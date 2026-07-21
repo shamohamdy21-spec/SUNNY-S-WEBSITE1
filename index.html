@@ -575,15 +575,14 @@ footer { background: var(--black); padding: 72px 80px 0; }
     aspect-ratio: 4/5;
     overflow: hidden;
     background: var(--cream-2);
+    touch-action: pan-y;
   }
   .hero-left { position: relative; top: auto; min-height: auto; padding: 52px 40px; }
   .hero-scroll-panel {
     position: relative;
-    width: 100%;
-    min-width: 100%;
+    flex: 0 0 auto;
     height: 100%;
     overflow: hidden;
-    flex-shrink: 0;
   }
   .hero-scroll-panel img {
     display: block;
@@ -1083,10 +1082,16 @@ footer { background: var(--black); padding: 72px 80px 0; }
       });
     }
 
+    function panelWidth() {
+      return right.getBoundingClientRect().width || right.offsetWidth;
+    }
+
     function goTo(n, instant) {
       cur = ((n % panels.length) + panels.length) % panels.length;
+      var tx = -(cur * panelWidth());
       track.style.transition = instant ? 'none' : 'transform 0.55s cubic-bezier(.4,0,.2,1)';
-      track.style.transform = 'translateX(-' + (cur * right.offsetWidth) + 'px)';
+      track.style.transform = 'translateX(' + tx + 'px)';
+      track.style.webkitTransform = 'translateX(' + tx + 'px)';
       updateDots();
     }
 
@@ -1096,15 +1101,35 @@ footer { background: var(--black); padding: 72px 80px 0; }
       goTo(cur + 1, isLast);
     }
 
+    function sizePanels() {
+      var w = panelWidth();
+      panels.forEach(function(p) {
+        p.style.width = w + 'px';
+        p.style.minWidth = w + 'px';
+      });
+      // Re-snap to current slide after resize without animation
+      var tx = -(cur * w);
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(' + tx + 'px)';
+      track.style.webkitTransform = 'translateX(' + tx + 'px)';
+    }
+
     function init() {
       if (initialized) return;
       initialized = true;
 
       // Wrap panels in a flex track
       track = document.createElement('div');
-      track.style.cssText = 'display:flex;height:100%;';
+      track.style.cssText = 'display:flex;height:100%;will-change:transform;';
       panels.forEach(function(p) { track.appendChild(p); });
       right.appendChild(track);
+
+      // Size panels to exact pixel width (fixes iOS Safari min-width:100% bug)
+      // Use rAF to ensure layout is complete before measuring
+      requestAnimationFrame(function() {
+        sizePanels();
+        window.addEventListener('resize', sizePanels, { passive: true });
+      });
 
       // Dots — placed after hero-right, overlapping it via negative margin
       dotsWrap = document.createElement('div');

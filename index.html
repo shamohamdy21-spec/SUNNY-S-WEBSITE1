@@ -580,7 +580,7 @@ footer { background: var(--black); padding: 72px 80px 0; }
   .hero-left { position: relative; top: auto; min-height: auto; padding: 52px 40px; }
   .hero-scroll-panel {
     position: relative;
-    flex: 0 0 auto;
+    flex-shrink: 0;
     height: 100%;
     overflow: hidden;
   }
@@ -1082,56 +1082,68 @@ footer { background: var(--black); padding: 72px 80px 0; }
       });
     }
 
-    function panelWidth() {
-      return right.getBoundingClientRect().width || right.offsetWidth;
+    function getW() {
+      return right.getBoundingClientRect().width || right.offsetWidth || window.innerWidth;
+    }
+
+    function applySize(w) {
+      panels.forEach(function(p) {
+        p.style.width = w + 'px';
+        p.style.minWidth = w + 'px';
+        p.style.maxWidth = w + 'px';
+      });
+    }
+
+    function snap(instant) {
+      var w = getW();
+      applySize(w);
+      var tx = -(cur * w);
+      track.style.transition = instant ? 'none' : 'transform 0.55s cubic-bezier(.4,0,.2,1)';
+      track.style.webkitTransition = instant ? 'none' : '-webkit-transform 0.55s cubic-bezier(.4,0,.2,1)';
+      track.style.transform = 'translateX(' + tx + 'px)';
+      track.style.webkitTransform = 'translateX(' + tx + 'px)';
     }
 
     function goTo(n, instant) {
       cur = ((n % panels.length) + panels.length) % panels.length;
-      var tx = -(cur * panelWidth());
-      track.style.transition = instant ? 'none' : 'transform 0.55s cubic-bezier(.4,0,.2,1)';
-      track.style.transform = 'translateX(' + tx + 'px)';
-      track.style.webkitTransform = 'translateX(' + tx + 'px)';
+      snap(instant);
       updateDots();
     }
 
     function advance() {
-      // When wrapping last→first, cut instantly (no backward pendulum)
       var isLast = cur === panels.length - 1;
       goTo(cur + 1, isLast);
-    }
-
-    function sizePanels() {
-      var w = panelWidth();
-      panels.forEach(function(p) {
-        p.style.width = w + 'px';
-        p.style.minWidth = w + 'px';
-      });
-      // Re-snap to current slide after resize without animation
-      var tx = -(cur * w);
-      track.style.transition = 'none';
-      track.style.transform = 'translateX(' + tx + 'px)';
-      track.style.webkitTransform = 'translateX(' + tx + 'px)';
     }
 
     function init() {
       if (initialized) return;
       initialized = true;
 
-      // Wrap panels in a flex track
+      // Build flex track — size panels synchronously before appending
+      // so iOS Safari never sees panels without an explicit pixel width
       track = document.createElement('div');
-      track.style.cssText = 'display:flex;height:100%;will-change:transform;';
-      panels.forEach(function(p) { track.appendChild(p); });
+      track.style.cssText = 'display:flex;height:100%;will-change:transform;-webkit-transform:translateX(0);transform:translateX(0);';
+      var w0 = right.offsetWidth || window.innerWidth;
+      panels.forEach(function(p) {
+        p.style.width    = w0 + 'px';
+        p.style.minWidth = w0 + 'px';
+        p.style.maxWidth = w0 + 'px';
+        track.appendChild(p);
+      });
       right.appendChild(track);
 
-      // Size panels to exact pixel width (fixes iOS Safari min-width:100% bug)
-      // Use rAF to ensure layout is complete before measuring
+      // Re-measure after paint (aspect-ratio height finalises here)
       requestAnimationFrame(function() {
-        sizePanels();
-        window.addEventListener('resize', sizePanels, { passive: true });
+        requestAnimationFrame(function() { snap(true); });
       });
 
-      // Dots — placed after hero-right, overlapping it via negative margin
+      // Re-measure on resize and orientation change
+      window.addEventListener('resize', function() { snap(true); }, { passive: true });
+      window.addEventListener('orientationchange', function() {
+        setTimeout(function() { snap(true); }, 300);
+      });
+
+      // Dots
       dotsWrap = document.createElement('div');
       dotsWrap.style.cssText = 'display:flex;justify-content:center;gap:8px;margin-top:-32px;position:relative;z-index:10;padding-bottom:8px;';
       panels.forEach(function(_, i) {
@@ -1141,25 +1153,32 @@ footer { background: var(--black); padding: 72px 80px 0; }
         dot.addEventListener('click', function() {
           clearInterval(timer);
           goTo(i, false);
-          timer = setInterval(advance, 2000);
+          timer = setInterval(advance, 3000);
         });
         dotsWrap.appendChild(dot);
       });
       right.parentNode.insertBefore(dotsWrap, right.nextSibling);
 
       // Touch swipe
-      var sx = 0;
+      var sx = 0, sy = 0, swiping = false;
       right.addEventListener('touchstart', function(e) {
         sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+        swiping = false;
         clearInterval(timer);
+      }, { passive: true });
+      right.addEventListener('touchmove', function(e) {
+        var dx = Math.abs(e.touches[0].clientX - sx);
+        var dy = Math.abs(e.touches[0].clientY - sy);
+        if (dx > dy) swiping = true;
       }, { passive: true });
       right.addEventListener('touchend', function(e) {
         var dx = sx - e.changedTouches[0].clientX;
-        if (Math.abs(dx) > 40) goTo(cur + (dx > 0 ? 1 : -1), false);
-        timer = setInterval(advance, 2000);
+        if (swiping && Math.abs(dx) > 30) goTo(cur + (dx > 0 ? 1 : -1), false);
+        timer = setInterval(advance, 3000);
       }, { passive: true });
 
-      timer = setInterval(advance, 2000);
+      timer = setInterval(advance, 3000);
     }
 
     if (mq.matches) init();

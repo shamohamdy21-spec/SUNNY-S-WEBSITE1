@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refund &amp; Exchange Policy — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF7F3; --cream-2:#F4F1EE; --cream-3:#EDE9E4;
+  --gold:#C6A15B; --gold-2:#D8C19A; --gold-pale:rgba(198,161,91,.08);
+  --black:#171717; --grey:#A8A8A8; --grey-2:#E8E4E0;
+  --fd:'Playfair Display',Georgia,serif; --fb:'Montserrat',system-ui,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cream);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%} a{text-decoration:none;color:inherit}
+button{font-family:var(--fb);cursor:pointer;border:none;background:none}
+::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--cream)} ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:10px 64px;background:rgba(250,247,243,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(198,161,91,.1);transition:padding .35s,box-shadow .35s,opacity .3s,transform .3s}
+.nav.scrolled{padding:6px 64px;box-shadow:0 4px 32px rgba(0,0,0,.06)}
+.nav-logo img{height:120px;width:auto;transition:height .35s}
+.nav.scrolled .nav-logo img{height:92px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;text-decoration:none}
+.nav-icon svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s}
+.nav-icon:hover svg{opacity:.5}
+.cart-badge{position:absolute;top:3px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#fff;font-size:8px;font-weight:700;display:none;align-items:center;justify-content:center}
+.cart-badge.show{display:flex}
+.nav-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:44px;height:3px;background:var(--black);border-radius:2px;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
+.nav-icon--cart svg{width:36px;height:36px}
+.nav.nav-hidden{opacity:0;pointer-events:none;transform:translateY(-8px)}
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay{position:fixed;inset:0;z-index:10000;background:transparent;pointer-events:none;transition:background .3s}
+.sidemenu-overlay.open{background:rgba(0,0,0,.46);pointer-events:all}
+.sidemenu{position:fixed;top:0;left:-380px;bottom:0;z-index:10001;width:340px;max-width:85vw;background:#fff;display:flex;flex-direction:column;transition:left .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+.sidemenu.open{left:0;box-shadow:6px 0 48px rgba(0,0,0,.14)}
+.sidemenu-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(198,161,91,.15)}
+.sidemenu-header .sidemenu-logo img{height:72px;width:auto}
+.sidemenu-close{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.sidemenu-close:hover{background:rgba(198,161,91,.12)}
+.sidemenu-close svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.6;stroke-linecap:round}
+.sidemenu-nav{flex:1;padding:44px 28px;display:flex;flex-direction:column}
+.sidemenu-nav a{font-family:var(--fd);font-size:26px;font-weight:400;color:var(--black);padding:18px 0;border-bottom:1px solid rgba(23,23,23,.07);display:block;transition:color .2s,padding-left .25s}
+.sidemenu-nav a:first-child{border-top:1px solid rgba(23,23,23,.07)}
+.sidemenu-nav a:hover{color:var(--gold);padding-left:10px}
+.sidemenu-nav a.active{color:var(--gold)}
+.sidemenu-footer{padding:28px 28px 36px;border-top:1px solid rgba(198,161,91,.15)}
+.sidemenu-footer p{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--grey)}
+
+/* ── FADE-IN ANIMATIONS ── */
+.fade-in{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.25,.46,.45,.94),transform .7s cubic-bezier(.25,.46,.45,.94)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in.d1{transition-delay:.1s}
+.fade-in.d2{transition-delay:.2s}
+.fade-in.d3{transition-delay:.3s}
+.fade-in.d4{transition-delay:.4s}
+
+/* ── HERO ── */
+.hero{padding-top:168px;padding-bottom:80px;text-align:center;background:var(--cream);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(198,161,91,.07) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.hero-title{font-family:var(--fd);font-size:clamp(36px,5vw,68px);font-weight:400;letter-spacing:-0.025em;line-height:1.1;color:var(--black);margin-bottom:28px}
+.hero-rule{width:48px;height:1.5px;background:var(--gold);margin:0 auto 28px}
+.hero-sub{font-family:var(--fd);font-size:clamp(16px,2vw,22px);font-weight:400;font-style:italic;color:var(--grey);line-height:1.5;max-width:520px;margin:0 auto}
+
+/* ── CONTENT WRAPPER ── */
+.content{max-width:780px;margin:0 auto;padding:0 40px 100px}
+
+/* ── INTRO BLOCK ── */
+.intro{padding:64px 0 56px;border-bottom:1px solid var(--grey-2)}
+.intro-lead{font-size:16px;font-weight:300;line-height:1.85;color:var(--black)}
+.intro-lead strong{font-weight:500;color:var(--black)}
+.intro-highlight{margin-top:28px;padding:22px 28px;border-left:2.5px solid var(--gold);background:var(--gold-pale);font-family:var(--fd);font-size:17px;font-style:italic;color:var(--black);line-height:1.6}
+
+/* ── SECTION HEADER ── */
+.sec-eyebrow{font-size:8px;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.sec-title{font-family:var(--fd);font-size:clamp(24px,3vw,34px);font-weight:400;letter-spacing:-0.015em;color:var(--black);margin-bottom:36px;line-height:1.2}
+
+/* ── HOW IT WORKS SECTION ── */
+.how-section{padding:64px 0 56px;border-bottom:1px solid var(--grey-2)}
+.how-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.how-card{background:var(--cream-2);padding:36px 32px;position:relative;overflow:hidden}
+.how-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold)}
+.how-card-num{font-family:var(--fd);font-size:52px;font-weight:400;color:rgba(198,161,91,.18);line-height:1;margin-bottom:16px;letter-spacing:-0.02em}
+.how-card-title{font-family:var(--fd);font-size:20px;font-weight:500;color:var(--black);margin-bottom:14px;line-height:1.2}
+.how-card-body{font-size:13px;font-weight:300;line-height:1.85;color:#4a4a4a}
+
+/* ── CARING SECTION ── */
+.caring-section{padding:64px 0 56px;border-bottom:1px solid var(--grey-2)}
+.caring-cards{display:flex;flex-direction:column;gap:0}
+.caring-card{display:grid;grid-template-columns:52px 1fr;gap:20px;align-items:flex-start;padding:28px 0;border-bottom:1px solid var(--grey-2)}
+.caring-card:last-child{border-bottom:none}
+.caring-icon{width:44px;height:44px;border-radius:50%;background:var(--gold-pale);border:1px solid rgba(198,161,91,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.caring-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.caring-title{font-family:var(--fd);font-size:18px;font-weight:500;color:var(--black);margin-bottom:8px;line-height:1.2}
+.caring-body{font-size:13px;font-weight:300;line-height:1.85;color:#4a4a4a}
+
+/* ── CLOSING QUOTE ── */
+.closing-section{padding:64px 0 56px;border-bottom:1px solid var(--grey-2)}
+.closing-quote{font-family:var(--fd);font-size:clamp(18px,2.2vw,24px);font-weight:400;font-style:italic;line-height:1.65;color:var(--black);text-align:center;padding:0 20px}
+.closing-quote em{color:var(--gold);font-style:italic}
+.closing-body{margin-top:28px;font-size:14px;font-weight:300;line-height:1.85;color:#4a4a4a;text-align:center}
+
+/* ── CTA SECTION ── */
+.cta-section{background:var(--black);padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(198,161,91,.08) 0%,transparent 70%);pointer-events:none}
+.cta-eyebrow{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.cta-heading{font-family:var(--fd);font-size:clamp(32px,4vw,52px);font-weight:400;color:#fff;letter-spacing:-0.02em;margin-bottom:16px}
+.cta-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,.5);margin-bottom:40px;line-height:1.6}
+.btn-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;background:var(--gold);color:#fff;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;text-decoration:none;position:relative;overflow:hidden;transition:box-shadow .3s}
+.btn-cta::before{content:'';position:absolute;inset:0;background:#b8943e;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.btn-cta:hover::before{transform:translateX(0)}
+.btn-cta span{position:relative;z-index:1}
+.btn-cta svg{position:relative;z-index:1;width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}
+.btn-cta:hover{box-shadow:0 8px 32px rgba(198,161,91,.3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){
+  .nav,.nav.scrolled{padding-left:40px;padding-right:40px}
+}
+@media(max-width:900px){
+  .nav,.nav.scrolled{padding:6px 20px;top:10px}
+  .nav-logo img,.nav.scrolled .nav-logo img{height:68px}
+  .hero{padding-top:148px;padding-bottom:60px}
+  .how-cards{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .hero{padding-top:130px;padding-bottom:48px}
+  .content{padding:0 20px 80px}
+  .intro{padding:48px 0 40px}
+  .how-section,.caring-section,.closing-section{padding:48px 0 40px}
+  .cta-section{padding:60px 20px}
+  .caring-card{grid-template-columns:40px 1fr;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart" id="cartIcon">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html" class="active">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="fade-in">
+    <p class="hero-eyebrow">Sunny's Eyewear</p>
+  </div>
+  <div class="fade-in d1">
+    <h1 class="hero-title">Refund &amp; Exchange Policy</h1>
+  </div>
+  <div class="fade-in d2">
+    <div class="hero-rule"></div>
+    <p class="hero-sub">The Perfect Fit: Our Gentle Try-On Experience</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="intro fade-in">
+    <p class="intro-lead">
+      At Sunny's, we believe true luxury is never rushed. We understand that selecting the perfect pair of sunglasses is a curated decision — it is about finding the frame that defines your signature style.
+    </p>
+    <div class="intro-highlight">
+      Because we want you to feel radiant, we offer an On-the-Spot Try-On.
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div class="fade-in">
+      <p class="sec-eyebrow">The Process</p>
+      <h2 class="sec-title">How It Works</h2>
+    </div>
+    <div class="how-cards">
+      <div class="how-card fade-in d1">
+        <div class="how-card-num">01</div>
+        <div class="how-card-title">Your Moment</div>
+        <p class="how-card-body">When our courier arrives, take a few quiet moments to open your package and try on your new Sunny's. You have up to <strong>10 minutes</strong> to see how they frame your face and check that they feel as wonderful as they look.</p>
+      </div>
+      <div class="how-card fade-in d2">
+        <div class="how-card-num">02</div>
+        <div class="how-card-title">The Decision</div>
+        <p class="how-card-body">If they aren't the perfect match, simply hand them back to the courier right then and there. If you love them, you can finalize your order and enjoy your new look immediately.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARING FOR YOUR FRAMES -->
+  <div class="caring-section">
+    <div class="fade-in">
+      <p class="sec-eyebrow">Handling Guidelines</p>
+      <h2 class="sec-title">Caring for Your New Frames</h2>
+      <p style="font-size:14px;font-weight:300;color:#4a4a4a;line-height:1.8;margin-bottom:36px">We put a lot of love into our designs, and we kindly ask that you show them a little love back during your try-on:</p>
+    </div>
+    <div class="caring-cards">
+
+      <div class="caring-card fade-in d1">
+        <div class="caring-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        </div>
+        <div>
+          <div class="caring-title">Gentle Hands</div>
+          <p class="caring-body">Please hold your frames by the chains so they stay pristine and free of smudges.</p>
+        </div>
+      </div>
+
+      <div class="caring-card fade-in d2">
+        <div class="caring-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <div>
+          <div class="caring-title">A Complete Set</div>
+          <p class="caring-body">If you decide they aren't "the one," please ensure the sunglasses are tucked back into their original case, with the cleaning cloth just as you received them.</p>
+        </div>
+      </div>
+
+      <div class="caring-card fade-in d3">
+        <div class="caring-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div>
+          <div class="caring-title">Pristine Condition</div>
+          <p class="caring-body">To keep our collection beautiful for everyone, we can only accept returns that are unscratched, and in their original, showroom-fresh condition. <strong>Returns are only permissible while the courier is still at your doorstep.</strong></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing-section">
+    <div class="fade-in">
+      <p class="closing-quote">Do they make you feel confident? If the answer is <em>"yes,"</em> then you've found your perfect pair!</p>
+      <p class="closing-body">We are delighted to bring a little bit of sunshine to your doorstep. If you have any questions, our team is always here for you — just reach out!</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="fade-in">
+    <p class="cta-eyebrow">Get in Touch</p>
+    <h2 class="cta-heading">Questions?</h2>
+    <p class="cta-sub">Our team is always here to help.</p>
+    <a href="mailto:shamohamdy21@gmail.com" class="btn-cta">
+      <span>Contact Us</span>
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<script>
+// ── Nav scroll ─────────────────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+let lastScrollY=0;
+window.addEventListener('scroll',()=>{const y=window.scrollY;nav.classList.toggle('scrolled',y>60);nav.classList.toggle('nav-hidden',y>80&&y>lastScrollY);lastScrollY=y;},{passive:true});
+
+// ── Side menu ──────────────────────────────────────────────────────────────
+(function(){
+  const h=document.getElementById('navHamburger'),m=document.getElementById('sidemenu'),o=document.getElementById('sidemenuOverlay'),c=document.getElementById('sidemenuClose');
+  function open(){m.classList.add('open');o.classList.add('open');document.body.style.overflow='hidden';h.setAttribute('aria-expanded','true');}
+  function close(){m.classList.remove('open');o.classList.remove('open');document.body.style.overflow='';h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',open);c.addEventListener('click',close);o.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
+
+// ── Cart badge ─────────────────────────────────────────────────────────────
+(function(){
+  try{
+    const c=JSON.parse(localStorage.getItem('sunny_cart')||'[]');
+    const n=c.reduce((s,i)=>s+i.qty,0);
+    const b=document.getElementById('cartBadge');
+    if(b&&n>0){b.textContent=n;b.classList.add('show');}
+  }catch(e){}
+})();
+
+// ── Scroll reveal ──────────────────────────────────────────────────────────
+(function(){
+  const els=document.querySelectorAll('.fade-in');
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>

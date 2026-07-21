@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rose Quartz — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root {
+  --cream:   #FAF7F3;
+  --cream-2: #F4F1EE;
+  --gold:    #C6A15B;
+  --gold-2:  #D8C19A;
+  --black:   #171717;
+  --grey:    #A8A8A8;
+  --rose:    #EBCBBE;
+  --champ:   #EFE4D6;
+  --fd: 'Playfair Display', Georgia, serif;
+  --fb: 'Montserrat', system-ui, sans-serif;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--fb);
+  background: var(--cream);
+  color: var(--black);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--fb); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+.lbl {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 3.5px; text-transform: uppercase; color: var(--gold);
+}
+em { font-style: italic; color: var(--gold); }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 64px;
+  background: rgba(250,247,243,.96); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(198,161,91,.1);
+  transition: padding .35s ease, box-shadow .35s ease, opacity .3s ease, transform .3s ease;
+}
+.nav.scrolled { padding: 6px 64px; box-shadow: 0 4px 32px rgba(0,0,0,.06); }
+.nav-logo img { height: 120px; width: auto; transition: height .35s ease; }
+.nav.scrolled .nav-logo img { height: 92px; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.nav-icon svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: opacity .2s; }
+.nav-icon:hover svg { opacity: .5; }
+.nav-icon--cart svg { width: 36px; height: 36px; }
+.nav.nav-hidden { opacity: 0; pointer-events: none; transform: translateY(-8px); }
+.nav-hamburger {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; width: 38px; height: 38px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-hamburger span {
+  display: block; width: 44px; height: 3px; background: var(--black); border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
+}
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: transparent; pointer-events: none;
+  transition: background 0.3s ease;
+}
+.sidemenu-overlay.open { background: rgba(0,0,0,.46); pointer-events: all; }
+.sidemenu {
+  position: fixed; top: 0; left: -380px; bottom: 0; z-index: 10001;
+  width: 340px; max-width: 85vw; background: #fff;
+  display: flex; flex-direction: column;
+  transition: left 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
+}
+.sidemenu.open { left: 0; box-shadow: 6px 0 48px rgba(0,0,0,.14); }
+.sidemenu-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px; border-bottom: 1px solid rgba(198,161,91,.15);
+}
+.sidemenu-header .sidemenu-logo img { height: 72px; width: auto; }
+.sidemenu-close {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.sidemenu-close:hover { background: rgba(198,161,91,.12); }
+.sidemenu-close svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.6; stroke-linecap: round; }
+.sidemenu-nav { flex: 1; padding: 44px 28px; display: flex; flex-direction: column; }
+.sidemenu-nav a {
+  font-family: var(--fd); font-size: 26px; font-weight: 400;
+  color: var(--black); letter-spacing: -0.01em;
+  padding: 18px 0; border-bottom: 1px solid rgba(23,23,23,.07); display: block;
+  transition: color 0.2s ease, padding-left 0.25s ease;
+}
+.sidemenu-nav a:first-child { border-top: 1px solid rgba(23,23,23,.07); }
+.sidemenu-nav a:hover { color: var(--gold); padding-left: 10px; }
+.sidemenu-footer { padding: 28px 28px 36px; border-top: 1px solid rgba(198,161,91,.15); }
+.sidemenu-footer p { font-size: 9px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); }
+
+/* ── PAGE ── */
+.page { padding-top: 148px; padding-bottom: 100px; }
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 80px 36px;
+}
+.breadcrumb a, .breadcrumb span {
+  font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey);
+}
+.breadcrumb a:hover { color: var(--gold); transition: color .2s; }
+.breadcrumb-sep { color: rgba(168,168,168,.5); }
+.breadcrumb .current { color: var(--black); }
+
+/* ── PRODUCT LAYOUT ── */
+.product-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; padding: 0 80px 100px;
+  align-items: start;
+}
+
+/* ── GALLERY ── */
+.gallery { position: sticky; top: 148px; }
+.gallery-main {
+  position: relative; overflow: hidden;
+  border-radius: 3px; background: var(--cream-2);
+  cursor: zoom-in; margin-bottom: 14px;
+}
+.gallery-main img {
+  width: 100%; aspect-ratio: 4/5;
+  object-fit: cover; object-position: center top; display: block;
+  transition: transform 0.55s cubic-bezier(.25,.46,.45,.94);
+}
+.gallery-main:hover img { transform: scale(1.07); }
+.gallery-badge {
+  position: absolute; top: 20px; left: 20px;
+  background: var(--gold); color: #fff;
+  font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 100px;
+}
+.gallery-thumbs { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.gallery-thumb {
+  overflow: hidden; border-radius: 3px; cursor: pointer;
+  border: 1.5px solid transparent; background: var(--cream-2);
+  transition: border-color 0.2s;
+}
+.gallery-thumb.active { border-color: var(--gold); }
+.gallery-thumb:hover:not(.active) { border-color: rgba(198,161,91,.4); }
+.gallery-thumb img {
+  width: 100%; aspect-ratio: 1;
+  object-fit: cover; display: block;
+  transition: transform 0.4s ease;
+}
+.gallery-thumb:hover img { transform: scale(1.08); }
+
+/* ── PRODUCT INFO ── */
+.prod-info {}
+.prod-tag { margin-bottom: 14px; }
+.prod-name {
+  font-family: var(--fd);
+  font-size: clamp(36px, 3.6vw, 56px);
+  font-weight: 400; line-height: 1.05; letter-spacing: -0.025em;
+  color: var(--black); margin-bottom: 14px;
+}
+.prod-rating-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.prod-stars { display: flex; gap: 3px; }
+.prod-stars svg { width: 13px; height: 13px; fill: var(--gold); }
+.prod-rating-count { font-size: 12px; color: var(--grey); }
+.prod-price {
+  font-family: var(--fd); font-size: 32px; font-weight: 400;
+  color: var(--black); margin-bottom: 28px; letter-spacing: -0.01em;
+}
+.prod-price .currency { font-size: 16px; vertical-align: 0.4em; margin-right: 2px; font-family: var(--fb); font-weight: 300; }
+.prod-divider { width: 100%; height: 1px; background: rgba(23,23,23,.08); margin-bottom: 28px; }
+.prod-desc {
+  font-size: 15px; font-weight: 300; line-height: 1.85; color: #686868;
+  margin-bottom: 36px; max-width: 440px;
+}
+
+/* Color selector */
+.option-group { margin-bottom: 28px; }
+.option-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--black); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.option-label .selected-val { font-weight: 300; color: var(--grey); text-transform: none; letter-spacing: 0; font-size: 12px; }
+.color-swatches { display: flex; gap: 11px; }
+.color-swatch {
+  width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+  position: relative; transition: transform 0.2s;
+}
+.color-swatch::after {
+  content: ''; position: absolute; inset: -3.5px; border-radius: 50%;
+  border: 1.5px solid transparent; transition: border-color 0.2s;
+}
+.color-swatch.active::after { border-color: var(--gold); }
+.color-swatch:hover { transform: scale(1.12); }
+
+/* Size selector */
+.size-options { display: flex; gap: 9px; flex-wrap: wrap; }
+.size-btn {
+  padding: 10px 20px; border-radius: 6px; cursor: pointer;
+  border: 1px solid rgba(23,23,23,.16); background: transparent;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.8px;
+  color: var(--black); line-height: 1.3; text-align: center;
+  transition: all 0.2s;
+}
+.size-btn .size-mm { display: block; font-size: 9px; font-weight: 300; letter-spacing: 0; color: var(--grey); margin-top: 2px; }
+.size-btn.active { background: var(--black); color: #fff; border-color: var(--black); }
+.size-btn.active .size-mm { color: rgba(255,255,255,.5); }
+.size-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+
+/* CTAs */
+.prod-ctas { display: flex; flex-direction: column; gap: 11px; margin-bottom: 32px; }
+.btn-gold {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--gold); color: #fff;
+  padding: 16px 36px; border-radius: 100px;
+  font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+  border: none; cursor: pointer; width: 100%;
+  transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), box-shadow 0.28s ease;
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(198,161,91,.38); }
+.btn-gold:active { transform: translateY(0); }
+.btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--black); padding: 16px 36px; border-radius: 100px;
+  border: 1px solid rgba(23,23,23,.2); background: transparent;
+  font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; width: 100%;
+  transition: all .25s ease;
+}
+.btn-ghost:hover { background: var(--black); color: #fff; border-color: var(--black); }
+
+/* Trust row */
+.trust-row { display: flex; gap: 20px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid rgba(23,23,23,.06); }
+.trust-item { display: flex; align-items: center; gap: 8px; }
+.trust-item svg { width: 15px; height: 15px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; flex-shrink: 0; }
+.trust-item span { font-size: 11px; color: #6a6a6a; white-space: nowrap; }
+
+/* ── SPECS ── */
+.specs-section { background: var(--cream-2); padding: 88px 80px; }
+.section-header { margin-bottom: 52px; }
+.section-header h2 {
+  font-family: var(--fd); font-size: clamp(28px, 3vw, 44px);
+  font-weight: 400; letter-spacing: -0.02em; margin-top: 12px; line-height: 1.1;
+}
+.specs-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; }
+.spec-card { background: #fff; padding: 38px 30px; }
+.spec-icon {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(198,161,91,.22);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
+}
+.spec-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.spec-lbl { font-size: 9px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.spec-val { font-family: var(--fd); font-size: 20px; font-weight: 400; color: var(--black); margin-bottom: 8px; line-height: 1.2; }
+.spec-detail { font-size: 12px; color: var(--grey); line-height: 1.65; }
+
+/* ── SHIPPING & RETURNS ── */
+.sr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(23,23,23,.05); }
+.sr-panel { padding: 80px; }
+.sr-panel.light { background: var(--cream); }
+.sr-panel.mid   { background: var(--cream-2); }
+.sr-panel h2 {
+  font-family: var(--fd); font-size: clamp(26px, 2.8vw, 38px);
+  font-weight: 400; letter-spacing: -0.02em; margin-top: 12px; margin-bottom: 36px; line-height: 1.1;
+}
+.sr-item { display: flex; gap: 18px; margin-bottom: 30px; }
+.sr-icon {
+  width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+  border: 1px solid rgba(198,161,91,.22);
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+.sr-icon svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.sr-item h4 { font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 5px; }
+.sr-item p  { font-size: 13px; color: #686868; line-height: 1.72; font-weight: 300; }
+
+/* ── REVIEWS ── */
+.reviews-section { padding: 88px 80px; background: var(--cream); }
+.reviews-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 48px; margin-bottom: 56px;
+}
+.reviews-top h2 {
+  font-family: var(--fd); font-size: clamp(28px, 3vw, 44px);
+  font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; margin-top: 12px;
+}
+.rating-summary { text-align: center; flex-shrink: 0; }
+.rating-big {
+  font-family: var(--fd); font-size: 76px; font-weight: 400;
+  color: var(--black); line-height: 1;
+}
+.rating-stars { display: flex; gap: 5px; justify-content: center; margin: 12px 0 6px; }
+.rating-stars svg { width: 17px; height: 17px; fill: var(--gold); }
+.rating-base { font-size: 11px; color: var(--grey); letter-spacing: 1px; }
+.reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.review-card { background: var(--cream-2); padding: 34px 30px; border-radius: 3px; }
+.rc-stars { display: flex; gap: 3px; margin-bottom: 16px; }
+.rc-stars svg { width: 12px; height: 12px; fill: var(--gold); }
+.rc-text {
+  font-size: 14px; font-weight: 300; line-height: 1.78;
+  color: #484848; margin-bottom: 22px; font-style: italic; font-family: var(--fd);
+}
+.rc-author { display: flex; align-items: center; gap: 12px; }
+.rc-avatar {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: var(--champ); display: flex; align-items: center; justify-content: center;
+  font-family: var(--fd); font-size: 15px; color: var(--gold);
+}
+.rc-name { font-size: 12px; font-weight: 500; color: var(--black); margin-bottom: 3px; }
+.rc-meta { font-size: 10px; color: var(--grey); }
+.rc-verified { font-size: 9px; color: var(--gold); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+/* ── STICKY BUY BAR ── */
+.sticky-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+  background: rgba(250,247,243,.97); backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(198,161,91,.15);
+  padding: 16px 64px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  box-shadow: 0 -6px 32px rgba(0,0,0,.07);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+.sticky-bar.visible { transform: translateY(0); }
+.sticky-bar-info { flex: 1; }
+.sticky-bar-name { font-family: var(--fd); font-size: 18px; font-weight: 400; color: var(--black); }
+.sticky-bar-price { font-size: 13px; color: var(--gold); font-weight: 500; margin-top: 2px; }
+.sticky-bar-btn {
+  flex-shrink: 0;
+  background: var(--gold); color: #fff;
+  padding: 14px 44px; border-radius: 100px;
+  font-family: var(--fb); font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase; border: none; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.sticky-bar-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(198,161,91,.38); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .nav, .nav.scrolled { padding-left: 40px; padding-right: 40px; }
+  .breadcrumb { padding: 0 40px 32px; }
+  .product-grid { gap: 56px; padding: 0 40px 80px; }
+  .specs-section { padding: 72px 40px; }
+  .sr-panel { padding: 64px 40px; }
+  .reviews-section { padding: 72px 40px; }
+  .sticky-bar { padding: 16px 40px; }
+}
+@media (max-width: 1024px) {
+  .nav, .nav.scrolled { padding: 6px 20px; top: 10px; }
+  .nav-logo img, .nav.scrolled .nav-logo img { height: 68px; }
+  .breadcrumb { padding: 0 28px 28px; }
+  .product-grid { grid-template-columns: 1fr; gap: 40px; padding: 0 28px 72px; }
+  .gallery { position: relative; top: auto; }
+  .specs-section { padding: 60px 28px; }
+  .specs-grid { grid-template-columns: repeat(2,1fr); }
+  .sr-grid { grid-template-columns: 1fr; }
+  .sr-panel { padding: 56px 28px; }
+  .reviews-section { padding: 60px 28px; }
+  .reviews-top { flex-direction: column; gap: 32px; }
+  .reviews-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .sticky-bar { padding: 14px 28px; }
+}
+@media (max-width: 600px) {
+  .page { padding-top: 120px; }
+  .breadcrumb { padding: 0 20px 20px; }
+  .product-grid { padding: 0 20px 56px; }
+  .prod-name { font-size: 36px; }
+  .specs-section { padding: 48px 20px; }
+  .specs-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+  .spec-card { padding: 26px 20px; }
+  .sr-panel { padding: 48px 20px; }
+  .reviews-section { padding: 48px 20px; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .sticky-bar { padding: 12px 20px; }
+  .sticky-bar-name { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </span>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="product.html">Shop Now</a>
+    <a href="/refund-policy">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer">
+    <p>Be Unique &bull; Be Different</p>
+  </div>
+</aside>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="#">Collections</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="current">The Rose Quartz</span>
+  </div>
+
+  <!-- PRODUCT LAYOUT -->
+  <div class="product-grid">
+
+    <!-- GALLERY -->
+    <div class="gallery">
+      <div class="gallery-main">
+        <div class="gallery-badge">New Arrival</div>
+        <img id="mainImg" src="brand_assets/06B7E699-4F6A-44AC-9CDB-0DBD7340C38A.jpeg" alt="The Rose Quartz — Front view">
+      </div>
+      <div class="gallery-thumbs">
+        <div class="gallery-thumb active" data-src="brand_assets/06B7E699-4F6A-44AC-9CDB-0DBD7340C38A.jpeg">
+          <img src="brand_assets/06B7E699-4F6A-44AC-9CDB-0DBD7340C38A.jpeg" alt="Front view">
+        </div>
+        <div class="gallery-thumb" data-src="brand_assets/6E8AE498-076B-4507-9155-D07FDC7C41CF.png">
+          <img src="brand_assets/6E8AE498-076B-4507-9155-D07FDC7C41CF.png" alt="Side view">
+        </div>
+        <div class="gallery-thumb" data-src="brand_assets/4C901354-5AB5-4B74-A5E6-1418835E0D4F.png">
+          <img src="brand_assets/4C901354-5AB5-4B74-A5E6-1418835E0D4F.png" alt="Detail view">
+        </div>
+        <div class="gallery-thumb" data-src="brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png">
+          <img src="brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png" alt="Chain detail">
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <div class="prod-info" id="prodInfo">
+      <div class="prod-tag lbl">Summer Collection 2026</div>
+      <h1 class="prod-name">The Rose <em>Quartz</em></h1>
+
+      <div class="prod-rating-row">
+        <div class="prod-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <span class="prod-rating-count">4.9 · 127 reviews</span>
+      </div>
+
+      <div class="prod-price"><span class="currency">AED</span>285</div>
+      <div class="prod-divider"></div>
+
+      <p class="prod-desc">
+        Handcrafted from premium Italian acetate with a genuine Rose Quartz gemstone chain. Cat-eye silhouette, UV400 polarized lenses — designed for the woman who turns every glance into an entrance. The chain is fully interchangeable.
+      </p>
+
+      <!-- Color -->
+      <div class="option-group">
+        <div class="option-label">Color <span class="selected-val" id="colorVal">Rose Quartz</span></div>
+        <div class="color-swatches">
+          <div class="color-swatch active" style="background:#EBCBBE" data-name="Rose Quartz" title="Rose Quartz"></div>
+          <div class="color-swatch" style="background:#171717" data-name="Onyx" title="Onyx"></div>
+          <div class="color-swatch" style="background:#EFE4D6" data-name="Champagne" title="Champagne"></div>
+        </div>
+      </div>
+
+      <!-- Size -->
+      <div class="option-group">
+        <div class="option-label">Frame Size <span class="selected-val" id="sizeVal">Medium</span></div>
+        <div class="size-options">
+          <button class="size-btn" data-size="Small">Small<span class="size-mm">49 mm</span></button>
+          <button class="size-btn active" data-size="Medium">Medium<span class="size-mm">52 mm</span></button>
+          <button class="size-btn" data-size="Large">Large<span class="size-mm">55 mm</span></button>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="prod-ctas" id="prodCtas">
+        <button class="btn-gold">Add to Bag</button>
+        <button class="btn-ghost">Save to Wishlist</button>
+      </div>
+
+      <!-- Trust -->
+      <div class="trust-row">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Authentic Gemstones</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <span>Free Shipping UAE</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+          <span>14-Day Returns</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /product-grid -->
+
+  <!-- SPECIFICATIONS -->
+  <section class="specs-section">
+    <div class="section-header">
+      <div class="lbl">Craftsmanship</div>
+      <h2>Product <em>Specifications</em></h2>
+    </div>
+    <div class="specs-grid">
+      <div class="spec-card">
+        <div class="spec-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="spec-lbl">Frame Material</div>
+        <div class="spec-val">Italian Acetate</div>
+        <div class="spec-detail">Premium Mazzucchelli acetate, hand-polished. Hypoallergenic, lightweight, and built to last.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="spec-lbl">Lens Material</div>
+        <div class="spec-val">Polarized CR-39</div>
+        <div class="spec-detail">Optically pure mineral lens with anti-reflective and scratch-resistant multi-layer coating.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="spec-lbl">UV Protection</div>
+        <div class="spec-val">UV400 · Cat. 3</div>
+        <div class="spec-detail">Blocks 100% of UVA and UVB radiation. Category 3 rating for intense sunlight and beach use.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="spec-lbl">Dimensions</div>
+        <div class="spec-val">52 — 18 — 145</div>
+        <div class="spec-detail">Lens 52 mm · Bridge 18 mm · Temple 145 mm · Total weight 22 g</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHIPPING & RETURNS -->
+  <div class="sr-grid">
+    <div class="sr-panel light">
+      <div class="lbl">Delivery</div>
+      <h2>Shipping <em>Information</em></h2>
+      <div class="sr-item">
+        <div class="sr-icon">
+          <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div>
+          <h4>Standard Delivery — Free</h4>
+          <p>3–5 business days across the UAE. Complimentary on every order, no minimum spend.</p>
+        </div>
+      </div>
+      <div class="sr-item">
+        <div class="sr-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <h4>Express — AED 25</h4>
+          <p>Next-day delivery for Dubai, Abu Dhabi, and Sharjah. Order before 2 pm for same-day dispatch.</p>
+        </div>
+      </div>
+      <div class="sr-item">
+        <div class="sr-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div>
+          <h4>GCC International</h4>
+          <p>Shipping to KSA, Kuwait, Bahrain, Oman, and Qatar in 5–10 business days. AED 45.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sr-panel mid">
+      <div class="lbl">Refund &amp; Exchange</div>
+      <h2>Returns <em>Policy</em></h2>
+      <div class="sr-item">
+        <div class="sr-icon">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+        </div>
+        <div>
+          <h4>14-Day Returns</h4>
+          <p>Not in love? Return within 14 days of delivery for a full refund — no questions asked, no fees.</p>
+        </div>
+      </div>
+      <div class="sr-item">
+        <div class="sr-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        </div>
+        <div>
+          <h4>Free First Exchange</h4>
+          <p>Swap for a different color or size — we cover the return shipping on your first exchange.</p>
+        </div>
+      </div>
+      <div class="sr-item">
+        <div class="sr-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <h4>Refund Conditions</h4>
+          <p>Items must be unworn, in original packaging with all tags attached. Custom engraved pieces are non-refundable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEWS -->
+  <section class="reviews-section">
+    <div class="reviews-top">
+      <div>
+        <div class="lbl">Customer Stories</div>
+        <h2>What They're <em>Saying</em></h2>
+      </div>
+      <div class="rating-summary">
+        <div class="rating-big">4.9</div>
+        <div class="rating-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="rating-base">Based on 127 reviews</div>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="rc-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="rc-text">"I've never received so many compliments on a pair of sunglasses. The Rose Quartz chain looks like genuine fine jewelry — because it is. Worth every dirham."</p>
+        <div class="rc-author">
+          <div class="rc-avatar">N</div>
+          <div>
+            <div class="rc-name">Noura Al-Rashidi</div>
+            <div class="rc-meta">June 2026 · Dubai</div>
+            <div class="rc-verified">✓ Verified Purchase</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="rc-text">"The quality exceeded my expectations. Lightweight and comfortable all day. The interchangeable chain concept is genius — I've already ordered two extra chains."</p>
+        <div class="rc-author">
+          <div class="rc-avatar">S</div>
+          <div>
+            <div class="rc-name">Sara Mitchell</div>
+            <div class="rc-meta">May 2026 · Abu Dhabi</div>
+            <div class="rc-verified">✓ Verified Purchase</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="rc-text">"Bought this as a gift for my sister — the unboxing alone felt like a luxury experience. The craftsmanship is evident in every detail. She hasn't taken them off since."</p>
+        <div class="rc-author">
+          <div class="rc-avatar">L</div>
+          <div>
+            <div class="rc-name">Layla Hassan</div>
+            <div class="rc-meta">April 2026 · Sharjah</div>
+            <div class="rc-verified">✓ Verified Purchase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<!-- STICKY BUY BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <div class="sticky-bar-info">
+    <div class="sticky-bar-name">The Rose Quartz</div>
+    <div class="sticky-bar-price">AED 285</div>
+  </div>
+  <button class="sticky-bar-btn">Add to Bag</button>
+</div>
+
+<script>
+  // Nav scroll shrink
+  const nav = document.getElementById('nav');
+  let lastScrollY = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 60);
+    nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+    lastScrollY = y;
+  }, { passive: true });
+
+  // Side menu
+  (function() {
+    const hamburger = document.getElementById('navHamburger');
+    const menu      = document.getElementById('sidemenu');
+    const overlay   = document.getElementById('sidemenuOverlay');
+    const closeBtn  = document.getElementById('sidemenuClose');
+    function openMenu()  { menu.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; hamburger.setAttribute('aria-expanded','true'); }
+    function closeMenu() { menu.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; hamburger.setAttribute('aria-expanded','false'); }
+    hamburger.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  })();
+
+  // Thumbnail gallery
+  (function() {
+    const mainImg = document.getElementById('mainImg');
+    document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        mainImg.src = thumb.dataset.src;
+        document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+      });
+    });
+  })();
+
+  // Color swatches
+  (function() {
+    const colorVal = document.getElementById('colorVal');
+    document.querySelectorAll('.color-swatch').forEach(s => {
+      s.addEventListener('click', () => {
+        document.querySelectorAll('.color-swatch').forEach(sw => sw.classList.remove('active'));
+        s.classList.add('active');
+        colorVal.textContent = s.dataset.name;
+      });
+    });
+  })();
+
+  // Size selector
+  (function() {
+    const sizeVal = document.getElementById('sizeVal');
+    document.querySelectorAll('.size-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        b.classList.add('active');
+        sizeVal.textContent = b.dataset.size;
+      });
+    });
+  })();
+
+  // Sticky buy bar — appears once product CTAs scroll out of view
+  (function() {
+    const bar    = document.getElementById('stickyBar');
+    const target = document.getElementById('prodCtas');
+    const obs = new IntersectionObserver(entries => {
+      bar.classList.toggle('visible', !entries[0].isIntersecting);
+    }, { threshold: 0 });
+    obs.observe(target);
+  })();
+</script>
+</body>
+</html>

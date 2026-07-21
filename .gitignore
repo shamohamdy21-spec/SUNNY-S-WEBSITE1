@@ -1,0 +1,41 @@
+# ── Dev tooling (not needed in production) ──────────────────────────────────
+node_modules/
+package-lock.json
+serve.mjs
+screenshot.mjs
+screenshot.js
+CLAUDE.md
+
+# ── Local screenshot artifacts ────────────────────────────────────────────────
+temporary screenshots/
+screenshots/
+breedlove.xyz_.png
+brand_assets/localhost_3000_.png
+
+# ── Replaced / unused brand assets ───────────────────────────────────────────
+# (old images superseded by newer uploads)
+brand_assets/23.jpg
+brand_assets/1 (1).jpg
+brand_assets/14592C00-3AE5-450F-8D9E-0CC895E8FC17.png
+brand_assets/20527374-8939-42C0-BD13-F0243276F846.jpeg
+brand_assets/47BF8D85-9CB2-41F4-9E68-12AAA01E8021.png
+brand_assets/80580A39-E2DE-4CBF-8C04-11584B0AB63C.png
+brand_assets/9358B3F9-60EB-4E92-B9AB-27960AC33A3A.jpeg
+brand_assets/E499ED04-0080-47DE-8485-70B6C9C85EF1.png
+brand_assets/IMG_9330.jpeg
+brand_assets/file_000000008830720ab4570236ba0be958.png
+brand_assets/Picsart_26-06-18_17-21-35-018.png
+brand_assets/Picsart_26-06-18_17-22-16-587.jpg
+brand_assets/Picsart_26-06-18_17-22-52-462.jpg
+brand_assets/Picsart_26-06-19_03-46-00-983.jpg
+brand_assets/Picsart_26-06-19_03-47-03-929.jpg
+brand_assets/Picsart_26-06-19_03-48-57-574.jpg
+brand_assets/Picsart_26-06-19_03-49-50-957.jpg
+brand_assets/Picsart_26-06-19_13-30-49-568.jpg
+brand_assets/brand assets 2/D7D378A9-F5AD-434F-A424-0CC7FDD7B3D0.png
+brand_assets/brand assets 3/4C4AFA05-9FED-44D3-BE77-3974497F27E8.png
+brand_assets/brand assets 3/57E16D95-868E-4D36-B364-AC0CD2614428.png
+brand_assets/brand assets 3/6B098B4C-D36E-4DD0-8D30-37F50FF55764.png
+brand_assets/brand assets 3/A33C827A-93FD-49DB-A78D-B1BEB1E59D0F.png
+brand_assets/brand assets 3/A9957C8D-BD49-4E5E-97A9-E66E904BC84D.jpeg
+brand_assets/brand assets 3/file_00000000e6a081f4bb1cf73be3dffc1a.png

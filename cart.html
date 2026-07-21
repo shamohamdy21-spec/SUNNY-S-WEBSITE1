@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF7F3; --cream-2:#F4F1EE; --gold:#C6A15B; --gold-2:#D8C19A;
+  --black:#171717; --grey:#A8A8A8;
+  --fd:'Playfair Display',Georgia,serif; --fb:'Montserrat',system-ui,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fb);background:var(--cream);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%} a{text-decoration:none;color:inherit}
+button{font-family:var(--fb);cursor:pointer;border:none}
+::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--cream)} ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:10px 64px;background:rgba(250,247,243,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(198,161,91,.1);transition:padding .35s,box-shadow .35s,opacity .3s,transform .3s}
+.nav.scrolled{padding:6px 64px;box-shadow:0 4px 32px rgba(0,0,0,.06)}
+.nav-logo img{height:120px;width:auto;transition:height .35s}
+.nav.scrolled .nav-logo img{height:92px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;text-decoration:none}
+.nav-icon svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s}
+.nav-icon:hover svg{opacity:.5}
+.cart-badge{position:absolute;top:3px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#fff;font-size:8px;font-weight:700;display:none;align-items:center;justify-content:center}
+.cart-badge.show{display:flex}
+.nav-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:44px;height:3px;background:var(--black);border-radius:2px;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
+.nav-icon--cart svg{width:36px;height:36px}
+.nav.nav-hidden{opacity:0;pointer-events:none;transform:translateY(-8px)}
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay{position:fixed;inset:0;z-index:10000;background:transparent;pointer-events:none;transition:background .3s}
+.sidemenu-overlay.open{background:rgba(0,0,0,.46);pointer-events:all}
+.sidemenu{position:fixed;top:0;left:-380px;bottom:0;z-index:10001;width:340px;max-width:85vw;background:#fff;display:flex;flex-direction:column;transition:left .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+.sidemenu.open{left:0;box-shadow:6px 0 48px rgba(0,0,0,.14)}
+.sidemenu-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(198,161,91,.15)}
+.sidemenu-header .sidemenu-logo img{height:72px;width:auto}
+.sidemenu-close{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.sidemenu-close:hover{background:rgba(198,161,91,.12)}
+.sidemenu-close svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.6;stroke-linecap:round}
+.sidemenu-nav{flex:1;padding:44px 28px;display:flex;flex-direction:column}
+.sidemenu-nav a{font-family:var(--fd);font-size:26px;font-weight:400;color:var(--black);padding:18px 0;border-bottom:1px solid rgba(23,23,23,.07);display:block;transition:color .2s,padding-left .25s}
+.sidemenu-nav a:first-child{border-top:1px solid rgba(23,23,23,.07)}
+.sidemenu-nav a:hover{color:var(--gold);padding-left:10px}
+.sidemenu-footer{padding:28px 28px 36px;border-top:1px solid rgba(198,161,91,.15)}
+.sidemenu-footer p{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--grey)}
+
+/* ── PAGE ── */
+.page{padding-top:148px;padding-bottom:80px;min-height:100vh}
+
+/* ── CART HEADER ── */
+.cart-page-header{padding:48px 80px 36px;border-bottom:1px solid rgba(198,161,91,.12)}
+.cart-page-title{font-family:var(--fd);font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-0.025em;color:var(--black)}
+.cart-page-count{margin-top:6px;font-size:11px;font-weight:400;color:var(--grey);letter-spacing:1px}
+
+/* ── MAIN LAYOUT ── */
+.cart-layout{display:grid;grid-template-columns:1fr 380px;gap:2px;background:rgba(198,161,91,.08);padding:0 80px;margin-top:2px}
+
+/* ── CART ITEMS SIDE ── */
+.cart-items-col{background:var(--cream);padding:40px 56px 40px 0}
+.cart-col-label{display:grid;grid-template-columns:96px 1fr auto auto;gap:16px;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(23,23,23,.08);margin-bottom:8px}
+.cart-col-label span{font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--grey)}
+.cart-col-label .cl-qty{text-align:center}
+.cart-col-label .cl-total{text-align:right;min-width:80px}
+
+/* ── SINGLE ITEM ── */
+.cart-item{display:grid;grid-template-columns:96px 1fr auto auto;gap:16px;align-items:center;padding:28px 0;border-bottom:1px solid rgba(23,23,23,.06);animation:itemIn .35s cubic-bezier(.25,.46,.45,.94)}
+@keyframes itemIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ci-img{width:96px;height:120px;object-fit:cover;object-position:center top;flex-shrink:0;background:var(--cream-2)}
+.ci-info{min-width:0}
+.ci-name{font-family:var(--fd);font-size:18px;font-weight:400;color:var(--black);line-height:1.2;margin-bottom:5px}
+.ci-col{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ci-unit-price{font-size:12px;font-weight:300;color:var(--grey)}
+.ci-remove{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-top:10px;padding:0;transition:color .2s}
+.ci-remove svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.ci-remove:hover{color:#c0392b}
+
+/* ── QTY STEPPER ── */
+.qty-ctrl{display:flex;align-items:center;gap:0;border:1px solid rgba(23,23,23,.14)}
+.qty-btn{width:34px;height:34px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;color:var(--black);transition:background .15s}
+.qty-btn:hover{background:rgba(198,161,91,.08)}
+.qty-num{width:40px;text-align:center;font-size:14px;font-weight:400;color:var(--black);border-left:1px solid rgba(23,23,23,.1);border-right:1px solid rgba(23,23,23,.1);height:34px;display:flex;align-items:center;justify-content:center;user-select:none}
+
+/* ── ITEM TOTAL ── */
+.ci-total{font-size:16px;font-weight:400;color:var(--black);text-align:right;min-width:80px;white-space:nowrap}
+
+/* ── CONTINUE SHOPPING ── */
+.cart-continue{margin-top:32px}
+.btn-continue{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--grey);background:none;border:none;padding:0;cursor:pointer;text-decoration:none;transition:color .2s}
+.btn-continue svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.btn-continue:hover{color:var(--gold)}
+
+/* ── SUMMARY SIDE ── */
+.cart-summary-col{background:var(--cream-2);padding:40px 40px;position:sticky;top:148px;height:fit-content;align-self:start}
+.sum-title{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--black);margin-bottom:28px}
+.sum-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.sum-row .l{font-size:12px;font-weight:300;color:var(--grey)}
+.sum-row .v{font-size:13px;font-weight:400;color:var(--black)}
+.sum-row .v.free{color:#27ae60;font-size:11px}
+.sum-row .v.note{color:var(--grey);font-size:11px;font-style:italic}
+.sum-div{height:1px;background:rgba(198,161,91,.2);margin:20px 0}
+.sum-total-row{display:flex;justify-content:space-between;align-items:baseline;padding-top:18px;border-top:1.5px solid var(--black);margin-top:8px}
+.sum-total-row .l{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.sum-total-row .v{font-family:var(--fd);font-size:26px;font-weight:400}
+.sum-total-row .v .cur{font-family:var(--fb);font-size:12px;font-weight:300;color:var(--grey);margin-right:3px}
+
+/* ── CTA BUTTONS ── */
+.btn-checkout{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px;margin-top:28px;background:var(--gold);color:#fff;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:background .25s,box-shadow .25s}
+.btn-checkout:hover{background:#b8943e;box-shadow:0 8px 28px rgba(198,161,91,.35)}
+.btn-checkout svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}
+.btn-shop-sum{display:flex;align-items:center;justify-content:center;width:100%;padding:14px;margin-top:10px;background:none;border:1.5px solid rgba(23,23,23,.14);color:var(--black);font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:border-color .2s,color .2s}
+.btn-shop-sum:hover{border-color:var(--gold);color:var(--gold)}
+.secure-line{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;font-size:10px;color:var(--grey)}
+.secure-line svg{width:11px;height:11px;stroke:var(--grey);fill:none;stroke-width:2}
+
+/* ── EMPTY STATE ── */
+.empty-state{display:none;flex-direction:column;align-items:center;justify-content:center;padding:96px 40px;text-align:center;min-height:60vh}
+.empty-state.show{display:flex}
+.empty-icon{width:80px;height:80px;opacity:.25;margin-bottom:32px}
+.empty-title{font-family:var(--fd);font-size:28px;font-weight:400;color:var(--black);margin-bottom:12px}
+.empty-sub{font-size:13px;font-weight:300;color:var(--grey);margin-bottom:36px;line-height:1.7}
+.btn-start{display:inline-flex;align-items:center;gap:10px;padding:15px 36px;background:var(--gold);color:#fff;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:background .25s,box-shadow .25s}
+.btn-start:hover{background:#b8943e;box-shadow:0 8px 28px rgba(198,161,91,.28)}
+
+/* ── MOBILE STICKY BAR ── */
+.mobile-sticky{display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:#fff;border-top:1px solid rgba(198,161,91,.2);padding:14px 20px;box-shadow:0 -4px 24px rgba(0,0,0,.08)}
+.mobile-sticky-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.mobile-sticky-total{display:flex;flex-direction:column}
+.mobile-sticky-label{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--grey)}
+.mobile-sticky-amount{font-family:var(--fd);font-size:20px;font-weight:400;color:var(--black)}
+.mobile-sticky-btn{flex:1;padding:14px;background:var(--gold);color:#fff;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;text-align:center;display:block;transition:background .2s}
+.mobile-sticky-btn:hover{background:#b8943e}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){
+  .nav,.nav.scrolled{padding-left:40px;padding-right:40px}
+  .cart-page-header{padding:40px 40px 28px}
+  .cart-layout{grid-template-columns:1fr 340px;padding:0 40px}
+  .cart-items-col{padding-right:40px}
+}
+@media(max-width:1024px){
+  .nav,.nav.scrolled{padding:6px 20px;top:10px}
+  .nav-logo img,.nav.scrolled .nav-logo img{height:68px}
+  .page{padding-top:120px}
+  .cart-page-header{padding:32px 28px 24px}
+  .cart-layout{grid-template-columns:1fr;padding:0;background:transparent;gap:0}
+  .cart-items-col{padding:28px 28px 20px}
+  .cart-summary-col{position:static;padding:28px 28px 100px}
+  .mobile-sticky{display:block}
+}
+@media(max-width:600px){
+  .page{padding-top:110px}
+  .cart-page-header{padding:24px 20px 20px}
+  .cart-items-col{padding:20px 20px 16px}
+  .cart-summary-col{padding:24px 20px 100px}
+  .cart-col-label{display:none}
+  .cart-item{grid-template-columns:80px 1fr;grid-template-rows:auto auto;gap:12px}
+  .ci-img{width:80px;height:100px}
+  .qty-ctrl{grid-column:2}
+  .ci-total{grid-column:2;text-align:left;font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart" id="cartIcon">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState">
+    <svg class="empty-icon" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="8" y="28" width="28" height="18" rx="9"/>
+      <rect x="44" y="28" width="28" height="18" rx="9"/>
+      <path d="M36 37h8"/>
+      <path d="M8 37H2M72 37h6"/>
+    </svg>
+    <h2 class="empty-title">Your cart is empty</h2>
+    <p class="empty-sub">Looks like you haven't added anything yet.<br>Discover our luxury eyewear collection.</p>
+    <a href="shop.html" class="btn-start">
+      Start Shopping
+      <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <!-- CART CONTENT -->
+  <div id="cartContent" style="display:none">
+    <div class="cart-page-header">
+      <h1 class="cart-page-title">Your Cart</h1>
+      <p class="cart-page-count" id="cartCount"></p>
+    </div>
+
+    <div class="cart-layout">
+      <!-- ITEMS -->
+      <div class="cart-items-col">
+        <div class="cart-col-label">
+          <span>Product</span>
+          <span></span>
+          <span class="cl-qty">Quantity</span>
+          <span class="cl-total">Total</span>
+        </div>
+        <div id="cartItems"></div>
+        <div class="cart-continue">
+          <a href="shop.html" class="btn-continue">
+            <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Continue Shopping
+          </a>
+        </div>
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="cart-summary-col">
+        <div class="sum-title">Order Summary</div>
+        <div class="sum-row">
+          <span class="l">Subtotal</span>
+          <span class="v" id="sumSubtotal">EGP —</span>
+        </div>
+        <div class="sum-row">
+          <span class="l">Shipping</span>
+          <span class="v note" id="sumShipping">Calculated at checkout</span>
+        </div>
+        <div class="sum-div"></div>
+        <div class="sum-total-row">
+          <span class="l">Total</span>
+          <span class="v"><span class="cur">EGP</span><span id="sumTotal">—</span></span>
+        </div>
+        <a href="#" onclick="goCheckout(event)" class="btn-checkout">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Proceed to Checkout
+        </a>
+        <a href="shop.html" class="btn-shop-sum">Continue Shopping</a>
+        <div class="secure-line">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Secure checkout
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MOBILE STICKY BAR -->
+<div class="mobile-sticky" id="mobileSticky" style="display:none">
+  <div class="mobile-sticky-inner">
+    <div class="mobile-sticky-total">
+      <span class="mobile-sticky-label">Total</span>
+      <span class="mobile-sticky-amount" id="mobileStickyTotal">EGP —</span>
+    </div>
+    <a href="#" onclick="goCheckout(event)" class="mobile-sticky-btn">Checkout</a>
+  </div>
+</div>
+
+<script>
+// ── Cart state ─────────────────────────────────────────────────────────────
+let items = [];
+
+function loadCart() {
+  try { items = JSON.parse(localStorage.getItem('sunny_cart') || '[]'); } catch(e) { items = []; }
+}
+
+function saveCart() {
+  localStorage.setItem('sunny_cart', JSON.stringify(items));
+}
+
+// ── Formatters ─────────────────────────────────────────────────────────────
+function fmt(n) { return Number(n).toLocaleString('en-EG'); }
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function render() {
+  loadCart();
+
+  const empty   = document.getElementById('emptyState');
+  const content = document.getElementById('cartContent');
+  const sticky  = document.getElementById('mobileSticky');
+
+  if (!items.length) {
+    empty.classList.add('show');
+    content.style.display = 'none';
+    sticky.style.display  = 'none';
+    updateBadge();
+    return;
+  }
+
+  empty.classList.remove('show');
+  content.style.display = 'block';
+  sticky.style.display  = 'block';
+
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = items.reduce((s, i) => s + i.qty, 0);
+
+  document.getElementById('cartCount').textContent = count + ' ' + (count === 1 ? 'item' : 'items');
+  document.getElementById('sumSubtotal').textContent = 'EGP ' + fmt(total);
+  document.getElementById('sumTotal').textContent    = fmt(total);
+  document.getElementById('mobileStickyTotal').textContent = 'EGP ' + fmt(total);
+
+  document.getElementById('cartItems').innerHTML = items.map((it, idx) => `
+    <div class="cart-item" id="ci-${idx}">
+      <img class="ci-img" src="${it.image}" alt="${it.name}" onerror="this.style.background='var(--cream-2)'">
+      <div class="ci-info">
+        <div class="ci-name">${it.name}</div>
+        <div class="ci-col">${it.collection || ''}</div>
+        <div class="ci-unit-price">EGP ${fmt(it.price)} each</div>
+        <button class="ci-remove" onclick="removeItem(${idx})" type="button">
+          <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          Remove
+        </button>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(${idx},-1)" type="button" aria-label="Decrease">−</button>
+        <div class="qty-num" id="qn-${idx}">${it.qty}</div>
+        <button class="qty-btn" onclick="changeQty(${idx},1)" type="button" aria-label="Increase">+</button>
+      </div>
+      <div class="ci-total" id="ct-${idx}">EGP ${fmt(it.price * it.qty)}</div>
+    </div>
+  `).join('');
+
+  updateBadge();
+}
+
+function changeQty(idx, delta) {
+  items[idx].qty = Math.max(1, items[idx].qty + delta);
+  saveCart();
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = items.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('qn-' + idx).textContent  = items[idx].qty;
+  document.getElementById('ct-' + idx).textContent  = 'EGP ' + fmt(items[idx].price * items[idx].qty);
+  document.getElementById('sumSubtotal').textContent = 'EGP ' + fmt(total);
+  document.getElementById('sumTotal').textContent    = fmt(total);
+  document.getElementById('mobileStickyTotal').textContent = 'EGP ' + fmt(total);
+  document.getElementById('cartCount').textContent   = count + ' ' + (count === 1 ? 'item' : 'items');
+  updateBadge();
+}
+
+function removeItem(idx) {
+  const el = document.getElementById('ci-' + idx);
+  if (el) { el.style.transition = 'opacity .25s,transform .25s'; el.style.opacity = '0'; el.style.transform = 'translateX(-12px)'; }
+  setTimeout(() => {
+    items.splice(idx, 1);
+    saveCart();
+    render();
+  }, 240);
+}
+
+function updateBadge() {
+  const n = items.reduce((s, i) => s + i.qty, 0);
+  const b = document.getElementById('cartBadge');
+  if (b) { b.textContent = n; b.classList.toggle('show', n > 0); }
+}
+
+// ── Nav scroll ─────────────────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+let lastScrollY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 60);
+  nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+  lastScrollY = y;
+}, { passive: true });
+
+// ── Side menu ──────────────────────────────────────────────────────────────
+(function(){
+  const h=document.getElementById('navHamburger'),m=document.getElementById('sidemenu'),o=document.getElementById('sidemenuOverlay'),c=document.getElementById('sidemenuClose');
+  function open(){m.classList.add('open');o.classList.add('open');document.body.style.overflow='hidden';h.setAttribute('aria-expanded','true');}
+  function close(){m.classList.remove('open');o.classList.remove('open');document.body.style.overflow='';h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',open);c.addEventListener('click',close);o.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
+
+// ── Checkout navigation — always uses sunny_cart ───────────────────────────
+function goCheckout(e) {
+  e.preventDefault();
+  // Clear any stale buy-now data so checkout reads sunny_cart, not a previous buy-now session
+  localStorage.removeItem('sunny_buynow');
+  window.location.href = 'checkout.html';
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>

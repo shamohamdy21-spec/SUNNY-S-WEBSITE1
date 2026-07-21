@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#FAF7F3; --cream-2:#F4F1EE; --gold:#C6A15B; --gold-2:#D8C19A;
+  --black:#171717; --grey:#A8A8A8;
+  --fd:'Playfair Display',Georgia,serif; --fb:'Montserrat',system-ui,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cream);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%} a{text-decoration:none;color:inherit}
+button{font-family:var(--fb);cursor:pointer;border:none}
+::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--cream)} ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:10px 64px;background:transparent;backdrop-filter:blur(0px);border-bottom:1px solid transparent;transition:padding .35s,box-shadow .35s,background .4s,backdrop-filter .4s,border-color .4s,opacity .3s ease,transform .3s ease}
+.nav.scrolled{padding:6px 64px;background:rgba(250,247,243,.96);backdrop-filter:blur(16px);border-bottom-color:rgba(198,161,91,.1);box-shadow:0 4px 32px rgba(0,0,0,.06)}
+.nav-logo img{height:120px;width:auto;transition:height .35s,filter .4s;filter:brightness(0) invert(1)}
+.nav.scrolled .nav-logo img{height:92px;filter:none}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none}
+.nav-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .4s,opacity .2s}
+.nav.scrolled .nav-icon svg{stroke:var(--black)}
+.nav-icon:hover svg{opacity:.5}
+.nav-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:44px;height:3px;background:#fff;border-radius:2px;transition:background .4s,transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
+.nav-icon--cart svg{width:36px;height:36px}
+.nav.nav-hidden{opacity:0;pointer-events:none;transform:translateY(-8px)}
+.nav.scrolled .nav-hamburger span{background:var(--black)}
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay{position:fixed;inset:0;z-index:10000;background:transparent;pointer-events:none;transition:background .3s}
+.sidemenu-overlay.open{background:rgba(0,0,0,.46);pointer-events:all}
+.sidemenu{position:fixed;top:0;left:-380px;bottom:0;z-index:10001;width:340px;max-width:85vw;background:#fff;display:flex;flex-direction:column;transition:left .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+.sidemenu.open{left:0;box-shadow:6px 0 48px rgba(0,0,0,.14)}
+.sidemenu-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(198,161,91,.15)}
+.sidemenu-header .sidemenu-logo img{height:72px;width:auto}
+.sidemenu-close{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.sidemenu-close:hover{background:rgba(198,161,91,.12)}
+.sidemenu-close svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.6;stroke-linecap:round}
+.sidemenu-nav{flex:1;padding:44px 28px;display:flex;flex-direction:column}
+.sidemenu-nav a{font-family:var(--fd);font-size:26px;font-weight:400;color:var(--black);padding:18px 0;border-bottom:1px solid rgba(23,23,23,.07);display:block;transition:color .2s,padding-left .25s}
+.sidemenu-nav a:first-child{border-top:1px solid rgba(23,23,23,.07)}
+.sidemenu-nav a:hover{color:var(--gold);padding-left:10px}
+.sidemenu-footer{padding:28px 28px 36px;border-top:1px solid rgba(198,161,91,.15)}
+.sidemenu-footer p{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--grey)}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.25,.46,.45,.94),transform .9s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal.d1{transition-delay:.12s} .reveal.d2{transition-delay:.24s} .reveal.d3{transition-delay:.36s} .reveal.d4{transition-delay:.48s}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* ── HERO ── */
+.hero{position:relative;min-height:100dvh;display:flex;align-items:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.78;transform:scale(1.06);transition:transform 9s cubic-bezier(.25,.46,.45,.94)}
+.hero-img.loaded{transform:scale(1)}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,rgba(23,23,23,.88) 0%,rgba(23,23,23,.3) 45%,rgba(23,23,23,.08) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 80px 88px;max-width:880px}
+.hero-eyebrow{font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;opacity:0;transform:translateY(14px);animation:hfu .8s .45s cubic-bezier(.25,.46,.45,.94) forwards}
+.hero-title{font-family:var(--fd);font-size:clamp(54px,7.5vw,106px);font-weight:400;line-height:.94;letter-spacing:-0.03em;color:#fff;margin-bottom:30px;opacity:0;transform:translateY(22px);animation:hfu .95s .65s cubic-bezier(.25,.46,.45,.94) forwards}
+.hero-title em{font-style:italic;color:var(--gold-2)}
+.hero-sub{font-size:clamp(13px,1.4vw,16px);font-weight:300;color:rgba(255,255,255,.68);line-height:1.75;max-width:500px;opacity:0;transform:translateY(18px);animation:hfu .9s .9s cubic-bezier(.25,.46,.45,.94) forwards}
+.hero-scroll-hint{position:absolute;bottom:36px;right:80px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:hfu .8s 1.2s ease forwards}
+.hero-scroll-hint span{font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45);writing-mode:vertical-rl}
+.hero-scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(198,161,91,.7),transparent)}
+@keyframes hfu{to{opacity:1;transform:translateY(0)}}
+
+/* ── BRAND STORY ── */
+.story-wrap{padding:120px 80px;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:center}
+.story-img-col{position:relative;aspect-ratio:3/4;overflow:hidden}
+.story-img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .9s cubic-bezier(.25,.46,.45,.94)}
+.story-img-col:hover .story-img{transform:scale(1.05)}
+.story-corner{position:absolute;bottom:-18px;right:-18px;width:100px;height:100px;border:1px solid rgba(198,161,91,.25);pointer-events:none}
+.story-text{}
+.eyebrow{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
+.story-title{font-family:var(--fd);font-size:clamp(30px,3.6vw,50px);font-weight:400;letter-spacing:-0.02em;line-height:1.14;color:var(--black);margin-bottom:28px}
+.story-body{font-size:15px;font-weight:300;line-height:1.9;color:#484848}
+.gold-rule{width:36px;height:1px;background:var(--gold);margin-top:36px}
+
+/* ── PHILOSOPHY ── */
+.phil-section{background:var(--black);padding:120px 80px}
+.phil-inner{max-width:1100px;margin:0 auto}
+.phil-header{margin-bottom:64px}
+.phil-header .eyebrow{color:var(--gold)}
+.phil-header-title{font-family:var(--fd);font-size:clamp(28px,3vw,42px);font-weight:400;color:#fff;letter-spacing:-0.02em}
+.phil-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.07)}
+.phil-card{padding:52px 44px 52px 0;border-right:1px solid rgba(255,255,255,.07)}
+.phil-card:last-child{border-right:none;padding-right:0}
+.phil-card:not(:first-child){padding-left:44px}
+.phil-icon-wrap{width:40px;height:40px;margin-bottom:30px}
+.phil-icon-wrap svg{width:40px;height:40px;stroke:var(--gold);fill:none;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.phil-word{font-family:var(--fd);font-size:clamp(22px,2.4vw,30px);font-weight:400;color:#fff;letter-spacing:-0.02em;margin-bottom:16px;line-height:1.1}
+.phil-desc{font-size:13px;font-weight:300;color:rgba(255,255,255,.48);line-height:1.85}
+
+/* ── QUOTE ── */
+.quote-section{padding:148px 80px;background:var(--cream);text-align:center;position:relative;overflow:hidden}
+.quote-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(198,161,91,.055) 0%,transparent 70%);pointer-events:none}
+.quote-mark{font-family:var(--fd);font-size:140px;line-height:.55;color:rgba(198,161,91,.14);display:block;margin-bottom:20px}
+.quote-text{font-family:var(--fd);font-size:clamp(28px,4.2vw,58px);font-weight:400;letter-spacing:-0.025em;line-height:1.18;color:var(--black);max-width:940px;margin:0 auto}
+.quote-text em{font-style:italic;color:var(--gold)}
+.quote-attr{margin-top:36px;display:block;font-size:10px;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold)}
+
+/* ── BEHIND THE BRAND ── */
+.behind-section{display:grid;grid-template-columns:1fr 1fr}
+.behind-img-col{position:relative;min-height:640px;overflow:hidden}
+.behind-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 1.2s cubic-bezier(.25,.46,.45,.94)}
+.behind-img-col:hover .behind-img{transform:scale(1.05)}
+.behind-text-col{background:var(--cream-2);padding:88px 72px;display:flex;flex-direction:column;justify-content:center}
+.behind-title{font-family:var(--fd);font-size:clamp(26px,3vw,44px);font-weight:400;letter-spacing:-0.02em;line-height:1.16;color:var(--black);margin-bottom:26px}
+.behind-body{font-size:14px;font-weight:300;line-height:1.9;color:#565656;margin-bottom:40px}
+.behind-details{display:flex;flex-direction:column;gap:18px}
+.behind-detail-item{display:flex;align-items:flex-start;gap:14px}
+.behind-detail-item svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;margin-top:3px}
+.behind-detail-item span{font-size:12px;font-weight:300;color:#666;line-height:1.65}
+
+/* ── CLOSING ── */
+.closing-section{background:var(--black);padding:148px 80px;text-align:center;position:relative;overflow:hidden}
+.closing-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(198,161,91,.35),transparent)}
+.closing-line1{font-family:var(--fd);font-size:clamp(42px,6.5vw,92px);font-weight:400;letter-spacing:-0.03em;color:#fff;line-height:.95}
+.closing-line2{font-family:var(--fd);font-size:clamp(42px,6.5vw,92px);font-weight:400;letter-spacing:-0.03em;font-style:italic;color:var(--gold);line-height:.95;margin-bottom:60px}
+.cta-btn{display:inline-flex;align-items:center;gap:14px;padding:18px 46px;background:transparent;border:1.5px solid var(--gold);color:var(--gold);font-family:var(--fb);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;text-decoration:none;position:relative;overflow:hidden;transition:color .35s ease;cursor:pointer}
+.cta-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateX(-101%);transition:transform .38s cubic-bezier(.4,0,.2,1)}
+.cta-btn:hover::before{transform:translateX(0)}
+.cta-btn:hover{color:var(--black)}
+.cta-btn-inner{position:relative;z-index:1;display:flex;align-items:center;gap:14px}
+.cta-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;transition:transform .25s ease}
+.cta-btn:hover svg{transform:translateX(5px)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){
+  .nav,.nav.scrolled{padding-left:40px;padding-right:40px}
+  .hero-content{padding:0 40px 72px}
+  .hero-scroll-hint{right:40px}
+  .story-wrap{padding:96px 40px;gap:56px}
+  .phil-section{padding:96px 40px}
+  .quote-section{padding:120px 40px}
+  .behind-text-col{padding:72px 52px}
+  .closing-section{padding:120px 40px}
+}
+@media(max-width:900px){
+  .nav,.nav.scrolled{padding-left:28px;padding-right:28px;top:10px}
+  .nav-logo img,.nav.scrolled .nav-logo img{height:68px}
+  .hero-content{padding:0 28px 60px}
+  .hero-scroll-hint{display:none}
+  .story-wrap{grid-template-columns:1fr;gap:40px;padding:72px 28px}
+  .story-corner{display:none}
+  .phil-section{padding:72px 28px}
+  .phil-grid{grid-template-columns:1fr;border-top:none}
+  .phil-card{padding:36px 0;border-right:none;border-top:1px solid rgba(255,255,255,.07)}
+  .phil-card:not(:first-child){padding-left:0}
+  .quote-section{padding:96px 28px}
+  .behind-section{grid-template-columns:1fr}
+  .behind-img-col{min-height:380px;position:relative}
+  .behind-text-col{padding:60px 28px}
+  .closing-section{padding:96px 28px}
+}
+@media(max-width:600px){
+  .hero-content{padding:0 20px 52px}
+  .story-wrap{padding:64px 20px}
+  .phil-section{padding:64px 20px}
+  .quote-section{padding:80px 20px}
+  .quote-mark{font-size:96px}
+  .behind-text-col{padding:52px 20px}
+  .closing-section{padding:80px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's" id="navLogo"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img class="hero-img" id="heroImg" src="brand_assets/brand%20assets%203/Picsart_26-07-20_10-31-26-162.png" alt="Sunny's editorial" loading="eager">
+    <div class="hero-gradient"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Sunny's Eyewear</div>
+    <h1 class="hero-title">More Than<br><em>Sunglasses</em></h1>
+    <p class="hero-sub">A story of individuality, confidence, and timeless expression.</p>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- BRAND STORY -->
+<div class="story-wrap">
+  <div class="story-img-col reveal">
+    <img class="story-img" src="brand_assets/ea231f26-8f4f-4ecc-aad9-55871e62dae9.jpeg" alt="Sunny's craftsmanship">
+    <div class="story-corner"></div>
+  </div>
+  <div class="story-text">
+    <span class="eyebrow reveal">Our Story</span>
+    <h2 class="story-title reveal d1">The Inspiration<br>of Sunny's</h2>
+    <p class="story-body reveal d2">Sunny's was born from a belief that eyewear should be more than an accessory. Every frame is designed to become part of a person's identity — a statement of confidence, elegance, and individuality.<br><br>Inspired by modern luxury and timeless silhouettes, Sunny's creates pieces that elevate everyday moments into lasting impressions.</p>
+    <div class="gold-rule reveal d3"></div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<section class="phil-section">
+  <div class="phil-inner">
+    <div class="phil-header">
+      <span class="eyebrow reveal">Philosophy</span>
+      <h2 class="phil-header-title reveal d1">What we stand for</h2>
+    </div>
+    <div class="phil-grid">
+      <div class="phil-card reveal">
+        <div class="phil-icon-wrap">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="phil-word">Be Unique</div>
+        <p class="phil-desc">We celebrate individuality and encourage self-expression. No two people should look the same, and no two moments deserve the same frame.</p>
+      </div>
+      <div class="phil-card reveal d1">
+        <div class="phil-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="phil-word">Crafted with Purpose</div>
+        <p class="phil-desc">Every detail is carefully considered, from frame design to finishing touches. We believe what you wear should be built to last and meant to matter.</p>
+      </div>
+      <div class="phil-card reveal d2">
+        <div class="phil-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="phil-word">Made to Be Remembered</div>
+        <p class="phil-desc">Our collections are created to leave a lasting impression. A Sunny's frame is not something you forget — and neither is the person wearing it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <span class="quote-mark reveal">"</span>
+  <blockquote class="quote-text reveal d1">
+    Style is not about being noticed.<br>
+    It's about being <em>remembered.</em>
+  </blockquote>
+  <span class="quote-attr reveal d2">— Sunny's</span>
+</section>
+
+<!-- BEHIND THE BRAND -->
+<section class="behind-section">
+  <div class="behind-img-col reveal">
+    <img class="behind-img" src="brand_assets/brand%20assets%203/290AD919-31F0-4FA9-9588-EA04396059BC.png" alt="Behind Sunny's">
+  </div>
+  <div class="behind-text-col">
+    <span class="eyebrow reveal">Behind the Brand</span>
+    <h2 class="behind-title reveal d1">Designed For Those Who Lead,<br>Not Follow.</h2>
+    <p class="behind-body reveal d2">Each Sunny's piece starts as a vision and is refined through a meticulous design process that balances aesthetic boldness with everyday wearability. The result is eyewear that commands attention — not because it tries to, but because it was made for people who naturally do.</p>
+    <div class="behind-details reveal d3">
+      <div class="behind-detail-item">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Braided copper chain temples with gold-tone finish</span>
+      </div>
+      <div class="behind-detail-item">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Natural gemstone accents with warm organic textures</span>
+      </div>
+      <div class="behind-detail-item">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Each piece inspected by hand before every dispatch</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing-section">
+  <p class="closing-line1 reveal">Wear Confidence.</p>
+  <p class="closing-line2 reveal d1">Wear Sunny's.</p>
+  <a href="shop.html" class="cta-btn reveal d2">
+    <span class="cta-btn-inner">
+      Shop the Collection
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </span>
+  </a>
+</section>
+
+<script>
+// Hero image slow-zoom on load
+(function(){
+  const img = document.getElementById('heroImg');
+  function onLoad(){ img.classList.add('loaded'); }
+  if(img.complete) onLoad(); else img.addEventListener('load', onLoad);
+})();
+
+// Nav — transparent over hero, filled when scrolled; fades on scroll-down
+const nav = document.getElementById('nav');
+let lastScrollY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 60);
+  nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+  lastScrollY = y;
+}, { passive: true });
+
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Side menu
+(function(){
+  const h=document.getElementById('navHamburger'),m=document.getElementById('sidemenu'),o=document.getElementById('sidemenuOverlay'),c=document.getElementById('sidemenuClose');
+  function open(){m.classList.add('open');o.classList.add('open');document.body.style.overflow='hidden';h.setAttribute('aria-expanded','true');}
+  function close(){m.classList.remove('open');o.classList.remove('open');document.body.style.overflow='';h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',open);c.addEventListener('click',close);o.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
+</script>
+</body>
+</html>

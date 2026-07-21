@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#FAF7F3;--cream-2:#F4F1EE;--gold:#C6A15B;--gold-2:#D8C19A;--black:#171717;--grey:#A8A8A8;--fd:'Playfair Display',Georgia,serif;--fb:'Montserrat',system-ui,sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fb);background:var(--cream);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%} a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--cream)} ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:10px 64px;background:rgba(250,247,243,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(198,161,91,.1);transition:padding .35s,box-shadow .35s,opacity .3s,transform .3s}
+.nav.scrolled{padding:6px 64px;box-shadow:0 4px 32px rgba(0,0,0,.06)}
+.nav-logo img{height:120px;width:auto;transition:height .35s}
+.nav.scrolled .nav-logo img{height:92px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-icon svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:44px;height:3px;background:var(--black);border-radius:2px;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
+.nav-icon--cart svg{width:36px;height:36px}
+.nav.nav-hidden{opacity:0;pointer-events:none;transform:translateY(-8px)}
+.sidemenu-overlay{position:fixed;inset:0;z-index:10000;background:transparent;pointer-events:none;transition:background .3s}
+.sidemenu-overlay.open{background:rgba(0,0,0,.46);pointer-events:all}
+.sidemenu{position:fixed;top:0;left:-380px;bottom:0;z-index:10001;width:340px;max-width:85vw;background:#fff;display:flex;flex-direction:column;transition:left .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+.sidemenu.open{left:0;box-shadow:6px 0 48px rgba(0,0,0,.14)}
+.sidemenu-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(198,161,91,.15)}
+.sidemenu-header .sidemenu-logo img{height:72px;width:auto}
+.sidemenu-close{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.sidemenu-close:hover{background:rgba(198,161,91,.12)}
+.sidemenu-close svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.6;stroke-linecap:round}
+.sidemenu-nav{flex:1;padding:44px 28px;display:flex;flex-direction:column}
+.sidemenu-nav a{font-family:var(--fd);font-size:26px;font-weight:400;color:var(--black);padding:18px 0;border-bottom:1px solid rgba(23,23,23,.07);display:block;transition:color .2s,padding-left .25s}
+.sidemenu-nav a:first-child{border-top:1px solid rgba(23,23,23,.07)}
+.sidemenu-nav a:hover{color:var(--gold);padding-left:10px}
+.sidemenu-footer{padding:28px 28px 36px;border-top:1px solid rgba(198,161,91,.15)}
+.sidemenu-footer p{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--grey)}
+
+/* PAGE */
+.page{padding-top:148px;padding-bottom:80px;max-width:860px;margin:0 auto;padding-left:40px;padding-right:40px}
+
+/* HERO */
+.conf-hero{text-align:center;padding:56px 0 48px;position:relative}
+.conf-check{width:80px;height:80px;border-radius:50%;background:rgba(198,161,91,.12);border:2px solid rgba(198,161,91,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.conf-check svg{width:36px;height:36px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.conf-eyebrow{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.conf-title{font-family:var(--fd);font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-0.025em;margin-bottom:14px;color:var(--black)}
+.conf-sub{font-size:13px;font-weight:300;color:var(--grey);line-height:1.7;max-width:480px;margin:0 auto 28px}
+.conf-orderid{display:inline-flex;align-items:center;gap:10px;padding:10px 20px;border:1px solid rgba(198,161,91,.3);font-size:12px;color:var(--black)}
+.conf-orderid strong{font-weight:600;letter-spacing:.5px}
+.conf-date{font-size:10px;color:var(--grey);margin-top:10px}
+
+/* CARDS GRID */
+.conf-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(23,23,23,.05);margin:48px 0}
+.conf-card{background:var(--cream);padding:28px}
+.conf-card.full{grid-column:1/-1}
+.conf-card-title{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.conf-row{display:flex;gap:8px;margin-bottom:9px;font-size:13px}
+.conf-row .lbl{font-weight:400;color:var(--grey);flex-shrink:0;min-width:100px}
+.conf-row .val{font-weight:300;color:var(--black)}
+.conf-row .val strong{font-weight:500}
+
+/* ITEMS */
+.conf-items{display:flex;flex-direction:column;gap:16px}
+.conf-item{display:flex;gap:14px;align-items:flex-start}
+.conf-img{width:60px;height:75px;object-fit:cover;object-position:center top;flex-shrink:0;background:var(--cream-2)}
+.conf-item-info{flex:1}
+.conf-item-name{font-family:var(--fd);font-size:15px;font-weight:400;color:var(--black);margin-bottom:3px}
+.conf-item-meta{font-size:10px;color:var(--grey)}
+.conf-item-price{font-size:13px;font-weight:400;color:var(--black);white-space:nowrap;padding-top:2px}
+
+/* TOTALS */
+.conf-totals{margin-top:20px;border-top:1px solid rgba(198,161,91,.15);padding-top:16px}
+.conf-total-line{display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;color:var(--grey)}
+.conf-total-line.big{font-size:16px;font-weight:500;color:var(--black);margin-top:10px;padding-top:10px;border-top:1px solid var(--black)}
+
+/* DELIVERY ESTIMATE */
+.conf-delivery{background:rgba(198,161,91,.06);border:1px solid rgba(198,161,91,.2);padding:20px 24px;margin:0 0 40px;display:flex;align-items:center;gap:16px}
+.conf-delivery svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;flex-shrink:0}
+.conf-delivery-text .t{font-size:12px;font-weight:500;color:var(--black);margin-bottom:3px}
+.conf-delivery-text .s{font-size:11px;font-weight:300;color:var(--grey)}
+
+/* STATUS BADGE */
+.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.status-pending{background:rgba(198,161,91,.15);color:#9a7a3a;border:1px solid rgba(198,161,91,.4)}
+.status-processing{background:rgba(52,152,219,.12);color:#2980b9;border:1px solid rgba(52,152,219,.3)}
+.status-shipped{background:rgba(155,89,182,.12);color:#8e44ad;border:1px solid rgba(155,89,182,.3)}
+.status-delivered{background:rgba(46,204,113,.12);color:#27ae60;border:1px solid rgba(46,204,113,.3)}
+.status-cancelled{background:rgba(231,76,60,.12);color:#c0392b;border:1px solid rgba(231,76,60,.3)}
+
+/* BUTTONS */
+.conf-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.btn-primary{flex:1;min-width:180px;padding:16px 24px;background:var(--gold);color:#fff;font-family:var(--fb);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-align:center;border:none;cursor:pointer;transition:background .25s,box-shadow .25s}
+.btn-primary:hover{background:#b8943e;box-shadow:0 6px 24px rgba(198,161,91,.35)}
+.btn-secondary{flex:1;min-width:180px;padding:16px 24px;background:none;color:var(--black);font-family:var(--fb);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-align:center;border:1.5px solid rgba(23,23,23,.2);cursor:pointer;transition:border-color .2s,color .2s}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* NOT FOUND */
+.not-found{text-align:center;padding:80px 20px}
+.not-found h2{font-family:var(--fd);font-size:32px;margin-bottom:12px}
+.not-found p{color:var(--grey);margin-bottom:24px}
+
+@media(max-width:700px){.page{padding-left:20px;padding-right:20px;padding-top:120px}.conf-grid{grid-template-columns:1fr}.conf-btns{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+  </div>
+</nav>
+
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<div class="page" id="page">
+  <div id="content"></div>
+</div>
+
+<script>
+function fmt(iso){const d=new Date(iso);return d.toLocaleDateString('en-AE',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function statusBadge(s){return`<span class="status-badge status-${s}">${s.charAt(0).toUpperCase()+s.slice(1)}</span>`;}
+function deliveryEst(country,method){
+  if(method==='express')return'Next business day';
+  const gcc=['ae','sa','kw','bh','qa','om'];
+  if(!country||gcc.includes(country))return'3–5 business days';
+  return'5–7 business days';
+}
+
+const params=new URLSearchParams(window.location.search);
+const orderId=params.get('order');
+const orders=JSON.parse(localStorage.getItem('sunny_orders')||'[]');
+const order=orders.find(o=>o.orderId===orderId);
+
+const content=document.getElementById('content');
+
+if(!order){
+  content.innerHTML=`<div class="not-found">
+    <h2>Order not found</h2>
+    <p>We couldn't find order ${orderId||'—'}. It may have been placed in a different browser.</p>
+    <a href="shop.html" class="btn-primary" style="display:inline-block">Continue Shopping</a>
+  </div>`;
+} else {
+  document.title=`Order ${order.orderId} — Sunny's Eyewear`;
+  const shipping=order.shipping||{};
+  const customer=order.customer||{};
+  const addrParts=[shipping.building,shipping.apartment,shipping.address,shipping.city,shipping.country].filter(Boolean);
+  const est=deliveryEst(shipping.countryCode,order.shippingMethod);
+  const payLabel='Cash on Delivery';
+
+  content.innerHTML=`
+    <div class="conf-hero">
+      <div class="conf-check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="conf-eyebrow">Order Confirmed</div>
+      <h1 class="conf-title">Thank you, ${customer.fullName.split(' ')[0]}!</h1>
+      <p class="conf-sub">Your order has been placed successfully. We'll prepare it with care and keep you updated.</p>
+      <div class="conf-orderid">
+        Order <strong>${order.orderId}</strong>
+        &nbsp;·&nbsp;
+        ${statusBadge(order.status)}
+      </div>
+      <div class="conf-date">${fmt(order.date)}</div>
+    </div>
+
+    <div class="conf-delivery">
+      <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <div class="conf-delivery-text">
+        <div class="t">Estimated Delivery: ${est}</div>
+        <div class="s">${order.shippingCost===0?'Free standard shipping':'EGP 100 shipping'} · ${payLabel}</div>
+      </div>
+    </div>
+
+    <div class="conf-grid">
+      <!-- Customer -->
+      <div class="conf-card">
+        <div class="conf-card-title">Customer Details</div>
+        <div class="conf-row"><span class="lbl">Name</span><span class="val"><strong>${customer.fullName}</strong></span></div>
+        <div class="conf-row"><span class="lbl">Phone</span><span class="val">${customer.phone}${customer.phone2?' / '+customer.phone2:''}</span></div>
+        ${customer.email?`<div class="conf-row"><span class="lbl">Email</span><span class="val">${customer.email}</span></div>`:''}
+        <div class="conf-row"><span class="lbl">Payment</span><span class="val">${payLabel}</span></div>
+      </div>
+
+      <!-- Shipping -->
+      <div class="conf-card">
+        <div class="conf-card-title">Shipping Address</div>
+        <div class="conf-row"><span class="lbl">Country</span><span class="val">${shipping.country||'—'}</span></div>
+        <div class="conf-row"><span class="lbl">City</span><span class="val">${shipping.city||'—'}</span></div>
+        <div class="conf-row"><span class="lbl">Address</span><span class="val">${shipping.address||'—'}</span></div>
+        <div class="conf-row"><span class="lbl">Building</span><span class="val">${shipping.building||'—'}${shipping.apartment?', Apt '+shipping.apartment:''}</span></div>
+      </div>
+
+      <!-- Items -->
+      <div class="conf-card full">
+        <div class="conf-card-title">Ordered Items</div>
+        <div class="conf-items">
+          ${(order.items||[]).map(it=>`
+            <div class="conf-item">
+              <img class="conf-img" src="${it.image}" alt="${it.name}" onerror="this.style.background='var(--cream-2)'">
+              <div class="conf-item-info">
+                <div class="conf-item-name">${it.name}</div>
+                <div class="conf-item-meta">${it.collection||''} · Qty ${it.qty}</div>
+              </div>
+              <div class="conf-item-price">EGP ${it.price*it.qty}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="conf-totals">
+          <div class="conf-total-line"><span>Subtotal</span><span>EGP ${order.subtotal}</span></div>
+          <div class="conf-total-line"><span>Shipping</span><span>${order.shippingCost===0?'Free':'EGP 100'}</span></div>
+          <div class="conf-total-line big"><span>Total</span><span>EGP ${order.total}</span></div>
+        </div>
+      </div>
+      ${order.notes?`<div class="conf-card full"><div class="conf-card-title">Order Notes</div><p style="font-size:13px;font-weight:300;color:#5a5a5a;line-height:1.7">${order.notes}</p></div>`:''}
+    </div>
+
+    <div class="conf-btns">
+      <a href="shop.html" class="btn-primary">Continue Shopping</a>
+      <a href="index.html" class="btn-secondary">Back to Home</a>
+    </div>
+  `;
+}
+
+// Nav scroll
+const nav=document.getElementById('nav');
+let lastScrollY=0;
+window.addEventListener('scroll',()=>{const y=window.scrollY;nav.classList.toggle('scrolled',y>60);nav.classList.toggle('nav-hidden',y>80&&y>lastScrollY);lastScrollY=y;},{passive:true});
+// Side menu
+(function(){
+  const h=document.getElementById('navHamburger'),m=document.getElementById('sidemenu'),o=document.getElementById('sidemenuOverlay'),c=document.getElementById('sidemenuClose');
+  function open(){m.classList.add('open');o.classList.add('open');document.body.style.overflow='hidden';h.setAttribute('aria-expanded','true');}
+  function close(){m.classList.remove('open');o.classList.remove('open');document.body.style.overflow='';h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',open);c.addEventListener('click',close);o.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:   #FAF7F3;
+  --cream-2: #F4F1EE;
+  --gold:    #C6A15B;
+  --gold-2:  #D8C19A;
+  --black:   #171717;
+  --grey:    #A8A8A8;
+  --fd: 'Playfair Display', Georgia, serif;
+  --fb: 'Montserrat', system-ui, sans-serif;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--fb); background: var(--cream); color: var(--black); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--fb); cursor: pointer; border: none; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 64px;
+  background: rgba(250,247,243,.96); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(198,161,91,.1);
+  transition: padding .35s ease, box-shadow .35s ease, opacity .3s ease, transform .3s ease;
+}
+.nav.scrolled { padding: 6px 64px; box-shadow: 0 4px 32px rgba(0,0,0,.06); }
+.nav-logo img { height: 120px; width: auto; transition: height .35s ease; }
+.nav.scrolled .nav-logo img { height: 92px; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.nav-icon svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: opacity .2s; }
+.nav-icon:hover svg { opacity: .5; }
+.nav-icon--cart svg { width: 36px; height: 36px; }
+.nav.nav-hidden { opacity: 0; pointer-events: none; transform: translateY(-8px); }
+.nav-hamburger { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 38px; height: 38px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav-hamburger span { display: block; width: 44px; height: 3px; background: var(--black); border-radius: 2px; transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s ease; }
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay { position: fixed; inset: 0; z-index: 10000; background: transparent; pointer-events: none; transition: background 0.3s ease; }
+.sidemenu-overlay.open { background: rgba(0,0,0,.46); pointer-events: all; }
+.sidemenu { position: fixed; top: 0; left: -380px; bottom: 0; z-index: 10001; width: 340px; max-width: 85vw; background: #fff; display: flex; flex-direction: column; transition: left 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease; }
+.sidemenu.open { left: 0; box-shadow: 6px 0 48px rgba(0,0,0,.14); }
+.sidemenu-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; border-bottom: 1px solid rgba(198,161,91,.15); }
+.sidemenu-header .sidemenu-logo img { height: 72px; width: auto; }
+.sidemenu-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.sidemenu-close:hover { background: rgba(198,161,91,.12); }
+.sidemenu-close svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.6; stroke-linecap: round; }
+.sidemenu-nav { flex: 1; padding: 44px 28px; display: flex; flex-direction: column; }
+.sidemenu-nav a { font-family: var(--fd); font-size: 26px; font-weight: 400; color: var(--black); letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid rgba(23,23,23,.07); display: block; transition: color 0.2s ease, padding-left 0.25s ease; }
+.sidemenu-nav a:first-child { border-top: 1px solid rgba(23,23,23,.07); }
+.sidemenu-nav a:hover { color: var(--gold); padding-left: 10px; }
+.sidemenu-footer { padding: 28px 28px 36px; border-top: 1px solid rgba(198,161,91,.15); }
+.sidemenu-footer p { font-size: 9px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); }
+
+/* ── PAGE WRAPPER ── */
+.page { padding-top: 148px; }
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  padding: 24px 80px 0;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 400; letter-spacing: .5px; color: var(--grey);
+}
+.breadcrumb a { color: var(--grey); transition: color .2s; }
+.breadcrumb a:hover { color: var(--gold); }
+.breadcrumb svg { width: 10px; height: 10px; stroke: var(--grey); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+.breadcrumb span { color: var(--black); }
+
+/* ── HERO IMAGES ── */
+.pd-hero {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2px; background: rgba(23,23,23,.05);
+  margin: 28px 2px 0;
+}
+.pd-hero-img {
+  position: relative; aspect-ratio: 4/5; overflow: hidden;
+  background: var(--cream-2);
+}
+.pd-hero-img img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center top;
+  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.pd-hero-img:hover img { transform: scale(1.03); }
+
+/* ── PRODUCT BODY ── */
+.pd-body {
+  max-width: 1200px; margin: 0 auto;
+  padding: 60px 80px 80px;
+  display: grid; grid-template-columns: 1fr 420px;
+  gap: 80px; align-items: start;
+}
+
+/* Left col: name, price, CTAs */
+.pd-left {}
+.pd-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.pd-name { font-family: var(--fd); font-size: clamp(80px, 9vw, 124px); font-weight: 400; letter-spacing: -0.025em; line-height: 1.0; color: var(--black); margin-bottom: 20px; }
+.pd-charm-desc { display: none; margin-bottom: 28px; }
+.pd-charm-title { font-family: var(--fd); font-size: 22px; font-weight: 500; font-style: italic; color: var(--gold); letter-spacing: 0.01em; margin-bottom: 8px; }
+.pd-charm-body { font-size: 13px; font-weight: 300; color: var(--grey); line-height: 1.75; max-width: 380px; }
+.pd-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 36px; }
+.pd-price { font-size: 56px; font-weight: 300; color: var(--black); letter-spacing: -.02em; }
+.pd-currency { font-size: 28px; font-weight: 400; color: var(--grey); }
+
+.pd-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+.btn-cart {
+  flex: 1; min-width: 160px; padding: 17px 28px;
+  background: none; border: 1.5px solid var(--black);
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--black);
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-cart svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; }
+.btn-cart:hover { background: var(--black); color: #fff; }
+.btn-buy {
+  flex: 1; min-width: 160px; padding: 17px 28px;
+  background: var(--gold);
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+  color: #fff; border: 1.5px solid var(--gold);
+  transition: background 0.25s, box-shadow 0.25s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-buy:hover { background: #b8943e; border-color: #b8943e; box-shadow: 0 8px 28px rgba(198,161,91,.35); }
+
+/* Divider */
+.pd-divider { width: 100%; height: 1px; background: rgba(198,161,91,.15); margin: 0 0 48px; }
+
+/* Specs grid */
+.pd-specs-label { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--black); margin-bottom: 24px; }
+.specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(23,23,23,.06); margin-bottom: 48px; }
+.spec-card {
+  background: var(--cream); padding: 24px 22px;
+}
+.spec-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(198,161,91,.28); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.spec-icon svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+.spec-title { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
+.spec-val { font-size: 26px; font-weight: 300; color: var(--black); line-height: 1.55; }
+
+/* Right col: shipping + returns */
+.pd-right {}
+.pd-section-title { font-size: 18px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--black); margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(198,161,91,.18); }
+.shipping-rows { display: flex; flex-direction: column; gap: 0; margin-bottom: 40px; }
+.shipping-row { display: flex; align-items: flex-start; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(23,23,23,.06); }
+.shipping-row:first-child { padding-top: 0; }
+.shipping-icon { width: 38px; height: 38px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(198,161,91,.2); }
+.shipping-icon svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.shipping-text {}
+.shipping-title { font-size: 24px; font-weight: 500; color: var(--black); margin-bottom: 3px; }
+.shipping-sub { font-size: 22px; font-weight: 300; color: var(--grey); line-height: 1.6; }
+
+.returns-rows { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+.return-item { display: flex; align-items: flex-start; gap: 10px; }
+.return-item::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+.return-item-text { font-size: 24px; font-weight: 300; color: #5a5a5a; line-height: 1.65; }
+
+.pd-note { font-size: 10px; font-weight: 300; color: var(--grey); line-height: 1.7; padding: 20px; background: var(--cream-2); border-left: 2px solid var(--gold); }
+
+/* ── FOOTER ── */
+.pd-footer { border-top: 1px solid rgba(198,161,91,.12); padding: 48px 80px; display: flex; align-items: center; justify-content: space-between; }
+.pd-footer-brand { font-family: var(--fd); font-size: 13px; font-weight: 400; letter-spacing: .5px; color: var(--grey); }
+.pd-footer-back a { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); transition: gap .2s; }
+.pd-footer-back a:hover { gap: 10px; }
+.pd-footer-back svg { width: 12px; height: 12px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .nav, .nav.scrolled { padding-left: 40px; padding-right: 40px; }
+  .breadcrumb { padding: 24px 40px 0; }
+  .pd-body { padding: 48px 40px 60px; gap: 48px; }
+  .pd-footer { padding: 40px 40px; }
+}
+@media (max-width: 1024px) {
+  .nav, .nav.scrolled { padding: 6px 20px; top: 10px; }
+  .nav-logo img, .nav.scrolled .nav-logo img { height: 68px; }
+  .breadcrumb { padding: 20px 28px 0; }
+  .pd-body { padding: 40px 28px 60px; grid-template-columns: 1fr; gap: 0; }
+  .pd-right { margin-top: 0; }
+  .pd-footer { padding: 36px 28px; }
+}
+@media (max-width: 700px) {
+  .page { padding-top: 120px; }
+  .breadcrumb { padding: 16px 20px 0; }
+  /* Swipeable carousel: show both images, portrait ratio, native scroll-snap */
+  .pd-hero {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    background: none;
+    margin: 28px 0 0;
+  }
+  .pd-hero::-webkit-scrollbar { display: none; }
+  .pd-hero-img { flex: 0 0 100%; scroll-snap-align: start; aspect-ratio: 3/4; display: block; }
+  .pd-hero-img:last-child { display: block; }
+  .pd-hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: none; }
+  .pd-body { padding: 32px 20px 48px; }
+  .pd-name { font-size: 38px; }
+  .pd-ctas { flex-direction: column; }
+  .btn-cart, .btn-buy { flex: none; width: 100%; }
+  .specs-grid { grid-template-columns: 1fr; }
+  .pd-footer { flex-direction: column; gap: 16px; align-items: flex-start; padding: 32px 20px; }
+}
+
+/* ── Inventory Badge ── */
+.inv-badge { display:inline-flex; align-items:center; padding:5px 12px; margin-bottom:18px; font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; }
+.inv-badge.in-stock    { background:rgba(45,106,79,.07);  color:#2D6A4F; }
+.inv-badge.limited     { background:rgba(146,64,14,.07);  color:#92400E; }
+.inv-badge.out-of-stock{ background:rgba(153,27,27,.07);  color:#991B1B; }
+.inv-badge.coming-soon { background:rgba(82,82,82,.07);   color:#525252; }
+.btn-cart:disabled,.btn-buy:disabled { opacity:.4; cursor:not-allowed; pointer-events:none; }
+.pd-img-out { object-fit: contain; object-position: center center; }
+
+/* ── Mobile image carousel dots ── */
+.pd-hero-dots { display: none; justify-content: center; gap: 8px; padding: 12px 0 4px; }
+.pd-hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(23,23,23,.18); border: none; cursor: pointer; padding: 0; transition: background .3s, transform .3s; }
+.pd-hero-dot.active { background: var(--gold); transform: scale(1.3); }
+@media (max-width: 700px) { .pd-hero-dots { display: flex; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart" id="cartIcon">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span id="cartBadge" style="display:none;position:absolute;top:3px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#fff;font-size:8px;font-weight:700;align-items:center;justify-content:center">0</span>
+    </a>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<!-- PAGE -->
+<div class="page" id="page">
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    <a href="shop.html">Shop</a>
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    <span id="bcName">—</span>
+  </div>
+
+  <!-- HERO IMAGES -->
+  <div class="pd-hero" id="pdHero">
+    <div class="pd-hero-img">
+      <img id="pdImg1" src="" alt="Product image 1">
+    </div>
+    <div class="pd-hero-img">
+      <img id="pdImg2" src="" alt="Product image 2">
+    </div>
+    <div class="pd-hero-img" id="pdImg3Wrap" style="display:none">
+      <img id="pdImg3" src="" alt="Product image 3">
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="pd-body">
+    <!-- LEFT: info + specs -->
+    <div class="pd-left">
+      <div class="pd-eyebrow" id="pdCollection">—</div>
+      <h1 class="pd-name" id="pdName">—</h1>
+      <div id="invBadge" style="display:none"></div>
+      <div class="pd-charm-desc" id="pdCharmDesc">
+        <div class="pd-charm-title">Signature Scent Charm</div>
+        <div class="pd-charm-body">A timeless charm designed to hold a few drops of your favorite perfume and gently diffuse its scent as you wear it.</div>
+      </div>
+      <div class="pd-price-row">
+        <span class="pd-currency">EGP</span>
+        <span class="pd-price" id="pdPrice">—</span>
+      </div>
+
+      <div class="pd-ctas">
+        <button class="btn-cart" id="btnCart">
+          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Add to Cart
+        </button>
+        <button class="btn-buy" id="btnBuy">Buy Now</button>
+      </div>
+
+      <div class="pd-divider"></div>
+
+      <div class="pd-specs-label">Specifications</div>
+      <div class="specs-grid">
+        <div class="spec-card">
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+          </div>
+          <div class="spec-title">Frame</div>
+          <div class="spec-val" id="specFrame">—</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20.188 10.934c.326.327.326.923 0 1.25L12 21.25l-8.188-9.066c-.326-.327-.326-.923 0-1.25L12 2.75l8.188 8.184z"/></svg>
+          </div>
+          <div class="spec-title">Lens</div>
+          <div class="spec-val" id="specLens">—</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="spec-title">Gemstone</div>
+          <div class="spec-val" id="specGemstone">—</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 12c0 0 4-6 10-6s10 6 10 6-4 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2"/><path d="M12 6V2M12 22v-4"/></svg>
+          </div>
+          <div class="spec-title">Chain Temple</div>
+          <div class="spec-val" id="specChain">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: shipping + returns -->
+    <div class="pd-right">
+      <div class="pd-section-title">Shipping</div>
+      <div class="shipping-rows">
+        <div class="shipping-row">
+          <div class="shipping-icon">
+            <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div class="shipping-text">
+            <div class="shipping-title">Standard Delivery</div>
+            <div class="shipping-sub">5–7 business days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-section-title">Returns &amp; Exchange</div>
+      <div class="returns-rows">
+        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">10-Minute Try-On Experience</strong><br>Take up to 10 minutes to try your Sunny's upon delivery and ensure they are the perfect fit.</span></div>
+        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">Instant Return at Delivery</strong><br>If they're not the right match, simply return them to the courier on the spot.</span></div>
+        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">Original Condition Required</strong><br>Items must remain unworn, unscratched, and returned with all original packaging and accessories.</span></div>
+        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">Hassle-Free Luxury Shopping</strong><br>Experience the confidence of shopping from home with our curated try-before-you-keep service.</span></div>
+      </div>
+
+      <div class="pd-note">
+        Each Sunny's piece is inspected by hand before dispatch. If your order arrives damaged, photograph it within 24 hours and contact us — we'll resolve it the same day.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pd-footer">
+    <div class="pd-footer-brand">Sunny's Eyewear — Be Unique · Be Different</div>
+    <div class="pd-footer-back">
+      <a href="shop.html">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Shop
+      </a>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ── Product catalogue ──────────────────────────────────────────────────────
+const PRODUCTS = {
+  'rose-quartz': {
+    name: 'The Rose Quartz',
+    collection: 'Summer Collection 2026',
+    price: '285',
+    img1: 'brand_assets/06B7E699-4F6A-44AC-9CDB-0DBD7340C38A.jpeg',
+    img2: 'brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg',
+    specs: {
+      frame: 'Premium Italian Acetate — hand-polished Mazzucchelli',
+      lens:  'CR-39 with UV400 multi-layer coating',
+      uv:    'Category 3',
+      dims:  'Lens 52 mm · Bridge 18 mm · Temple 145 mm · 22 g'
+    }
+  },
+  'scarlet': {
+    name: 'The Scarlet',
+    collection: 'Summer Collection 2026',
+    price: '310',
+    img1: 'brand_assets/6E8AE498-076B-4507-9155-D07FDC7C41CF.png',
+    img2: 'brand_assets/ea231f26-8f4f-4ecc-aad9-55871e62dae9.jpeg',
+    specs: {
+      frame: 'Premium Italian Acetate — glossy scarlet finish',
+      lens:  'Gradient mineral glass with crimson tint',
+      uv:    'Category 3',
+      dims:  'Lens 54 mm · Bridge 17 mm · Temple 140 mm · 24 g'
+    }
+  },
+  'teal-opal': {
+    name: 'The Teal Opal',
+    collection: 'Summer Collection 2026',
+    price: '295',
+    img1: 'brand_assets/4C901354-5AB5-4B74-A5E6-1418835E0D4F.png',
+    img2: 'brand_assets/9365A1C7-F671-4B4A-B3E9-41C40B7012A4.png',
+    specs: {
+      frame: 'Titanium wire core with acetate overlay',
+      lens:  'Mirrored lens — ocean teal tint',
+      uv:    'Category 3',
+      dims:  'Lens 50 mm · Bridge 19 mm · Temple 143 mm · 18 g'
+    }
+  },
+  'noir': {
+    name: 'The Noir',
+    collection: 'Core Collection',
+    price: '3000',
+    img1: 'brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg',
+    img2: 'brand_assets/brand%20assets%202/0657C550-9A3B-4107-AE70-88C8EE590015.png',
+    specs: {
+      frame:    'Matte black Italian acetate — ultra-lightweight',
+      lens:     'Dark smoke CR-39',
+      uv:       'Category 4 — Maximum Glare Protection',
+      dims:     'Lens 56 mm · Bridge 16 mm · Temple 145 mm · 21 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'rose': {
+    name: 'The Citrine',
+    collection: 'Core Collection',
+    price: '2800',
+    img1: 'brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg',
+    img2: 'brand_assets/brand%20assets%202/530BABA6-D93E-42F2-8955-544D3C1BE712.png',
+    specs: {
+      frame:    'Blush pink acetate with gold-tone hinges',
+      lens:     'Rose gradient lens',
+      uv:       'Category 3',
+      dims:     'Lens 52 mm · Bridge 18 mm · Temple 142 mm · 22 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'citrine': {
+    name: 'The Champagne',
+    collection: 'Core Collection',
+    price: '2800',
+    img1: 'brand_assets/brand%20assets%202/DDCA0B31-EFD6-4E36-A832-EBBFF14AF74A.png',
+    img2: 'brand_assets/brand%20assets%202/90C4A8D8-AB03-4AEE-B66E-A4C93A1B5E6E.png',
+    specs: {
+      frame:    'Amber-tinted acetate with gold hardware',
+      lens:     'Amber gradient CR-39 — anti-reflective coat',
+      uv:       'Category 3',
+      dims:     'Lens 53 mm · Bridge 17 mm · Temple 144 mm · 23 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'aurelia': {
+    name: 'The Ruby',
+    collection: 'Core Collection',
+    price: '3200',
+    img1: 'brand_assets/brand%20assets%202/1E5D59D1-C541-4C32-B169-B6C037499F40.png',
+    img2: 'brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png',
+    specs: {
+      frame:    'Polished gold acetate — hand-finished',
+      lens:     'Warm amber CR-39 with UV400 coating',
+      uv:       'Category 3',
+      dims:     'Lens 54 mm · Bridge 17 mm · Temple 144 mm · 22 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'solene': {
+    name: 'The Maldives',
+    collection: 'Core Collection',
+    price: '3000',
+    img1: 'brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png',
+    img2: 'brand_assets/brand%20assets%202/F7D8666D-B57B-4A8D-813D-10B746BCB3F7.png',
+    specs: {
+      frame:    'Ivory acetate with brushed gold temple detail',
+      lens:     'Soft brown gradient CR-39',
+      uv:       'Category 3',
+      dims:     'Lens 53 mm · Bridge 18 mm · Temple 143 mm · 21 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'celeste': {
+    name: 'The Opaline',
+    collection: 'Core Collection',
+    price: '3200',
+    img1: 'brand_assets/brand%20assets%202/8C2831C2-A8E1-43CE-B1C8-97F110DEA8DC.jpeg',
+    img2: 'brand_assets/brand%20assets%202/01070F7C-5529-44BA-98C5-EC565A30E07A.png',
+    img3: 'brand_assets/brand%20assets%203/IMG-20260720-WA0025.jpg',
+    specs: {
+      frame:    'Pearl white acetate — lightweight Italian construction',
+      lens:     'Grey gradient CR-39 with anti-reflective coat',
+      uv:       'Category 3',
+      dims:     'Lens 52 mm · Bridge 17 mm · Temple 142 mm · 20 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'verona': {
+    name: 'The Honey Quartz',
+    collection: 'Core Collection',
+    price: '2800',
+    img1: 'brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png',
+    img2: 'brand_assets/brand%20assets%202/C40AF091-BC10-47E2-AFF7-BB34D08208FA.png',
+    specs: {
+      frame:    'Deep tortoise acetate with gold inlay',
+      lens:     'Brown CR-39',
+      uv:       'Category 3',
+      dims:     'Lens 55 mm · Bridge 16 mm · Temple 145 mm · 23 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'riviera': {
+    name: 'The Golden Aura',
+    collection: 'Core Collection',
+    price: '3200',
+    img1: 'brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg',
+    img2: 'brand_assets/brand%20assets%202/F489181E-B43B-4088-9D32-023B592DAB01.png',
+    specs: {
+      frame:    'Translucent sand acetate — resort-ready finish',
+      lens:     'Blue mirror CR-39',
+      uv:       'Category 3',
+      dims:     'Lens 54 mm · Bridge 17 mm · Temple 144 mm · 21 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'siena': {
+    name: 'The Eclipse',
+    collection: 'Core Collection',
+    price: '2800',
+    img1: 'brand_assets/brand%20assets%202/6599B5D7-1468-46B9-B5E6-6178775530B0.png',
+    img2: 'brand_assets/brand%20assets%202/19C9BD28-199D-4165-AB84-703580536AE9.png',
+    specs: {
+      frame:    'Terracotta acetate with gold-tone hardware',
+      lens:     'Warm copper gradient CR-39',
+      uv:       'Category 3',
+      dims:     'Lens 53 mm · Bridge 17 mm · Temple 143 mm · 22 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+  'lumiere': {
+    name: 'The Obsidian Noir',
+    collection: 'Core Collection',
+    price: '3000',
+    img1: 'brand_assets/brand%20assets%202/F8D0426E-A7B2-499B-B07E-81BC8ABD46FA.jpeg',
+    img2: 'brand_assets/brand%20assets%202/51D0502D-194A-47D6-AA26-5F855C2EFCAA.png',
+    specs: {
+      frame:    'Crystal clear acetate — luminous ultra-light',
+      lens:     'Light gold tint CR-39 with UV400 coating',
+      uv:       'Category 2 — Soft Light Filtration',
+      dims:     'Lens 52 mm · Bridge 18 mm · Temple 142 mm · 19 g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  }
+};
+
+// ── Load product ─────────────────────────────────────────────────────────
+const id = new URLSearchParams(window.location.search).get('p') || 'rose-quartz';
+const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
+(function loadProduct() {
+
+  document.title = p.name + ' — Sunny\'s Eyewear';
+  document.getElementById('bcName').textContent     = p.name;
+  document.getElementById('pdCollection').textContent = p.collection;
+  document.getElementById('pdName').textContent      = p.name;
+  document.getElementById('pdPrice').textContent     = p.price;
+  document.getElementById('pdCharmDesc').style.display = (id === 'celeste') ? 'block' : 'none';
+
+  const img1 = document.getElementById('pdImg1');
+  const img2 = document.getElementById('pdImg2');
+  img1.src = p.img1; img1.alt = p.name;
+  img2.src = p.img2; img2.alt = p.name + ' — detail';
+  if (id === 'rose' || id === 'noir') img2.classList.add('pd-img-out');
+  if (p.img3) {
+    const wrap3 = document.getElementById('pdImg3Wrap');
+    const img3  = document.getElementById('pdImg3');
+    img3.src = p.img3; img3.alt = p.name + ' — view 3';
+    wrap3.style.display = '';
+    document.getElementById('pdHero').style.gridTemplateColumns = '1fr 1fr 1fr';
+  }
+
+  document.getElementById('specFrame').textContent    = p.specs.frame;
+  document.getElementById('specLens').textContent     = p.specs.lens;
+  document.getElementById('specGemstone').textContent = p.specs.gemstone;
+  document.getElementById('specChain').textContent    = p.specs.chain;
+})();
+
+// ── Nav scroll ───────────────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+let lastScrollY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 60);
+  nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+  lastScrollY = y;
+}, { passive: true });
+
+// ── Side menu ────────────────────────────────────────────────────────────
+(function() {
+  const hamburger = document.getElementById('navHamburger');
+  const menu      = document.getElementById('sidemenu');
+  const overlay   = document.getElementById('sidemenuOverlay');
+  const closeBtn  = document.getElementById('sidemenuClose');
+  function openMenu()  { menu.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; hamburger.setAttribute('aria-expanded','true'); }
+  function closeMenu() { menu.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; hamburger.setAttribute('aria-expanded','false'); }
+  hamburger.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+})();
+
+// ── Cart badge ─────────────────────────────────────────────────────────────
+(function() {
+  const cart = JSON.parse(localStorage.getItem('sunny_cart') || '[]');
+  const n = cart.reduce((s, i) => s + i.qty, 0);
+  const b = document.getElementById('cartBadge');
+  if (b && n > 0) { b.textContent = n; b.style.display = 'flex'; }
+})();
+
+// ── CTA: Add to Cart ──────────────────────────────────────────────────────
+document.getElementById('btnCart').addEventListener('click', function() {
+  const cart = JSON.parse(localStorage.getItem('sunny_cart') || '[]');
+  const existing = cart.find(i => i.productId === id);
+  if (existing) { existing.qty++; } else {
+    cart.push({ productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: p.img1, qty: 1 });
+  }
+  localStorage.setItem('sunny_cart', JSON.stringify(cart));
+  window.location.href = 'cart.html';
+});
+
+// ── Mobile image carousel dots ─────────────────────────────────────────────
+(function() {
+  if (window.innerWidth > 700) return;
+  const hero = document.getElementById('pdHero');
+  const imgs = hero.querySelectorAll('.pd-hero-img');
+  const dotsEl = document.createElement('div');
+  dotsEl.className = 'pd-hero-dots';
+  imgs.forEach(function(_, i) {
+    const dot = document.createElement('button');
+    dot.className = 'pd-hero-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Image ' + (i + 1));
+    dot.addEventListener('click', function() {
+      hero.scrollTo({ left: i * hero.offsetWidth, behavior: 'smooth' });
+    });
+    dotsEl.appendChild(dot);
+  });
+  hero.insertAdjacentElement('afterend', dotsEl);
+  hero.addEventListener('scroll', function() {
+    const n = Math.round(hero.scrollLeft / hero.offsetWidth);
+    dotsEl.querySelectorAll('.pd-hero-dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === n);
+    });
+  }, { passive: true });
+})();
+
+// ── CTA: Buy Now ──────────────────────────────────────────────────────────
+document.getElementById('btnBuy').addEventListener('click', function() {
+  localStorage.setItem('sunny_buynow', JSON.stringify([
+    { productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: p.img1, qty: 1 }
+  ]));
+  window.location.href = 'checkout.html';
+});
+</script>
+
+<script type="module">
+// ── Inventory: load from Firestore, show badge, disable buttons if needed ──
+const _pid = new URLSearchParams(window.location.search).get('p');
+if (_pid) {
+  try {
+    const {initializeApp,getApps} = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js');
+    const {getFirestore,doc,getDoc} = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js');
+    const _cfg = {
+      apiKey:'AIzaSyC5HNrB24BLHeKpZrrHULK_hjGypussFc8',
+      authDomain:'sunny-s-website.firebaseapp.com',
+      projectId:'sunny-s-website',
+      storageBucket:'sunny-s-website.firebasestorage.app',
+      messagingSenderId:'946546687002',
+      appId:'1:946546687002:web:3abbaf98e3abdf4d52a5a3'
+    };
+    const _app = getApps().length ? getApps()[0] : initializeApp(_cfg);
+    const _db  = getFirestore(_app,'default');
+    const snap = await getDoc(doc(_db,'inventory',_pid));
+    const inv  = snap.exists() ? snap.data() : {inventoryQuantity:20,comingSoon:false};
+    const qty  = inv.inventoryQuantity ?? 20;
+    const cs   = inv.comingSoon ?? false;
+
+    let label, cls;
+    if (cs)        { label='Coming Soon';       cls='coming-soon'; }
+    else if (qty===0) { label='Out of Stock';   cls='out-of-stock'; }
+    else if (qty<=10) { label=`Only ${qty} Left`; cls='limited'; }
+    else              { label='✓ In Stock';      cls='in-stock'; }
+
+    const badge = document.getElementById('invBadge');
+    if (badge) { badge.textContent=label; badge.className=`inv-badge ${cls}`; badge.style.display=''; }
+
+    if (cs || qty===0) {
+      const bc=document.getElementById('btnCart');
+      const bb=document.getElementById('btnBuy');
+      if (bc) bc.disabled=true;
+      if (bb) bb.disabled=true;
+    }
+  } catch(e) { console.warn('[Inventory]',e.message); }
+}
+</script>
+</body>
+</html>

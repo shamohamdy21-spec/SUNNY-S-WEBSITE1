@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processing Payment…</title>
+<style>
+  body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,sans-serif;background:#FAF7F3;color:#171717}
+  .msg{text-align:center;padding:40px}
+  .spinner{width:40px;height:40px;border:3px solid rgba(198,161,91,.2);border-top-color:#C6A15B;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  p{font-size:13px;color:#A8A8A8;margin:0}
+</style>
+</head>
+<body>
+<div class="msg">
+  <div class="spinner"></div>
+  <p>Processing your payment…</p>
+</div>
+<script>
+(function(){
+  const p=new URLSearchParams(window.location.search);
+  const success=p.get('success')==='true';
+  const orderId=p.get('merchant_order_id')||p.get('order');
+  // Navigate the top-level window (this page may be inside Paymob's iframe)
+  const target=window.top!==window.self?window.top:window;
+  if(success&&orderId){
+    target.location.href='/confirmation.html?order='+encodeURIComponent(orderId)+'&paid=1';
+  }else{
+    target.location.href='/checkout.html?payment_failed=1';
+  }
+})();
+</script>
+</body>
+</html>

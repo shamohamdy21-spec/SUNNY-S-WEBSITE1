@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — Sunny's Eyewear</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Montserrat',system-ui,sans-serif;background:#0D0D0D;min-height:100vh;display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased;position:relative;overflow:hidden}
+body::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 50%,rgba(198,161,91,.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(198,161,91,.04) 0%,transparent 50%)}
+
+.login-card{position:relative;z-index:1;width:100%;max-width:420px;padding:20px}
+.card-inner{background:#fff;padding:52px 48px 48px;box-shadow:0 32px 80px rgba(0,0,0,.4)}
+
+.brand{text-align:center;margin-bottom:40px}
+.brand img{height:88px;width:auto;margin-bottom:18px}
+.brand-label{font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#A8A8A8}
+
+.login-title{font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:400;color:#171717;text-align:center;margin-bottom:8px}
+.login-sub{font-size:11px;font-weight:300;color:#A8A8A8;text-align:center;margin-bottom:36px}
+
+.fgrp{margin-bottom:18px}
+.flbl{display:block;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#171717;margin-bottom:8px}
+.fi{width:100%;padding:13px 15px;border:1.5px solid rgba(23,23,23,.12);background:#FAFAFA;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:300;color:#171717;outline:none;transition:border-color .2s,background .2s;border-radius:0;-webkit-appearance:none}
+.fi::placeholder{color:#C0BAB4}
+.fi:focus{border-color:#C6A15B;background:#fff}
+.fi.err{border-color:#c0392b}
+
+.pw-wrap{position:relative}
+.pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#A8A8A8;padding:4px;transition:color .2s}
+.pw-toggle:hover{color:#C6A15B}
+.pw-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round}
+
+.err-msg{font-size:11px;color:#c0392b;margin-top:4px;display:none}
+.err-msg.show{display:block}
+
+.btn-login{width:100%;padding:16px;margin-top:8px;background:#C6A15B;color:#fff;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;position:relative;overflow:hidden;transition:box-shadow .3s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-login::before{content:'';position:absolute;inset:0;background:#b8943e;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.btn-login:hover::before{transform:translateX(0)}
+.btn-login span{position:relative;z-index:1}
+.btn-login svg{position:relative;z-index:1;width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}
+.btn-login:hover{box-shadow:0 8px 28px rgba(198,161,91,.35)}
+.btn-login:disabled{background:#C0BAB4;box-shadow:none;cursor:not-allowed}
+.btn-login:disabled::before{display:none}
+
+.login-footer{margin-top:32px;padding-top:24px;border-top:1px solid rgba(23,23,23,.07);text-align:center;font-size:10px;color:#A8A8A8;letter-spacing:.5px}
+
+@media(max-width:480px){.card-inner{padding:40px 28px 36px}.login-card{padding:16px}}
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="card-inner">
+    <div class="brand">
+      <img src="brand_assets/brand-logo.png" alt="Sunny's">
+      <div class="brand-label">Admin Portal</div>
+    </div>
+
+    <h1 class="login-title">Welcome Back</h1>
+    <p class="login-sub">Sign in to manage your store</p>
+
+    <form id="loginForm" novalidate>
+      <div class="fgrp">
+        <label class="flbl" for="email">Email Address</label>
+        <input class="fi" type="email" id="email" placeholder="admin@sunnys.com" autocomplete="email">
+        <span class="err-msg" id="email-err">Please enter a valid email</span>
+      </div>
+      <div class="fgrp">
+        <label class="flbl" for="password">Password</label>
+        <div class="pw-wrap">
+          <input class="fi" type="password" id="password" placeholder="Enter your password" autocomplete="current-password" style="padding-right:44px">
+          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Toggle password">
+            <svg id="eyeIcon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <span class="err-msg" id="pw-err">Incorrect email or password</span>
+      </div>
+
+      <button type="submit" class="btn-login" id="btnLogin">
+        <span>Sign In</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+
+    <div class="login-footer">Sunny's Eyewear &bull; Admin Only</div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
+import{getAuth,signInWithEmailAndPassword,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
+
+const firebaseConfig={
+  apiKey:"AIzaSyC5HNrB24BLHeKpZrrHULK_hjGypussFc8",
+  authDomain:"sunny-s-website.firebaseapp.com",
+  projectId:"sunny-s-website",
+  storageBucket:"sunny-s-website.firebasestorage.app",
+  messagingSenderId:"946546687002",
+  appId:"1:946546687002:web:3abbaf98e3abdf4d52a5a3"
+};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+
+// If Firebase session already exists, skip the login page
+onAuthStateChanged(auth,user=>{
+  if(user)window.location.href='admin.html';
+});
+
+// Password visibility toggle
+document.getElementById('pwToggle').addEventListener('click',function(){
+  const inp=document.getElementById('password');
+  const isText=inp.type==='text';
+  inp.type=isText?'password':'text';
+  document.getElementById('eyeIcon').innerHTML=isText
+    ?'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+    :'<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+});
+
+// Form submit — authenticates against Firebase Auth
+document.getElementById('loginForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  const emailErr=document.getElementById('email-err');
+  const pwErr=document.getElementById('pw-err');
+  emailErr.classList.remove('show');
+  pwErr.classList.remove('show');
+
+  if(!email||!email.includes('@')){emailErr.classList.add('show');return;}
+  if(!password){pwErr.textContent='Please enter your password';pwErr.classList.add('show');return;}
+
+  const btn=document.getElementById('btnLogin');
+  btn.disabled=true;
+  btn.querySelector('span').textContent='Signing in…';
+
+  try{
+    await signInWithEmailAndPassword(auth,email,password);
+    // onAuthStateChanged fires and redirects to admin.html
+  }catch(err){
+    btn.disabled=false;
+    btn.querySelector('span').textContent='Sign In';
+    const invalid=['auth/user-not-found','auth/wrong-password','auth/invalid-credential','auth/invalid-email'];
+    if(invalid.includes(err.code)){
+      pwErr.textContent='Incorrect email or password';
+    }else if(err.code==='auth/too-many-requests'){
+      pwErr.textContent='Too many failed attempts. Try again later.';
+    }else{
+      pwErr.textContent='Sign in failed. Please try again.';
+    }
+    pwErr.classList.add('show');
+    document.getElementById('password').classList.add('err');
+    setTimeout(()=>document.getElementById('password').classList.remove('err'),2000);
+  }
+});
+
+['email','password'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',function(){
+    this.classList.remove('err');
+    document.getElementById(id==='email'?'email-err':'pw-err').classList.remove('show');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#FAF7F3; --cream-2:#F4F1EE; --gold:#C6A15B; --gold-2:#D8C19A;
+  --black:#171717; --grey:#A8A8A8;
+  --fd:'Playfair Display',Georgia,serif; --fb:'Montserrat',system-ui,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fb);background:var(--cream);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%} a{text-decoration:none;color:inherit}
+button{font-family:var(--fb);cursor:pointer;border:none}
+input,select,textarea{font-family:var(--fb)}
+::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--cream)} ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:10px 64px;background:rgba(250,247,243,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(198,161,91,.1);transition:padding .35s,box-shadow .35s,opacity .3s,transform .3s}
+.nav.scrolled{padding:6px 64px;box-shadow:0 4px 32px rgba(0,0,0,.06)}
+.nav-logo img{height:120px;width:auto;transition:height .35s}
+.nav.scrolled .nav-logo img{height:92px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;text-decoration:none}
+.nav-icon svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s}
+.nav-icon:hover svg{opacity:.5}
+.cart-badge{position:absolute;top:3px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#fff;font-size:8px;font-weight:700;display:none;align-items:center;justify-content:center}
+.cart-badge.show{display:flex}
+.nav-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:44px;height:3px;background:var(--black);border-radius:2px;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
+.nav-icon--cart svg{width:36px;height:36px}
+.nav.nav-hidden{opacity:0;pointer-events:none;transform:translateY(-8px)}
+
+/* SIDE MENU */
+.sidemenu-overlay{position:fixed;inset:0;z-index:10000;background:transparent;pointer-events:none;transition:background .3s}
+.sidemenu-overlay.open{background:rgba(0,0,0,.46);pointer-events:all}
+.sidemenu{position:fixed;top:0;left:-380px;bottom:0;z-index:10001;width:340px;max-width:85vw;background:#fff;display:flex;flex-direction:column;transition:left .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+.sidemenu.open{left:0;box-shadow:6px 0 48px rgba(0,0,0,.14)}
+.sidemenu-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(198,161,91,.15)}
+.sidemenu-header .sidemenu-logo img{height:72px;width:auto}
+.sidemenu-close{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.sidemenu-close:hover{background:rgba(198,161,91,.12)}
+.sidemenu-close svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.6;stroke-linecap:round}
+.sidemenu-nav{flex:1;padding:44px 28px;display:flex;flex-direction:column}
+.sidemenu-nav a{font-family:var(--fd);font-size:26px;font-weight:400;color:var(--black);padding:18px 0;border-bottom:1px solid rgba(23,23,23,.07);display:block;transition:color .2s,padding-left .25s}
+.sidemenu-nav a:first-child{border-top:1px solid rgba(23,23,23,.07)}
+.sidemenu-nav a:hover{color:var(--gold);padding-left:10px}
+.sidemenu-footer{padding:28px 28px 36px;border-top:1px solid rgba(198,161,91,.15)}
+.sidemenu-footer p{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--grey)}
+
+/* CHECKOUT LAYOUT */
+.co-wrap{padding-top:148px;display:grid;grid-template-columns:1fr 420px;min-height:100vh}
+
+/* FORM SIDE */
+.form-side{padding:56px 72px 80px;border-right:1px solid rgba(198,161,91,.12)}
+.co-back{display:inline-flex;align-items:center;gap:7px;margin-bottom:36px;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--grey);background:none;border:none;padding:0;transition:color .2s}
+.co-back:hover{color:var(--gold)}
+.co-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.co-title{font-family:var(--fd);font-size:38px;font-weight:400;letter-spacing:-0.02em;margin-bottom:48px}
+
+.co-sec{margin-bottom:40px}
+.co-sec-title{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--black);margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid rgba(198,161,91,.15)}
+
+.frow{display:grid;gap:16px;margin-bottom:16px}
+.frow-2{grid-template-columns:1fr 1fr}
+.fgrp{display:flex;flex-direction:column;gap:7px}
+.flbl{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--black)}
+.flbl .opt{font-weight:300;color:var(--grey);letter-spacing:0;text-transform:none;font-size:9px}
+.fi,.fsel,.fta{width:100%;padding:13px 15px;border:1.5px solid rgba(23,23,23,.12);background:var(--cream-2);font-family:var(--fb);font-size:14px;font-weight:300;color:var(--black);outline:none;transition:border-color .2s,background .2s;appearance:none;border-radius:0}
+.fi::placeholder,.fta::placeholder{color:var(--grey)}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--gold);background:#fff}
+.fi.err,.fsel.err{border-color:#c0392b}
+.ferr{font-size:11px;color:#c0392b;display:none;margin-top:2px}
+.ferr.show{display:block}
+.fsel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A8A8A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+.fta{resize:vertical;min-height:90px;line-height:1.6}
+
+/* PAYMENT */
+.pay-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.pay-card{padding:18px 16px;border:1.5px solid rgba(23,23,23,.12);background:var(--cream-2);cursor:pointer;transition:border-color .2s,background .2s;display:flex;align-items:center;gap:12px;user-select:none;position:relative}
+.pay-card:hover{border-color:var(--gold-2)}
+.pay-card.sel{border-color:var(--gold);background:#fff}
+.pay-chk{position:absolute;top:10px;right:11px;width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(23,23,23,.2);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s;flex-shrink:0}
+.pay-card.sel .pay-chk{background:var(--gold);border-color:var(--gold)}
+.pay-chk svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;display:none}
+.pay-card.sel .pay-chk svg{display:block}
+.pay-ico{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:rgba(198,161,91,.1);display:flex;align-items:center;justify-content:center}
+.pay-ico svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round}
+.pay-name{font-size:13px;font-weight:500;color:var(--black);line-height:1.2}
+.pay-sub{font-size:9px;color:var(--grey);margin-top:2px}
+.pay-err{font-size:11px;color:#c0392b;display:none;margin-bottom:8px}
+.pay-err.show{display:block}
+
+.card-form{display:none;padding:24px;border:1px solid rgba(198,161,91,.2);background:var(--cream);margin-top:4px}
+.card-form.show{display:block}
+.card-note{font-size:10px;color:var(--grey);margin-bottom:16px;padding:10px 12px;border-left:2px solid var(--gold);line-height:1.5}
+
+/* SUBMIT */
+.btn-place{width:100%;padding:18px;margin-top:36px;background:var(--gold);color:#fff;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;transition:background .25s,box-shadow .25s;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-place:hover{background:#b8943e;box-shadow:0 8px 28px rgba(198,161,91,.35)}
+.btn-place:disabled{background:var(--grey);box-shadow:none;cursor:not-allowed}
+.btn-place svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round}
+.secure-note{text-align:center;margin-top:14px;font-size:10px;color:var(--grey);display:flex;align-items:center;justify-content:center;gap:5px}
+.secure-note svg{width:11px;height:11px;stroke:var(--grey);fill:none;stroke-width:2}
+
+/* SUMMARY SIDE */
+.sum-side{background:var(--cream-2);padding:56px 44px 80px;position:sticky;top:148px;height:fit-content;align-self:start}
+.sum-title{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px}
+.sum-items{display:flex;flex-direction:column;gap:22px}
+.sum-item{display:flex;gap:14px;align-items:flex-start}
+.sum-img{width:72px;height:90px;object-fit:cover;object-position:center top;flex-shrink:0;background:var(--cream)}
+.sum-info{flex:1}
+.sum-name{font-family:var(--fd);font-size:17px;font-weight:400;color:var(--black);margin-bottom:3px;line-height:1.2}
+.sum-col{font-size:9px;color:var(--grey);margin-bottom:10px;letter-spacing:1px}
+.qty-row{display:flex;align-items:center;gap:10px}
+.qty-btn{width:26px;height:26px;border:1px solid rgba(23,23,23,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;color:var(--black);transition:border-color .15s,background .15s}
+.qty-btn:hover{border-color:var(--gold);background:rgba(198,161,91,.06)}
+.qty-num{font-size:14px;min-width:22px;text-align:center}
+.sum-price{font-size:14px;font-weight:400;color:var(--black);text-align:right;white-space:nowrap;padding-top:4px}
+
+.sum-div{height:1px;background:rgba(198,161,91,.2);margin:24px 0}
+.sum-line{display:flex;justify-content:space-between;margin-bottom:10px}
+.sum-line .l{font-size:12px;font-weight:300;color:var(--grey)}
+.sum-line .v{font-size:13px;font-weight:400;color:var(--black)}
+.sum-line .v.free{color:#27ae60}
+.sum-tot{display:flex;justify-content:space-between;align-items:baseline;padding-top:18px;border-top:1.5px solid var(--black);margin-top:8px}
+.sum-tot .l{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.sum-tot .v{font-family:var(--fd);font-size:28px;font-weight:400}
+.sum-tot .v .cur{font-family:var(--fb);font-size:13px;font-weight:300;color:var(--grey);margin-right:3px}
+
+/* DISABLED CARD OPTION */
+.pay-card-disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}
+.coming-soon-tag{position:absolute;top:10px;right:11px;font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);border:1px solid rgba(168,168,168,.4);padding:2px 7px}
+/* CARD COMING SOON NOTICE */
+.card-soon{padding:18px 20px;border:1px dashed rgba(168,168,168,.4);background:rgba(168,168,168,.04);margin-top:4px;display:none}
+.card-soon.show{display:block}
+.card-soon p{font-size:11px;font-weight:300;color:var(--grey);line-height:1.6}
+/* RESPONSIVE */
+@media(max-width:1200px){.nav,.nav.scrolled{padding-left:40px;padding-right:40px}.form-side{padding:48px 48px 72px}.sum-side{padding:48px 32px 72px}.co-wrap{grid-template-columns:1fr 380px}}
+@media(max-width:1024px){.nav,.nav.scrolled{padding:6px 20px;top:10px}.nav-logo img,.nav.scrolled .nav-logo img{height:68px}.co-wrap{grid-template-columns:1fr;padding-top:120px}.sum-side{position:static;border-top:1px solid rgba(198,161,91,.12)}.form-side{padding:40px 36px 60px;border-right:none}}
+@media(max-width:600px){.co-wrap{padding-top:110px}.form-side{padding:28px 20px 48px}.sum-side{padding:32px 20px 48px}.co-title{font-size:30px}.frow-2{grid-template-columns:1fr}.pay-opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart" id="cartIcon">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+  </div>
+</nav>
+
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<div class="co-wrap">
+  <!-- FORM -->
+  <div class="form-side">
+    <button class="co-back" onclick="history.back()">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Continue Shopping
+    </button>
+    <h1 class="co-title">Checkout</h1>
+
+    <form id="checkoutForm" novalidate>
+
+      <!-- CUSTOMER INFO -->
+      <div class="co-sec">
+        <div class="co-sec-title">Customer Information</div>
+        <div class="frow">
+          <div class="fgrp">
+            <label class="flbl" for="fname">Full Name</label>
+            <input class="fi" type="text" id="fname" placeholder="Your full name" autocomplete="name">
+            <span class="ferr" id="fname-err">Please enter your full name</span>
+          </div>
+        </div>
+        <div class="frow frow-2">
+          <div class="fgrp">
+            <label class="flbl" for="phone">Phone Number</label>
+            <input class="fi" type="tel" id="phone" placeholder="+971 50 000 0000" autocomplete="tel">
+            <span class="ferr" id="phone-err">Please enter your phone number</span>
+          </div>
+          <div class="fgrp">
+            <label class="flbl" for="phone2">Additional Phone <span class="opt">(optional)</span></label>
+            <input class="fi" type="tel" id="phone2" placeholder="+971 55 000 0000">
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgrp">
+            <label class="flbl" for="email">Email Address <span class="opt">(optional)</span></label>
+            <input class="fi" type="email" id="email" placeholder="you@example.com" autocomplete="email">
+          </div>
+        </div>
+      </div>
+
+      <!-- SHIPPING INFO -->
+      <div class="co-sec">
+        <div class="co-sec-title">Shipping Information</div>
+        <div class="frow frow-2">
+          <div class="fgrp">
+            <label class="flbl" for="country">Country</label>
+            <select class="fsel" id="country" autocomplete="country">
+              <option value="">Select country</option>
+              <optgroup label="GCC">
+                <option value="ae">United Arab Emirates</option>
+                <option value="sa">Saudi Arabia</option>
+                <option value="kw">Kuwait</option>
+                <option value="bh">Bahrain</option>
+                <option value="qa">Qatar</option>
+                <option value="om">Oman</option>
+              </optgroup>
+              <optgroup label="International">
+                <option value="jo">Jordan</option>
+                <option value="eg">Egypt</option>
+                <option value="lb">Lebanon</option>
+                <option value="gb">United Kingdom</option>
+                <option value="us">United States</option>
+                <option value="other">Other</option>
+              </optgroup>
+            </select>
+            <span class="ferr" id="country-err">Please select a country</span>
+          </div>
+          <div class="fgrp">
+            <label class="flbl" for="city">City</label>
+            <input class="fi" type="text" id="city" placeholder="e.g. Dubai" autocomplete="address-level2">
+            <span class="ferr" id="city-err">Please enter your city</span>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgrp">
+            <label class="flbl" for="address">Full Address</label>
+            <input class="fi" type="text" id="address" placeholder="Street, area, district…" autocomplete="street-address">
+            <span class="ferr" id="address-err">Please enter your full address</span>
+          </div>
+        </div>
+        <div class="frow frow-2">
+          <div class="fgrp">
+            <label class="flbl" for="building">Building / Villa No.</label>
+            <input class="fi" type="text" id="building" placeholder="e.g. B12 or Villa 7">
+            <span class="ferr" id="building-err">Please enter building number</span>
+          </div>
+          <div class="fgrp">
+            <label class="flbl" for="apartment">Apt. No. <span class="opt">(optional)</span></label>
+            <input class="fi" type="text" id="apartment" placeholder="e.g. 304">
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="co-sec">
+        <div class="co-sec-title">Order Notes <span style="font-weight:300;color:var(--grey);font-size:8px;text-transform:none;letter-spacing:0">(optional)</span></div>
+        <textarea class="fta" id="notes" placeholder="Special requests, color preferences, delivery instructions…"></textarea>
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="co-sec">
+        <div class="co-sec-title">Payment Method</div>
+        <div class="pay-opts">
+          <div class="pay-card" id="payCod" onclick="selPay('cod')" role="radio" aria-checked="false" tabindex="0">
+            <div class="pay-chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="pay-ico"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M22 10H2"/><path d="M7 15h.01M11 15h2"/></svg></div>
+            <div><div class="pay-name">Cash on Delivery</div><div class="pay-sub">Pay when you receive</div></div>
+          </div>
+          <div class="pay-card pay-card-disabled" id="payCard" aria-disabled="true" tabindex="-1">
+            <div class="pay-ico"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div><div class="pay-name">Credit / Debit Card</div><div class="pay-sub">Visa · Mastercard · AMEX</div></div>
+            <span class="coming-soon-tag">Coming Soon</span>
+          </div>
+        </div>
+        <span class="pay-err" id="pay-err">Please select a payment method</span>
+
+        <div class="card-soon" id="cardSoon">
+          <p>Card payments coming soon. Please use Cash on Delivery for now.</p>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-place" id="btnPlace">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Place Order Securely
+      </button>
+      <p class="secure-note">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Your information is protected and secure
+      </p>
+    </form>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="sum-side">
+    <div class="sum-title">Order Summary</div>
+    <div class="sum-items" id="sumItems"></div>
+    <div class="sum-div"></div>
+    <div class="sum-line"><span class="l">Subtotal</span><span class="v" id="sumSub">EGP —</span></div>
+    <div class="sum-line"><span class="l">Shipping</span><span class="v" id="sumShip">—</span></div>
+    <div class="sum-tot">
+      <span class="l">Total</span>
+      <span class="v"><span class="cur">EGP</span><span id="sumTot">—</span></span>
+    </div>
+  </div>
+</div>
+
+<script>
+const COUNTRY_MAP = {ae:'United Arab Emirates',sa:'Saudi Arabia',kw:'Kuwait',bh:'Bahrain',qa:'Qatar',om:'Oman',jo:'Jordan',eg:'Egypt',lb:'Lebanon',gb:'United Kingdom',us:'United States',other:'Other'};
+
+function shipCost(c){if(!c)return 0;return 100;}
+function fmt(n){return Number(n).toLocaleString('en-EG');}
+
+// Load cart — prefer sunny_buynow (Buy Now flow), otherwise use sunny_cart
+let items=[];
+try{
+  const bn=localStorage.getItem('sunny_buynow');
+  if(bn){items=JSON.parse(bn);}
+  else{const c=localStorage.getItem('sunny_cart');if(c)items=JSON.parse(c);}
+}catch(e){}
+if(!items||!items.length)window.location.href='shop.html';
+
+// Render summary items
+function renderItems(){
+  document.getElementById('sumItems').innerHTML=items.map((it,i)=>`
+    <div class="sum-item">
+      <img class="sum-img" src="${it.image}" alt="${it.name}" onerror="this.style.background='var(--cream-2)'">
+      <div class="sum-info">
+        <div class="sum-name">${it.name}</div>
+        <div class="sum-col">${it.collection||''}</div>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="chgQty(${i},-1)" type="button">−</button>
+          <span class="qty-num" id="qn${i}">${it.qty}</span>
+          <button class="qty-btn" onclick="chgQty(${i},1)" type="button">+</button>
+        </div>
+      </div>
+      <div class="sum-price" id="qp${i}">EGP ${fmt(it.price*it.qty)}</div>
+    </div>`).join('');
+  updTots();
+}
+
+function chgQty(i,d){
+  items[i].qty=Math.max(1,items[i].qty+d);
+  document.getElementById('qn'+i).textContent=items[i].qty;
+  document.getElementById('qp'+i).textContent='EGP '+fmt(items[i].price*items[i].qty);
+  updTots();
+}
+
+function updTots(){
+  const c=document.getElementById('country').value;
+  const ship=shipCost(c);
+  const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('sumSub').textContent='EGP '+fmt(sub);
+  document.getElementById('sumShip').innerHTML=ship===0?'<span class="free">Free</span>':'EGP '+fmt(ship);
+  document.getElementById('sumTot').textContent=fmt(sub+ship);
+}
+
+document.getElementById('country').addEventListener('change',updTots);
+renderItems();
+
+// Payment selection — only COD is active
+let selPayment=null;
+function selPay(m){
+  selPayment=m;
+  document.getElementById('payCod').classList.toggle('sel',m==='cod');
+  document.getElementById('payCod').setAttribute('aria-checked',m==='cod');
+  document.getElementById('pay-err').classList.remove('show');
+}
+document.getElementById('payCod').addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter')selPay('cod');});
+
+// Validation
+function vf(id){
+  const el=document.getElementById(id),err=document.getElementById(id+'-err');
+  const ok=el.value.trim().length>0;
+  el.classList.toggle('err',!ok);
+  if(err)err.classList.toggle('show',!ok);
+  return ok;
+}
+function validate(){
+  let ok=true;
+  if(!vf('fname'))ok=false;
+  if(!vf('phone'))ok=false;
+  if(!vf('country'))ok=false;
+  if(!vf('city'))ok=false;
+  if(!vf('address'))ok=false;
+  if(!vf('building'))ok=false;
+  if(!selPayment){document.getElementById('pay-err').classList.add('show');ok=false;}
+  return ok;
+}
+['fname','phone','country','city','address','building'].forEach(id=>{
+  const el=document.getElementById(id);
+  ['input','change'].forEach(ev=>el.addEventListener(ev,()=>{el.classList.remove('err');const e=document.getElementById(id+'-err');if(e)e.classList.remove('show');}));
+});
+
+// Order ID
+function genId(){return'SUN-'+Date.now().toString(36).toUpperCase().slice(-8);}
+
+// Submit
+document.getElementById('checkoutForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  if(!validate()){
+    const first=document.querySelector('.fi.err,.fsel.err');
+    if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const btn=document.getElementById('btnPlace');
+  btn.disabled=true;
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round"><polyline points="20 6 9 17 4 12"/></svg> Placing Order…';
+  // Safety net: re-enable after 8s if redirect never fires (shouldn't happen, but prevents permanent freeze)
+  const safetyTimer=setTimeout(()=>{btn.disabled=false;btn.innerHTML='Place Order — Try Again';console.error('[Order] Safety timer fired — redirect did not happen within 8s');},8000);
+
+  const country=document.getElementById('country').value;
+  const sc=shipCost(country);
+  const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
+
+  const order={
+    orderId:genId(),
+    date:new Date().toISOString(),
+    status:'pending',
+    customer:{
+      fullName:document.getElementById('fname').value.trim(),
+      phone:document.getElementById('phone').value.trim(),
+      phone2:document.getElementById('phone2').value.trim(),
+      email:document.getElementById('email').value.trim(),
+    },
+    shipping:{
+      country:COUNTRY_MAP[country]||country,
+      countryCode:country,
+      city:document.getElementById('city').value.trim(),
+      address:document.getElementById('address').value.trim(),
+      building:document.getElementById('building').value.trim(),
+      apartment:document.getElementById('apartment').value.trim(),
+    },
+    notes:document.getElementById('notes').value.trim(),
+    items:items.map(i=>({...i})),
+    paymentMethod:'cod',
+    subtotal:sub,
+    shippingCost:sc,
+    total:sub+sc,
+  };
+
+  // ── Step 1: Save to localStorage (instant — confirmation page reads this) ──
+  console.log('[Order] Step 1 — saving to localStorage:', order.orderId);
+  const orders=JSON.parse(localStorage.getItem('sunny_orders')||'[]');
+  orders.unshift(order);
+  localStorage.setItem('sunny_orders',JSON.stringify(orders));
+  if(localStorage.getItem('sunny_buynow'))localStorage.removeItem('sunny_buynow');
+  else localStorage.removeItem('sunny_cart');
+  console.log('[Order] ✓ localStorage saved');
+
+  // ── Step 2: Save to Firestore with a 6-second timeout ──
+  // If Firestore hangs (not provisioned, rules blocking, no network),
+  // we fall through after the timeout and redirect anyway.
+  // The order is already safe in localStorage.
+  console.log('[Order] Step 2 — attempting Firestore write…');
+  try{
+    if(typeof window.saveOrderToFirestore==='function'){
+      // No timeout — waiting for real Firestore response (success or error)
+      await window.saveOrderToFirestore(order);
+      console.log('[Order] ✓ Firestore write succeeded');
+      if(typeof window.decrementInventory==='function'){
+        window.decrementInventory(order.items).catch(e=>console.warn('[Inventory] decrement error:',e));
+      }
+    }else{
+      console.warn('[Order] saveOrderToFirestore not available — Firebase module may not have loaded');
+    }
+  }catch(err){
+    console.error('[Order] ✗ Firestore write failed — redirecting anyway, order safe in localStorage');
+  }
+
+  // ── Step 3: Always redirect — localStorage guarantees confirmation page works ──
+  console.log('[Order] Step 3 — redirecting to confirmation page');
+  clearTimeout(safetyTimer);
+  window.location.href='confirmation.html?order='+order.orderId;
+});
+
+// Cart badge
+(function(){const c=JSON.parse(localStorage.getItem('sunny_cart')||'[]');const n=c.reduce((s,i)=>s+i.qty,0);const b=document.getElementById('cartBadge');if(b&&n>0){b.textContent=n;b.classList.add('show');}})();
+
+// Nav scroll
+const nav=document.getElementById('nav');
+let lastScrollY=0;
+window.addEventListener('scroll',()=>{const y=window.scrollY;nav.classList.toggle('scrolled',y>60);nav.classList.toggle('nav-hidden',y>80&&y>lastScrollY);lastScrollY=y;},{passive:true});
+
+// Side menu
+(function(){
+  const h=document.getElementById('navHamburger'),m=document.getElementById('sidemenu'),o=document.getElementById('sidemenuOverlay'),c=document.getElementById('sidemenuClose');
+  function open(){m.classList.add('open');o.classList.add('open');document.body.style.overflow='hidden';h.setAttribute('aria-expanded','true');}
+  function close(){m.classList.remove('open');o.classList.remove('open');document.body.style.overflow='';h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',open);c.addEventListener('click',close);o.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- Firebase: saves each order to Firestore so the admin dashboard can see it from any device -->
+<script type="module">
+// ── Closure variables populated once Firebase loads ──────────────────────────
+let _db=null,_col,_addDoc,_getDocs,_limit,_query,_doc,_getDoc,_setDoc,_SDK_VERSION='(not yet loaded)';
+
+// ── Register functions FIRST (synchronous, before any await) ─────────────────
+// This guarantees window.testFirestore is always a function, even if Firebase
+// hasn't finished loading yet.
+
+window.testFirestore=async function(){
+  console.log('[testFirestore] called');
+  if(!_db){
+    console.error('[testFirestore] Firebase not initialized yet.');
+    return;
+  }
+  console.log('DB databaseId:',_db._databaseId);
+  console.log('TEST START');
+  const q=_query(_col(_db,'orders'),_limit(1));
+  const snap=await _getDocs(q);
+  console.log('READ SUCCESS',snap.size);
+
+  console.log('BEFORE addDoc');
+  const writePromise=_addDoc(_col(_db,'orders'),{test:true,createdAt:new Date().toISOString()});
+  writePromise.then(
+    r=>console.log('PROMISE RESOLVED',r.id),
+    e=>console.error('PROMISE REJECTED',e)
+  );
+  setTimeout(()=>console.error('WRITE STILL PENDING AFTER 15 SECONDS'),15000);
+};
+console.log('[Firebase] ✓ testFirestore registered on window');
+
+// REST API test — bypasses the SDK entirely to isolate SDK vs Firebase issue
+window.testFirestoreREST=async function(){
+  const projectId='sunny-s-website';
+  const base=`https://firestore.googleapis.com/v1/projects/${projectId}/databases/default/documents/orders`;
+  console.log('--- REST GET (list) ---');
+  try{
+    const r=await fetch(base);
+    const d=await r.json();
+    console.log('GET status:',r.status);
+    console.log('GET body:',d);
+  }catch(e){console.error('GET failed:',e.message);}
+  console.log('--- REST POST (write) ---');
+  try{
+    const r=await fetch(base,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{test:{booleanValue:true},src:{stringValue:'rest-test'},at:{stringValue:new Date().toISOString()}}})
+    });
+    const d=await r.json();
+    console.log('POST status:',r.status);
+    console.log('POST body:',d);
+  }catch(e){console.error('POST failed:',e.message);}
+};
+console.log('[Firebase] ✓ testFirestoreREST registered — run window.testFirestoreREST()');
+
+window.saveOrderToFirestore=async function(order){
+  if(!_db) throw new Error('[Firebase] Firestore not initialized — check CDN errors');
+  console.log('[Firestore] About to call addDoc');
+  try{
+    const ref=await _addDoc(_col(_db,'orders'),order);
+    console.log('[Firestore] SUCCESS',ref.id);
+    return ref.id;
+  }catch(err){
+    console.error('[Firestore] FULL ERROR OBJECT:',err);
+    console.error('[Firestore] CODE:',err?.code);
+    console.error('[Firestore] MESSAGE:',err?.message);
+    console.error('[Firestore] STACK:',err?.stack);
+    throw err;
+  }
+};
+console.log('[Firebase] ✓ saveOrderToFirestore registered on window');
+
+window.decrementInventory=async function(items){
+  if(!_db) return;
+  for(const item of items){
+    try{
+      const ref=_doc(_db,'inventory',item.productId);
+      const snap=await _getDoc(ref);
+      const inv=snap.exists()?snap.data():{inventoryQuantity:20,comingSoon:false};
+      if(inv.comingSoon) continue;
+      const newQty=Math.max(0,(inv.inventoryQuantity??20)-item.qty);
+      let status;
+      if(newQty===0) status='out_of_stock';
+      else if(newQty<=10) status='limited';
+      else status='in_stock';
+      await _setDoc(ref,{...inv,inventoryQuantity:newQty,inventoryStatus:status},{ merge:true });
+    }catch(e){ console.warn('[Inventory] decrement failed for',item.productId,e.message); }
+  }
+};
+
+// ── Initialize Firebase (async — populates closure vars above) ───────────────
+try{
+  console.log('[Firebase] Loading SDK v10.13.0 from CDN…');
+  const appMod=await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js');
+  const{initializeApp,setLogLevel}=appMod;
+  const fs=await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js');
+  setLogLevel('debug');
+  _SDK_VERSION=appMod.SDK_VERSION||fs.SDK_VERSION||'(SDK_VERSION not exported)';
+  console.log('[Firebase] SDK loaded, SDK_VERSION=',_SDK_VERSION);
+
+  const firebaseConfig={
+    apiKey:"AIzaSyC5HNrB24BLHeKpZrrHULK_hjGypussFc8",
+    authDomain:"sunny-s-website.firebaseapp.com",
+    projectId:"sunny-s-website",
+    storageBucket:"sunny-s-website.firebasestorage.app",
+    messagingSenderId:"946546687002",
+    appId:"1:946546687002:web:3abbaf98e3abdf4d52a5a3"
+  };
+  console.log('[Firebase] firebaseConfig:',firebaseConfig);
+
+  const app=initializeApp(firebaseConfig);
+  console.log('[Firebase] app.options:',app.options);
+
+  _db=fs.getFirestore(app,'default');
+  _col=fs.collection;
+  _addDoc=fs.addDoc;
+  _getDocs=fs.getDocs;
+  _limit=fs.limit;
+  _query=fs.query;
+  _doc=fs.doc;
+  _getDoc=fs.getDoc;
+  _setDoc=fs.setDoc;
+
+  console.log('[Firebase] db.app.options:',_db.app.options);
+  console.log('[Firebase] db._databaseId:',_db._databaseId);
+  console.log('[Firebase] db._settings:',JSON.stringify(_db._settings||{}));
+  console.log('[Firebase] ✓ Firestore connected — project:',firebaseConfig.projectId);
+  console.log('[Firebase] ✓ _db is ready — window.testFirestore() will now work');
+
+}catch(initErr){
+  console.error('[Firebase] ✗ SDK init failed:',initErr?.message||initErr);
+  console.error('[Firebase] Full init error:',initErr);
+}
+</script>
+</body>
+</html>

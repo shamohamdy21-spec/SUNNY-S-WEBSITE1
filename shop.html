@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop the Collection — Sunny's Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:   #FAF7F3;
+  --cream-2: #F4F1EE;
+  --gold:    #C6A15B;
+  --gold-2:  #D8C19A;
+  --black:   #171717;
+  --grey:    #A8A8A8;
+  --champ:   #EFE4D6;
+  --fd: 'Playfair Display', Georgia, serif;
+  --fb: 'Montserrat', system-ui, sans-serif;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--fb); background: var(--cream); color: var(--black); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--fb); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 64px;
+  background: rgba(250,247,243,.96); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(198,161,91,.1);
+  transition: padding .35s ease, box-shadow .35s ease, opacity .3s ease, transform .3s ease;
+}
+.nav.scrolled { padding: 6px 64px; box-shadow: 0 4px 32px rgba(0,0,0,.06); }
+.nav-logo img { height: 120px; width: auto; transition: height .35s ease; }
+.nav.scrolled .nav-logo img { height: 92px; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.nav-icon svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: opacity .2s; }
+.nav-icon:hover svg { opacity: .5; }
+.nav-icon--cart svg { width: 36px; height: 36px; }
+.nav.nav-hidden { opacity: 0; pointer-events: none; transform: translateY(-8px); }
+.nav-hamburger { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 38px; height: 38px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav-hamburger span { display: block; width: 44px; height: 3px; background: var(--black); border-radius: 2px; transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s ease; }
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay { position: fixed; inset: 0; z-index: 10000; background: transparent; pointer-events: none; transition: background 0.3s ease; }
+.sidemenu-overlay.open { background: rgba(0,0,0,.46); pointer-events: all; }
+.sidemenu { position: fixed; top: 0; left: -380px; bottom: 0; z-index: 10001; width: 340px; max-width: 85vw; background: #fff; display: flex; flex-direction: column; transition: left 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease; }
+.sidemenu.open { left: 0; box-shadow: 6px 0 48px rgba(0,0,0,.14); }
+.sidemenu-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; border-bottom: 1px solid rgba(198,161,91,.15); }
+.sidemenu-header .sidemenu-logo img { height: 72px; width: auto; }
+.sidemenu-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.sidemenu-close:hover { background: rgba(198,161,91,.12); }
+.sidemenu-close svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.6; stroke-linecap: round; }
+.sidemenu-nav { flex: 1; padding: 44px 28px; display: flex; flex-direction: column; }
+.sidemenu-nav a { font-family: var(--fd); font-size: 26px; font-weight: 400; color: var(--black); letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid rgba(23,23,23,.07); display: block; transition: color 0.2s ease, padding-left 0.25s ease; }
+.sidemenu-nav a:first-child { border-top: 1px solid rgba(23,23,23,.07); }
+.sidemenu-nav a:hover { color: var(--gold); padding-left: 10px; }
+.sidemenu-footer { padding: 28px 28px 36px; border-top: 1px solid rgba(198,161,91,.15); }
+.sidemenu-footer p { font-size: 9px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); }
+
+/* ── PAGE ── */
+.page { padding-top: 148px; padding-bottom: 80px; }
+
+/* ── SHOP HEADER ── */
+.shop-header {
+  padding: 56px 80px 52px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  border-bottom: 1px solid rgba(198,161,91,.12);
+}
+.shop-header-left {}
+.shop-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 3.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.shop-title { font-family: var(--fd); font-size: clamp(38px, 4.5vw, 64px); font-weight: 400; letter-spacing: -0.025em; line-height: 1.02; color: var(--black); }
+.shop-title em { font-style: italic; color: var(--gold); }
+.shop-header-right { text-align: right; flex-shrink: 0; }
+.shop-count { font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
+.shop-sub { font-size: 16px; font-weight: 300; color: #787878; line-height: 1.65; max-width: 380px; }
+
+/* ── PRODUCT GRID ── */
+.products-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; background: rgba(23,23,23,.06);
+  margin: 2px;
+}
+
+/* ── PRODUCT CARD ── */
+.prod-card {
+  background: var(--cream); cursor: pointer;
+  overflow: hidden; position: relative;
+  transition: background 0.3s ease;
+  user-select: none; -webkit-user-select: none;
+}
+.prod-card:hover { background: var(--cream-2); }
+
+/* Image carousel */
+.card-images {
+  position: relative; aspect-ratio: 3/4; overflow: hidden;
+}
+.card-track {
+  display: flex; height: 100%;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+.card-img {
+  min-width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  flex-shrink: 0; display: block;
+}
+
+/* Arrows */
+.card-arrows {
+  position: absolute; top: 50%; left: 0; right: 0;
+  transform: translateY(-50%);
+  display: flex; justify-content: space-between; padding: 0 14px;
+  opacity: 0; transition: opacity 0.25s;
+  pointer-events: none;
+}
+.prod-card:hover .card-arrows { opacity: 1; pointer-events: all; }
+.card-arrow {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.88); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  transition: background 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+.card-arrow:hover { background: #fff; transform: scale(1.08); }
+.card-arrow:active { transform: scale(.94); }
+.card-arrow svg { width: 13px; height: 13px; stroke: var(--black); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.card-arrow.hidden { opacity: 0; pointer-events: none; }
+
+/* Dots */
+.card-dots {
+  position: absolute; bottom: 16px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 6px;
+  pointer-events: none;
+}
+.card-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,.45);
+  transition: background 0.25s, transform 0.25s;
+}
+.card-dot.active { background: #fff; transform: scale(1.4); }
+
+/* Card info */
+.card-info { padding: 22px 24px 32px; }
+.card-collection { font-size: 9px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.card-name { font-family: var(--fd); font-size: 44px; font-weight: 400; color: var(--black); letter-spacing: -0.01em; margin-bottom: 8px; line-height: 1.2; }
+.card-price { font-size: 28px; font-weight: 400; color: var(--black); }
+.card-price .cur { font-size: 22px; font-weight: 300; color: var(--grey); margin-right: 2px; }
+.card-arrow-link {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold);
+  transition: gap 0.2s;
+}
+.card-arrow-link svg { width: 12px; height: 12px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; }
+.prod-card:hover .card-arrow-link { gap: 10px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .nav, .nav.scrolled { padding-left: 40px; padding-right: 40px; }
+  .shop-header { padding: 44px 40px 40px; }
+}
+@media (max-width: 1024px) {
+  .nav, .nav.scrolled { padding: 6px 20px; top: 10px; }
+  .nav-logo img, .nav.scrolled .nav-logo img { height: 68px; }
+  .shop-header { padding: 36px 28px 32px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .shop-header-right { text-align: left; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .page { padding-top: 120px; }
+  .shop-header { padding: 28px 20px 24px; }
+  .shop-title { font-size: 34px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1px; }
+  .card-info { padding: 16px 16px 24px; }
+  .card-name { font-size: 17px; }
+  .card-arrows { opacity: 1 !important; pointer-events: all !important; }
+  .card-arrow { width: 30px; height: 30px; }
+}
+
+/* ── Inventory badges on cards ── */
+.card-img-out { object-fit: contain; object-position: center center; }
+
+/* Opaline descriptor */
+.card-desc {
+  font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+
+/* Special edition badge */
+.card-special-badge {
+  position: absolute; top: 14px; left: 14px; z-index: 5;
+  padding: 5px 11px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 8px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* Chain temple badges */
+.card-chain-badge {
+  position: absolute; top: 14px; right: 14px; z-index: 5;
+  padding: 5px 11px;
+  font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  pointer-events: none;
+}
+.card-chain-badge.copper  { background: #B87333; color: #fff; }
+.card-chain-badge.stainless { background: #A8A9AD; color: #1a1a1a; }
+
+/* ── Inventory badges on cards ── */
+.card-inv { display:inline-flex; align-items:center; padding:3px 9px; margin-top:6px; font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+.card-inv.in-stock     { background:rgba(45,106,79,.07);  color:#2D6A4F; }
+.card-inv.limited      { background:rgba(146,64,14,.07);  color:#92400E; }
+.card-inv.out-of-stock { background:rgba(153,27,27,.07);  color:#991B1B; }
+.card-inv.coming-soon  { background:rgba(82,82,82,.07);   color:#525252; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="shop-header">
+    <div class="shop-header-left">
+      <div class="shop-eyebrow">Sunny's Eyewear</div>
+      <h1 class="shop-title">Shop the<br><em>Collection</em></h1>
+    </div>
+    <div class="shop-header-right">
+      <p class="shop-sub">Luxury sunglasses with interchangeable gemstone chains. Each piece is handcrafted and unique.</p>
+    </div>
+  </div>
+
+  <!-- PRODUCTS GRID -->
+  <div class="products-grid">
+
+    <!-- 1 · The Noir -->
+    <div class="prod-card" data-href="product-detail.html?p=noir">
+      <div class="card-images">
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg" alt="The Noir – detail">
+          <img class="card-img card-img-out" src="brand_assets/brand%20assets%202/0657C550-9A3B-4107-AE70-88C8EE590015.png" alt="The Noir">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Noir</div>
+        <div class="card-price"><span class="cur">EGP</span>3,000</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 5 · The Rose -->
+    <div class="prod-card" data-href="product-detail.html?p=rose">
+      <div class="card-images">
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg" alt="The Rose – detail">
+          <img class="card-img card-img-out" src="brand_assets/brand%20assets%202/530BABA6-D93E-42F2-8955-544D3C1BE712.png" alt="The Rose">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Citrine</div>
+        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 6 · The Citrine -->
+    <div class="prod-card" data-href="product-detail.html?p=citrine">
+      <div class="card-images">
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/DDCA0B31-EFD6-4E36-A832-EBBFF14AF74A.png" alt="The Citrine – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/90C4A8D8-AB03-4AEE-B66E-A4C93A1B5E6E.png" alt="The Citrine">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Champagne</div>
+        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+
+    <!-- 4 · The Aurelia -->
+    <div class="prod-card" data-href="product-detail.html?p=aurelia">
+      <div class="card-images">
+        <div class="card-chain-badge stainless">Stainless Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/1E5D59D1-C541-4C32-B169-B6C037499F40.png" alt="The Aurelia – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png" alt="The Aurelia">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Ruby</div>
+        <div class="card-price"><span class="cur">EGP</span>3,200</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 5 · The Solene -->
+    <div class="prod-card" data-href="product-detail.html?p=solene">
+      <div class="card-images">
+        <div class="card-chain-badge stainless">Stainless Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png" alt="The Solene – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/F7D8666D-B57B-4A8D-813D-10B746BCB3F7.png" alt="The Solene">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Maldives</div>
+        <div class="card-price"><span class="cur">EGP</span>3,000</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 6 · The Celeste -->
+    <div class="prod-card" data-href="product-detail.html?p=celeste">
+      <div class="card-images">
+        <div class="card-special-badge">Special Edition</div>
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/8C2831C2-A8E1-43CE-B1C8-97F110DEA8DC.jpeg" alt="The Celeste – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/01070F7C-5529-44BA-98C5-EC565A30E07A.png" alt="The Celeste">
+          <img class="card-img" src="brand_assets/brand%20assets%203/IMG-20260720-WA0025.jpg" alt="The Opaline – extra">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Opaline</div>
+        <div class="card-desc">Scent Stone Pendant To Hold Your Favorite Perfumes</div>
+        <div class="card-price"><span class="cur">EGP</span>3,200</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 7 · The Verona -->
+    <div class="prod-card" data-href="product-detail.html?p=verona">
+      <div class="card-images">
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png" alt="The Verona – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/C40AF091-BC10-47E2-AFF7-BB34D08208FA.png" alt="The Verona">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Honey Quartz</div>
+        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 8 · The Riviera -->
+    <div class="prod-card" data-href="product-detail.html?p=riviera">
+      <div class="card-images">
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg" alt="The Riviera – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/F489181E-B43B-4088-9D32-023B592DAB01.png" alt="The Riviera">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Golden Aura</div>
+        <div class="card-price"><span class="cur">EGP</span>3,200</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 9 · The Siena -->
+    <div class="prod-card" data-href="product-detail.html?p=siena">
+      <div class="card-images">
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/6599B5D7-1468-46B9-B5E6-6178775530B0.png" alt="The Siena – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/19C9BD28-199D-4165-AB84-703580536AE9.png" alt="The Siena">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Eclipse</div>
+        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 10 · The Lumière -->
+    <div class="prod-card" data-href="product-detail.html?p=lumiere">
+      <div class="card-images">
+        <div class="card-chain-badge copper">Copper Chain Temple</div>
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/brand%20assets%202/F8D0426E-A7B2-499B-B07E-81BC8ABD46FA.jpeg" alt="The Lumière – detail">
+          <img class="card-img" src="brand_assets/brand%20assets%202/51D0502D-194A-47D6-AA26-5F855C2EFCAA.png" alt="The Lumière">
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Obsidian Noir</div>
+        <div class="card-price"><span class="cur">EGP</span>3,000</div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+  </div><!-- /products-grid -->
+</div><!-- /page -->
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  let lastScrollY = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 60);
+    nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+    lastScrollY = y;
+  }, { passive: true });
+
+  // Side menu
+  (function() {
+    const hamburger = document.getElementById('navHamburger');
+    const menu      = document.getElementById('sidemenu');
+    const overlay   = document.getElementById('sidemenuOverlay');
+    const closeBtn  = document.getElementById('sidemenuClose');
+    function openMenu()  { menu.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; hamburger.setAttribute('aria-expanded','true'); }
+    function closeMenu() { menu.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; hamburger.setAttribute('aria-expanded','false'); }
+    hamburger.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  })();
+
+  // Per-card carousel
+  document.querySelectorAll('.prod-card').forEach(card => {
+    const track  = card.querySelector('.card-track');
+    const dots   = card.querySelectorAll('.card-dot');
+    const prev   = card.querySelector('.card-arrow.prev');
+    const next   = card.querySelector('.card-arrow.next');
+    const total  = track.querySelectorAll('.card-img').length;
+    let cur = 0;
+
+    function goTo(idx) {
+      cur = Math.max(0, Math.min(total - 1, idx));
+      track.style.transform = `translateX(${-cur * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+      prev.classList.toggle('hidden', cur === 0);
+      next.classList.toggle('hidden', cur === total - 1);
+    }
+
+    prev.addEventListener('click', e => { e.stopPropagation(); goTo(cur - 1); });
+    next.addEventListener('click', e => { e.stopPropagation(); goTo(cur + 1); });
+    dots.forEach((d, i) => d.addEventListener('click', e => { e.stopPropagation(); goTo(i); }));
+
+    // Touch swipe
+    let sx = 0;
+    card.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+    card.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 44) goTo(dx < 0 ? cur + 1 : cur - 1);
+    }, { passive: true });
+
+    // Card click → navigate (ignore button/dot clicks)
+    card.addEventListener('click', e => {
+      if (!e.target.closest('.card-arrow, .card-dots, .card-dot')) {
+        window.location.href = card.dataset.href;
+      }
+    });
+  });
+</script>
+
+<script type="module">
+// ── Inventory badges on shop cards ──────────────────────────────────────────
+try {
+  const {initializeApp,getApps} = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js');
+  const {getFirestore,collection,getDocs} = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js');
+  const _cfg = {
+    apiKey:'AIzaSyC5HNrB24BLHeKpZrrHULK_hjGypussFc8',
+    authDomain:'sunny-s-website.firebaseapp.com',
+    projectId:'sunny-s-website',
+    storageBucket:'sunny-s-website.firebasestorage.app',
+    messagingSenderId:'946546687002',
+    appId:'1:946546687002:web:3abbaf98e3abdf4d52a5a3'
+  };
+  const _app = getApps().length ? getApps()[0] : initializeApp(_cfg);
+  const _db  = getFirestore(_app,'default');
+  const snap = await getDocs(collection(_db,'inventory'));
+  const invMap = {};
+  snap.forEach(d => { invMap[d.id] = d.data(); });
+
+  document.querySelectorAll('.prod-card[data-href]').forEach(card => {
+    const m = (card.getAttribute('data-href')||'').match(/[?&]p=([^&]+)/);
+    if (!m) return;
+    const inv = invMap[m[1]] || {inventoryQuantity:20,comingSoon:false};
+    const qty = inv.inventoryQuantity ?? 20;
+    const cs  = inv.comingSoon ?? false;
+
+    let label, cls;
+    if (cs)          { label='Coming Soon';       cls='coming-soon'; }
+    else if (qty===0){ label='Out of Stock';       cls='out-of-stock'; }
+    else if (qty<=10){ label=`Only ${qty} Left`;  cls='limited'; }
+    else             { label='In Stock';           cls='in-stock'; }
+
+    const badge = document.createElement('div');
+    badge.className = `card-inv ${cls}`;
+    badge.textContent = label;
+    const priceEl = card.querySelector('.card-price');
+    if (priceEl) priceEl.parentNode.insertBefore(badge, priceEl);
+  });
+} catch(e) { console.warn('[Inventory]', e.message); }
+</script>
+</body>
+</html>

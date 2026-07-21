@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunny's — Be Unique • Be Different</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root {
+  --cream:   #FAF7F3;
+  --cream-2: #F4F1EE;
+  --gold:    #C6A15B;
+  --gold-2:  #D8C19A;
+  --black:   #171717;
+  --grey:    #A8A8A8;
+  --rose:    #EBCBBE;
+  --champ:   #EFE4D6;
+  --fd: 'Playfair Display', Georgia, serif;
+  --fb: 'Montserrat', system-ui, sans-serif;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--fb);
+  background: var(--cream);
+  color: var(--black);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ── LABEL ── */
+.lbl {
+  font-family: var(--fb);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ── BUTTONS ── */
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold); color: #fff;
+  padding: 18px 44px; border-radius: 100px;
+  font-family: var(--fb); font-size: 13px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer;
+  transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), box-shadow 0.28s ease;
+  box-shadow: 0 0 18px rgba(198,161,91,.45), 0 0 40px rgba(198,161,91,.18), 0 4px 20px rgba(198,161,91,.3);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(198,161,91,.6), 0 0 60px rgba(198,161,91,.25), 0 10px 30px rgba(198,161,91,.4); }
+.btn-gold:active { transform: translateY(0); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--black); padding: 13px 30px; border-radius: 100px;
+  border: 1px solid rgba(23,23,23,.22);
+  font-family: var(--fb); font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; background: transparent;
+  transition: all .25s ease;
+}
+.btn-ghost:hover { background: var(--black); color: #fff; border-color: var(--black); }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 64px;
+  background: rgba(250,247,243,.94); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(198,161,91,.1);
+  transition: padding .35s ease, box-shadow .35s ease, opacity .3s ease, transform .3s ease;
+}
+.nav.scrolled { padding: 6px 64px; box-shadow: 0 4px 32px rgba(0,0,0,.06); }
+.nav.nav-hidden { opacity: 0; pointer-events: none; transform: translateY(-8px); }
+.nav-logo img { height: 120px; width: auto; transition: height .35s ease; }
+.nav.scrolled .nav-logo img { height: 92px; }
+.nav-links { display: flex; gap: 44px; list-style: none; }
+.nav-links a {
+  font-size: 10px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--black); position: relative; transition: color .25s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: -3px;
+  width: 0; height: 1px; background: var(--gold); transition: width .3s ease;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-icon {
+  width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.nav-icon svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: opacity .2s; }
+.nav-icon:hover svg { opacity: .5; }
+.nav-icon--cart svg { width: 36px; height: 36px; }
+
+/* ── HAMBURGER ── */
+.nav-hamburger {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; width: 38px; height: 38px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-hamburger span {
+  display: block; width: 44px; height: 3px; background: var(--black);
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
+}
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: transparent; pointer-events: none;
+  transition: background 0.3s ease;
+}
+.sidemenu-overlay.open { background: rgba(0,0,0,.46); pointer-events: all; }
+.sidemenu {
+  position: fixed; top: 0; left: -380px; bottom: 0; z-index: 10001;
+  width: 340px; max-width: 85vw;
+  background: #fff;
+  display: flex; flex-direction: column;
+  transition: left 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
+}
+.sidemenu.open { left: 0; box-shadow: 6px 0 48px rgba(0,0,0,.14); }
+.sidemenu-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid rgba(198,161,91,.15);
+}
+.sidemenu-header .sidemenu-logo img { height: 72px; width: auto; }
+.sidemenu-close {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.sidemenu-close:hover { background: rgba(198,161,91,.12); }
+.sidemenu-close svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 1.6; stroke-linecap: round; }
+.sidemenu-nav {
+  flex: 1; padding: 44px 28px;
+  display: flex; flex-direction: column;
+}
+.sidemenu-nav a {
+  font-family: var(--fd); font-size: 26px; font-weight: 400;
+  color: var(--black); letter-spacing: -0.01em;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(23,23,23,.07);
+  display: block;
+  transition: color 0.2s ease, padding-left 0.25s ease;
+}
+.sidemenu-nav a:first-child { border-top: 1px solid rgba(23,23,23,.07); }
+.sidemenu-nav a:hover { color: var(--gold); padding-left: 10px; }
+.sidemenu-footer {
+  padding: 28px 28px 36px;
+  border-top: 1px solid rgba(198,161,91,.15);
+}
+.sidemenu-footer p {
+  font-size: 9px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--grey);
+}
+
+/* ── HERO ── */
+.hero {
+  display: grid; grid-template-columns: 1fr 1fr; align-items: start; padding-top: 108px;
+}
+.hero-left {
+  position: sticky; top: 108px; isolation: isolate;
+  min-height: calc(100vh - 108px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 64px 80px 80px;
+}
+
+/* ── ETHEREAL HERO SHADOW ── */
+.hero-ethereal-bg {
+  position: absolute; inset: 0;
+  overflow: hidden; pointer-events: none; z-index: -1;
+}
+.hero-ethereal-inner {
+  position: absolute; inset: -100px;
+  filter: url(#heroEtherealFilter) blur(4px);
+}
+.hero-ethereal-blob {
+  width: 100%; height: 100%;
+  background-color: rgba(198, 161, 91, 0.48);
+  -webkit-mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+  mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.hero-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.hero-eyebrow-line { width: 32px; height: 1px; background: var(--gold); }
+.hero-h1 {
+  font-family: var(--fd);
+  font-size: clamp(62px, 6.8vw, 112px);
+  font-weight: 300; line-height: .9; letter-spacing: -0.03em;
+  color: var(--black); margin-bottom: 26px;
+}
+.hero-h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 16px; font-weight: 300; line-height: 1.8; color: #6a6a6a;
+  max-width: 370px; margin-bottom: 40px;
+}
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 56px; }
+.hero-rule { width: 100%; height: 1px; background: rgba(23,23,23,.1); margin-bottom: 32px; }
+.hero-stats { display: flex; gap: 44px; }
+.stat-n { font-family: var(--fd); font-size: 34px; font-weight: 400; color: var(--black); line-height: 1; }
+.stat-l { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey); margin-top: 5px; }
+.hero-right { position: relative; }
+
+/* ── SCROLL CARDS (CardsParallax port) ── */
+.hero-scroll-panel {
+  position: sticky; top: 0;
+  height: 140vh; overflow: hidden;
+}
+.hero-scroll-panel img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+}
+/* Floating crystals */
+.crystals { position: absolute; inset: 0; pointer-events: none; }
+.crystal { position: absolute; }
+.c1 { top: 22%; right: 16%; animation: fl1 5.5s ease-in-out infinite; }
+.c2 { top: 48%; right: 7%;  animation: fl2 7s  ease-in-out infinite 1s; }
+.c3 { top: 70%; right: 26%; animation: fl1 6.5s ease-in-out infinite 2s; }
+.c4 { top: 33%; right: 38%; animation: fl2 5s  ease-in-out infinite .5s; opacity: .45; }
+@keyframes fl1 {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-14px) rotate(6deg); }
+}
+@keyframes fl2 {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-10px) rotate(-5deg); }
+}
+
+/* ── MARQUEE ── */
+.marquee { background: var(--black); padding: 14px 0; overflow: hidden; }
+.marquee-track {
+  display: flex; white-space: nowrap;
+  animation: mk 34s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+.mk-item {
+  display: flex; align-items: center; gap: 26px; padding: 0 26px; flex-shrink: 0;
+  font-size: 9px; font-weight: 500; letter-spacing: 3.5px; text-transform: uppercase;
+  color: rgba(255,255,255,.65);
+}
+.mk-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); }
+@keyframes mk { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ── COLLECTIONS ── */
+.collections { padding: 112px 80px; background: var(--cream); }
+.sec-hdr {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 52px;
+}
+.sec-h2 {
+  font-family: var(--fd);
+  font-size: clamp(34px, 3.5vw, 58px); font-weight: 400;
+  line-height: 1.05; letter-spacing: -0.02em; margin-top: 10px;
+}
+.sec-h2 em { font-style: italic; color: var(--gold); }
+.coll-grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 14px;
+}
+.cc { position: relative; overflow: hidden; cursor: pointer; background: var(--cream-2); }
+.cc:first-child { grid-row: span 2; }
+.cc-img {
+  width: 100%; aspect-ratio: 3/4; object-fit: cover;
+  transition: transform .8s cubic-bezier(.25,.46,.45,.94);
+  display: block;
+}
+.cc:first-child .cc-img { aspect-ratio: unset; height: 100%; min-height: 420px; }
+.cc:hover .cc-img { transform: scale(1.07); }
+.cc-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(23,23,23,.78) 0%, rgba(198,161,91,.06) 55%, transparent 100%);
+  opacity: 0; transition: opacity .4s ease;
+}
+.cc:hover .cc-overlay { opacity: 1; }
+.cc-info {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 22px;
+  transform: translateY(10px); opacity: 0;
+  transition: transform .4s ease, opacity .4s ease;
+}
+.cc:hover .cc-info { transform: translateY(0); opacity: 1; }
+.cc-name { font-family: var(--fd); font-size: 24px; font-weight: 400; color: #fff; }
+.cc-sub  { font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-2); margin-top: 4px; }
+.cc-badge {
+  position: absolute; top: 14px; left: 14px;
+  background: var(--gold); color: #fff;
+  font-size: 8px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 2px;
+}
+.cc-badge.dark { background: var(--black); }
+
+/* ── CHAINS ── */
+.chains { display: flex; flex-direction: column; align-items: center; padding: 96px 80px; background: var(--cream-2); }
+.chains-vis { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; width: 100%; max-width: 720px; margin-top: 56px; }
+.chains-vis img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 3px; }
+.chains-body {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 0; background: none; max-width: 720px; width: 100%;
+}
+.chains-body .lbl { margin-bottom: 16px; }
+.chains-h2 {
+  font-family: var(--fd);
+  font-size: clamp(52px, 6vw, 96px); font-weight: 400;
+  line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px;
+}
+.chains-h2 em { font-style: italic; color: var(--gold); }
+.chains-body p {
+  font-size: 18px; font-weight: 300; line-height: 1.82; color: #6a6a6a;
+  max-width: 600px; margin-bottom: 14px;
+}
+.chain-feats { display: flex; flex-direction: column; gap: 28px; margin: 40px 0 52px; }
+.chain-feat { display: flex; align-items: flex-start; gap: 20px; }
+.cf-icon {
+  width: 54px; height: 54px; flex-shrink: 0; border-radius: 50%;
+  border: 1px solid rgba(198,161,91,.28);
+  display: flex; align-items: center; justify-content: center;
+}
+.cf-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.cf-text h4 { font-size: 17px; font-weight: 500; color: var(--black); margin-bottom: 4px; }
+.cf-text p  { font-size: 15px; color: var(--grey); line-height: 1.7; margin: 0; }
+
+/* ── VERSATILITY ── */
+.versatility { padding: 112px 80px; background: var(--cream); }
+.vers-header { text-align: center; max-width: 560px; margin: 0 auto 64px; }
+.vers-header p { font-size: 15px; font-weight: 300; color: #7a7a7a; margin-top: 14px; line-height: 1.75; }
+.vers-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+.vc { position: relative; overflow: hidden; border-radius: 3px; cursor: pointer; }
+.vc-img {
+  width: 100%; aspect-ratio: 3/4; object-fit: cover;
+  transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+}
+.vc:hover .vc-img { transform: scale(1.09); }
+.vc-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 44px 20px 20px;
+  background: linear-gradient(to top, rgba(23,23,23,.68) 0%, transparent 100%);
+}
+.vc-label h3 { font-family: var(--fd); font-size: 22px; font-weight: 400; color: #fff; }
+.vc-label span { font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-2); }
+
+/* ── PRODUCTS ── */
+.products { padding: 112px 80px; background: var(--cream-2); }
+.prod-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; }
+.pc { cursor: pointer; }
+.pc-img-wrap {
+  position: relative; overflow: hidden; border-radius: 3px;
+  background: var(--champ); aspect-ratio: 3/4; margin-bottom: 14px;
+}
+.pc-img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.25,.46,.45,.94), opacity .4s ease; }
+.pc-img-alt { position: absolute; inset: 0; object-fit: cover; opacity: 0; transition: opacity .4s ease; width: 100%; height: 100%; }
+.pc:hover .pc-img { transform: scale(1.04); opacity: 0; }
+.pc:hover .pc-img-alt { opacity: 1; }
+.pc-badge {
+  position: absolute; top: 11px; right: 11px;
+  background: var(--black); color: var(--gold-2);
+  font-size: 8px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 2px;
+}
+.pc-qv {
+  position: absolute; bottom: 14px; left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(250,247,243,.95); backdrop-filter: blur(8px);
+  color: var(--black); padding: 9px 22px; border-radius: 100px;
+  font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+  white-space: nowrap; opacity: 0;
+  transition: all .3s ease;
+}
+.pc:hover .pc-qv { opacity: 1; transform: translateX(-50%) translateY(0); }
+.pc-name   { font-family: var(--fd); font-size: 20px; font-weight: 400; color: var(--black); margin-bottom: 2px; }
+.pc-crystal{ font-size: 10px; font-weight: 400; letter-spacing: .5px; color: var(--grey); margin-bottom: 7px; }
+.pc-price  { font-size: 14px; font-weight: 500; color: var(--gold); }
+
+/* ── STORY ── */
+.story { position: relative; }
+.story-img-wrap { position: relative; height: 660px; overflow: hidden; background: #111; }
+.story-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+.story-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.18) 40%, transparent 70%);
+}
+.story-content {
+  position: absolute; bottom: 40px; left: 80px;
+  top: auto; transform: none; max-width: 520px;
+}
+.story-content .lbl { color: var(--gold-2); margin-bottom: 18px; letter-spacing: 4px; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+.story-h2 {
+  font-family: var(--fd);
+  font-size: clamp(36px, 4.2vw, 64px); font-weight: 500;
+  line-height: 1.0; letter-spacing: -0.02em; color: #fff; margin-bottom: 22px;
+  text-shadow: 0 2px 28px rgba(0,0,0,.55), 0 1px 4px rgba(0,0,0,.4);
+}
+.story-h2 em { font-style: italic; color: var(--gold-2); }
+.story-content p {
+  font-size: 15px; font-weight: 400; line-height: 1.82;
+  color: rgba(255,255,255,.95); margin-bottom: 36px; max-width: 420px;
+  text-shadow: 0 1px 12px rgba(0,0,0,.45);
+}
+.btn-ghost-light {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: #fff; padding: 13px 30px; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08);
+  backdrop-filter: blur(8px);
+  font-family: var(--fb); font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+  transition: all .25s ease;
+}
+.btn-ghost-light:hover { background: rgba(255,255,255,.18); }
+
+/* ── TESTIMONIALS ── */
+.testimonials { padding: 112px 80px; background: var(--cream); }
+.testi-header { text-align: center; max-width: 480px; margin: 0 auto 64px; }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+.tc {
+  background: var(--cream-2); padding: 38px; border-radius: 3px;
+  border: 1px solid rgba(198,161,91,.1);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.tc:hover { transform: translateY(-4px); box-shadow: 0 18px 46px rgba(0,0,0,.07); }
+.tc-stars { display: flex; gap: 3px; margin-bottom: 20px; color: var(--gold); font-size: 13px; }
+.tc-quote {
+  font-family: var(--fd); font-size: 19px; font-style: italic; font-weight: 400;
+  line-height: 1.58; color: var(--black); margin-bottom: 26px;
+}
+.tc-author {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 20px; border-top: 1px solid rgba(198,161,91,.14);
+}
+.tc-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-2); }
+.tc-name   { font-size: 11px; font-weight: 600; letter-spacing: .5px; color: var(--black); }
+.tc-handle { font-size: 11px; color: var(--gold); margin-top: 2px; }
+
+/* ── INSTAGRAM ── */
+.instagram { padding: 96px 80px; background: var(--cream-2); }
+.ig-header { text-align: center; margin-bottom: 48px; }
+.ig-header .sec-h2 { font-size: clamp(28px, 3vw, 46px); }
+.ig-handle { font-size: 14px; color: var(--gold); margin-top: 6px; }
+.ig-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 7px; }
+.ig-item { position: relative; overflow: hidden; aspect-ratio: 1; cursor: pointer; }
+.ig-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.ig-item:hover img { transform: scale(1.09); }
+.ig-overlay {
+  position: absolute; inset: 0; background: rgba(198,161,91,.75);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .35s ease;
+}
+.ig-item:hover .ig-overlay { opacity: 1; }
+.ig-overlay svg { width: 26px; height: 26px; fill: #fff; }
+
+/* ── NEWSLETTER ── */
+.newsletter { padding: 88px 80px; background: var(--champ); text-align: center; }
+.newsletter .lbl { margin-bottom: 14px; }
+.nl-h2 {
+  font-family: var(--fd);
+  font-size: clamp(34px, 3.8vw, 58px); font-weight: 400;
+  letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px;
+}
+.nl-h2 em { font-style: italic; color: var(--gold); }
+.newsletter p { font-size: 15px; font-weight: 300; color: #7a7a7a; max-width: 400px; margin: 0 auto 40px; line-height: 1.75; }
+.nl-form {
+  display: flex; max-width: 460px; margin: 0 auto;
+  border: 1px solid rgba(198,161,91,.42); border-radius: 100px; overflow: hidden; background: #fff;
+}
+.nl-input {
+  flex: 1; background: transparent; border: none; outline: none;
+  padding: 14px 22px; font-family: var(--fb); font-size: 14px; color: var(--black);
+}
+.nl-input::placeholder { color: var(--grey); }
+.nl-btn {
+  background: var(--gold); border: none; color: #fff;
+  padding: 14px 28px; border-radius: 100px; margin: 3px;
+  font-family: var(--fb); font-size: 10px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  transition: background .25s;
+}
+.nl-btn:hover { background: #b8924d; }
+
+/* ── FOOTER ── */
+footer { background: var(--black); padding: 72px 80px 0; }
+.foot-wordmark {
+  font-family: var(--fd);
+  font-size: clamp(58px, 10vw, 138px); font-weight: 300;
+  letter-spacing: -0.03em; color: rgba(255,255,255,.05);
+  text-align: center; line-height: .85; margin-bottom: 0;
+  user-select: none;
+}
+.foot-divider {
+  width: 100%; height: 1px; margin: 0 0 52px;
+  background: linear-gradient(to right, transparent, rgba(198,161,91,.4), transparent);
+}
+.foot-top { position: relative; display: flex; align-items: center; padding-bottom: 56px; min-height: 200px; }
+.foot-brand { flex-shrink: 0; }
+.foot-brand img { height: 200px; opacity: .95; }
+.foot-center {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.foot-center p {
+  font-size: 17px; font-weight: 300; line-height: 1.85;
+  color: rgba(255,255,255,.35); max-width: 420px; margin-bottom: 24px;
+}
+.foot-socials { display: flex; gap: 14px; justify-content: center; }
+.fsoc {
+  width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255,255,255,.13);
+  display: flex; align-items: center; justify-content: center; transition: all .25s;
+}
+.fsoc:hover { border-color: var(--gold); background: var(--gold); }
+.fsoc svg { width: 22px; height: 22px; fill: rgba(255,255,255,.5); transition: fill .25s; }
+.fsoc:hover svg { fill: #fff; }
+.foot-col h4 {
+  font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(255,255,255,.45); margin-bottom: 20px;
+}
+.foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.foot-col ul a { font-size: 12px; font-weight: 300; color: rgba(255,255,255,.35); transition: color .25s; }
+.foot-col ul a:hover { color: var(--gold-2); }
+.foot-bottom {
+  border-top: 1px solid rgba(255,255,255,.07); padding: 24px 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.foot-bottom p { font-size: 10px; color: rgba(255,255,255,.2); }
+.foot-legal { display: flex; gap: 22px; }
+.foot-legal a { font-size: 10px; color: rgba(255,255,255,.2); transition: color .25s; }
+.foot-legal a:hover { color: var(--gold-2); }
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94); }
+.reveal.vis { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .1s; }
+.d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; }
+.d4 { transition-delay: .4s; }
+
+/* ── HERO MOBILE CAROUSEL DOTS ── */
+.hero-carousel-dots {
+  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  display: none; gap: 8px; z-index: 10;
+}
+.hero-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.4); border: none; cursor: pointer; padding: 0;
+  transition: background .3s, transform .3s;
+}
+.hero-dot.active { background: #fff; transform: scale(1.25); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .nav, .nav.scrolled { padding-left: 40px; padding-right: 40px; }
+  .hero-left { padding: 60px 48px 60px 56px; }
+  .prod-grid { grid-template-columns: repeat(3,1fr); }
+  .ig-grid { grid-template-columns: repeat(3,1fr); }
+}
+@media (max-width: 1024px) {
+  .nav, .nav.scrolled { padding: 6px 20px; top: 10px; }
+  .nav-logo img, .nav.scrolled .nav-logo img { height: 68px; }
+  /* Hero: flex column, images on top as transform carousel */
+  .hero { display: flex; flex-direction: column; align-items: stretch; }
+  .hero-right {
+    order: -1;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: var(--cream-2);
+  }
+  .hero-left { position: relative; top: auto; min-height: auto; padding: 52px 40px; }
+  .hero-scroll-panel {
+    position: relative;
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .hero-scroll-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+  }
+  .hero-carousel-dots { display: flex; }
+  /* Chains */
+  .chains { padding: 64px 28px; }
+  .chains-vis { max-width: 100%; margin-top: 36px; }
+  .chains-body { padding: 0 12px; }
+  .collections, .versatility, .products, .testimonials, .instagram, .newsletter { padding: 80px 40px; }
+  .coll-grid { grid-template-columns: 1fr 1fr; }
+  .cc:first-child { grid-row: span 1; }
+  .cc:first-child .cc-img { aspect-ratio: 3/4; height: auto; min-height: unset; }
+  .vers-grid { grid-template-columns: repeat(2,1fr); }
+  .prod-grid { grid-template-columns: repeat(2,1fr); }
+  .testi-grid { grid-template-columns: 1fr 1fr; }
+  .ig-grid { grid-template-columns: repeat(3,1fr); }
+  .foot-top { justify-content: center; }
+  .story-content { left: 40px; bottom: 32px; }
+  footer { padding: 56px 40px 0; }
+}
+@media (max-width: 640px) {
+  .hero-h1 { font-size: 52px; }
+  .hero-stats { gap: 24px; }
+  .hero-right { aspect-ratio: 4/5; }
+  .hero-scroll-panel { height: 100%; }
+  .hero-scroll-panel img { height: 100%; object-fit: cover; object-position: center 15%; }
+  .coll-grid { grid-template-columns: 1fr; }
+  .vers-grid { grid-template-columns: 1fr 1fr; }
+  .prod-grid { grid-template-columns: 1fr 1fr; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .ig-grid { grid-template-columns: repeat(2,1fr); }
+  .foot-top { justify-content: center; }
+  .foot-wordmark { font-size: 52px; }
+  .collections, .versatility, .products, .testimonials, .instagram, .newsletter { padding-left: 22px; padding-right: 22px; }
+  .hero-left { padding: 38px 22px; }
+  footer { padding: 44px 22px 0; }
+  .story-content { left: 22px; right: 22px; max-width: none; bottom: 24px; }
+  .story-h2 { font-size: 34px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, .crystal { animation: none !important; transition: none !important; }
+}
+
+/* ── Inventory badges on featured cards ── */
+.pc-inv { display:inline-flex; align-items:center; padding:3px 9px; margin-top:5px; font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+.pc-inv.in-stock     { background:rgba(45,106,79,.07);  color:#2D6A4F; }
+.pc-inv.limited      { background:rgba(146,64,14,.07);  color:#92400E; }
+.pc-inv.out-of-stock { background:rgba(153,27,27,.07);  color:#991B1B; }
+.pc-inv.coming-soon  { background:rgba(82,82,82,.07);   color:#525252; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="sidemenu-header">
+    <a href="#" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer">
+    <p>Be Unique &bull; Be Different</p>
+  </div>
+</aside>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <!-- Ethereal animated shadow background -->
+    <div class="hero-ethereal-bg" aria-hidden="true">
+      <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+        <defs>
+          <filter id="heroEtherealFilter">
+            <feTurbulence
+              result="undulation"
+              numOctaves="2"
+              baseFrequency="0.0005,0.002"
+              seed="0"
+              type="turbulence"
+            />
+            <feColorMatrix
+              id="heroHueRotate"
+              in="undulation"
+              type="hueRotate"
+              values="180"
+            />
+            <feColorMatrix
+              in="dist"
+              result="circulation"
+              type="matrix"
+              values="4 0 0 0 1  4 0 0 0 1  4 0 0 0 1  1 0 0 0 0"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="circulation"
+              scale="100"
+              result="dist"
+            />
+            <feDisplacementMap
+              in="dist"
+              in2="undulation"
+              scale="100"
+              result="output"
+            />
+          </filter>
+        </defs>
+      </svg>
+      <div class="hero-ethereal-inner">
+        <div class="hero-ethereal-blob"></div>
+      </div>
+    </div>
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="lbl">Summer Collection 2026</span>
+    </div>
+    <h1 class="hero-h1">
+      Be<br><em>Unique.</em><br>Be<br>Different.
+    </h1>
+    <p class="hero-sub">
+      Luxury eyewear reimagined through gemstones, craftsmanship, and individuality. Every pair tells your story.
+    </p>
+    <div class="hero-ctas">
+      <a href="shop.html" class="btn-gold">Shop Now</a>
+    </div>
+    <div class="hero-rule"></div>
+    <div class="hero-stats">
+      <div><div class="stat-n">10K+</div><div class="stat-l">Happy Clients</div></div>
+      <div><div class="stat-n">10+</div><div class="stat-l">Collections</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-scroll-panel">
+      <img src="brand_assets/06B7E699-4F6A-44AC-9CDB-0DBD7340C38A.jpeg" alt="Sunny's Eyewear — Pink">
+    </div>
+    <div class="hero-scroll-panel">
+      <img src="brand_assets/1 (2).jpg" alt="Sunny's Eyewear — Red">
+    </div>
+    <div class="hero-scroll-panel">
+      <img src="brand_assets/4C901354-5AB5-4B74-A5E6-1418835E0D4F.png" alt="Sunny's Eyewear — Teal">
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="mk-item"><span>Be Unique</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Be Different</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Sunny's Eyewear</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Jewelry For Your Eyes</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Gemstone Chains</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Summer 2026</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Luxury Eyewear</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Be Unique</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Be Different</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Sunny's Eyewear</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Jewelry For Your Eyes</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Gemstone Chains</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Summer 2026</span><span class="mk-dot"></span></div>
+    <div class="mk-item"><span>Luxury Eyewear</span><span class="mk-dot"></span></div>
+  </div>
+</div>
+
+<!-- FEATURED COLLECTIONS -->
+<section class="collections" id="collections">
+  <div class="sec-hdr reveal">
+    <div>
+      <div class="lbl">Featured Collections</div>
+      <h2 class="sec-h2">Find Your Signature <em>Style</em></h2>
+    </div>
+  </div>
+  <div class="coll-grid">
+    <div class="cc reveal">
+      <img class="cc-img" src="brand_assets/brand%20assets%202/8C2831C2-A8E1-43CE-B1C8-97F110DEA8DC.jpeg" alt="The Opaline">
+      <div class="cc-overlay"></div>
+      <div class="cc-info"><div class="cc-name">The Opaline</div></div>
+      <div class="cc-badge">Bestseller</div>
+    </div>
+    <div class="cc reveal d1">
+      <img class="cc-img" src="brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg" alt="Obsidian Noir">
+      <div class="cc-overlay"></div>
+      <div class="cc-info"><div class="cc-name">The Noir</div></div>
+      <div class="cc-badge dark">New</div>
+    </div>
+    <div class="cc reveal d2">
+      <img class="cc-img" src="brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png" alt="Rose Quartz">
+      <div class="cc-overlay"></div>
+      <div class="cc-info"><div class="cc-name">The Honey Quartz</div></div>
+    </div>
+    <div class="cc reveal d1">
+      <img class="cc-img" src="brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg" alt="Citrine Glow">
+      <div class="cc-overlay"></div>
+      <div class="cc-info"><div class="cc-name">The Golden Aura</div></div>
+    </div>
+    <div class="cc reveal d2">
+      <img class="cc-img" src="brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png" alt="Lapis Luxe">
+      <div class="cc-overlay"></div>
+      <div class="cc-info"><div class="cc-name">The Maldives</div></div>
+      <div class="cc-badge">Limited</div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNATURE CHAINS -->
+<section class="chains" id="chains">
+  <div class="chains-body">
+    <div class="lbl">Our Signature</div>
+    <h2 class="chains-h2">Jewelry<br>For Your<br><em>Eyewear</em></h2>
+    <p>Every pair of Sunny's comes with an interchangeable gemstone chain that transforms your sunglasses into wearable art.</p>
+    <p>Crafted from genuine crystals, freshwater pearls, and semi-precious stones — each chain is a piece of jewelry in its own right.</p>
+    <div class="chain-feats">
+      <div class="chain-feat">
+        <div class="cf-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="cf-text">
+          <h4>Genuine Gemstones</h4>
+          <p>Authentic crystals, pearls, and semi-precious stones sourced ethically.</p>
+        </div>
+      </div>
+      <div class="chain-feat">
+        <div class="cf-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        </div>
+        <div class="cf-text">
+          <h4>Interchangeable Design</h4>
+          <p>Swap your chain to match any outfit, mood, or occasion in seconds.</p>
+        </div>
+      </div>
+      <div class="chain-feat">
+        <div class="cf-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="cf-text">
+          <h4>Handcrafted with Love</h4>
+          <p>Every detail is assembled by hand — no two pieces are identical.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chains-vis">
+    <img src="brand_assets/brand%20assets%203/68051722-5881-4D38-8C8D-989C7277BCFB.png" alt="Crystal chain closeup">
+    <img src="brand_assets/brand%20assets%203/F7ECBC13-827E-40D5-B8CD-311D67A2A43A.png" alt="Gemstone detail">
+  </div>
+</section>
+
+<!-- VERSATILITY -->
+<section class="versatility" id="versatility">
+  <div class="vers-header reveal">
+    <div class="lbl">One Chain, Many Ways</div>
+    <h2 class="sec-h2">Wear It <em>Your Way</em></h2>
+    <p>Your Sunny's chain is more than an eyewear accessory — it's a versatile piece of jewelry that moves with your life.</p>
+  </div>
+  <div class="vers-grid">
+    <div class="vc reveal">
+      <img class="vc-img" src="brand_assets/brand%20assets%203/3C9620C7-A2F3-43CD-AEA2-AC3E17376BBA.jpeg" alt="Sunglasses Chain">
+      <div class="vc-label"><h3>Sunglasses Chain</h3><span>Classic Style</span></div>
+    </div>
+    <div class="vc reveal d1">
+      <img class="vc-img" src="brand_assets/brand%20assets%203/63AA3055-7FC4-43BB-95A5-1A40B2193438.png" alt="Necklace">
+      <div class="vc-label"><h3>Necklace</h3><span>Elegant Layer</span></div>
+    </div>
+    <div class="vc reveal d2">
+      <img class="vc-img" src="brand_assets/3751C96E-A619-42B6-80B2-5B86107DEE21.png" alt="Fashion Accessory">
+      <div class="vc-label"><h3>Fashion Accessory</h3><span>Styling Detail</span></div>
+    </div>
+    <div class="vc reveal d3">
+      <img class="vc-img" src="brand_assets/brand%20assets%203/34967A75-611D-4C44-A16F-623332426B08.png" alt="Crystal Pendant">
+      <div class="vc-label"><h3>Crystal Pendant</h3><span>Standalone Jewel</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<!-- BRAND STORY -->
+<section class="story" id="story">
+  <div class="story-img-wrap">
+    <img src="brand_assets/brand%20assets%203/Picsart_26-07-20_10-44-22-498.png" alt="Sunny's Brand Story">
+    <div class="story-scrim"></div>
+    <div class="story-content reveal">
+      <div class="lbl">Our Story</div>
+      <h2 class="story-h2">Designed For Women<br>Who Refuse To <em>Blend In</em></h2>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testi-header reveal">
+    <div class="lbl">Client Love</div>
+    <h2 class="sec-h2">What Our <em>Community</em> Says</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="tc reveal">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-quote">"I've never felt more confident in a pair of sunglasses. Sunny's isn't just eyewear — it's an attitude."</p>
+      <div class="tc-author">
+        <img class="tc-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80" alt="Layla">
+        <div><div class="tc-name">Layla Hassan</div><div class="tc-handle">@laylavibes</div></div>
+      </div>
+    </div>
+    <div class="tc reveal d1">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-quote">"The crystal chain is stunning. It transforms the whole look — people keep asking if it's fine jewelry."</p>
+      <div class="tc-author">
+        <img class="tc-avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="Sara">
+        <div><div class="tc-name">Sara Khalid</div><div class="tc-handle">@sarastyle</div></div>
+      </div>
+    </div>
+    <div class="tc reveal d2">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-quote">"Every compliment I get is about my Sunny's. The chain details are unreal — pure luxury at every angle."</p>
+      <div class="tc-author">
+        <img class="tc-avatar" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80" alt="Nour">
+        <div><div class="tc-name">Nour El-Din</div><div class="tc-handle">@nour.chic</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram">
+  <div class="ig-header reveal">
+    <div class="lbl">Follow Along</div>
+    <h2 class="sec-h2" style="margin-top:10px;">@sunnys.eyewear</h2>
+    <div class="ig-handle">Tag us for a chance to be featured</div>
+  </div>
+  <div class="ig-grid">
+    <div class="ig-item reveal">
+      <img src="brand_assets/Picsart_26-06-19_03-47-49-942.jpg" alt="IG 1">
+      <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="ig-item reveal d1">
+      <img src="brand_assets/IMG_9324.png" alt="IG 2">
+      <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="ig-item reveal d2">
+      <img src="brand_assets/6E8AE498-076B-4507-9155-D07FDC7C41CF.png" alt="IG 3">
+      <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="ig-item reveal d1">
+      <img src="brand_assets/Picsart_26-06-19_03-46-28-822.jpg" alt="IG 4">
+      <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="ig-item reveal d2">
+      <img src="brand_assets/Picsart_26-06-19_03-48-28-776.jpg" alt="IG 5">
+      <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="ig-item reveal d3">
+      <img src="brand_assets/4C901354-5AB5-4B74-A5E6-1418835E0D4F.png" alt="IG 6">
+      <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="lbl">Stay Connected</div>
+  <h2 class="nl-h2">Join the <em>Sunny's</em> Circle</h2>
+  <p>Early access to new collections, exclusive offers, and style inspiration delivered to your inbox.</p>
+  <form class="nl-form" onsubmit="return false;">
+    <input class="nl-input" type="email" placeholder="Your email address">
+    <button class="nl-btn" type="submit">Subscribe</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-wordmark">SUNNY'S</div>
+  <div class="foot-divider"></div>
+  <div class="foot-top">
+    <div class="foot-center">
+      <p>Luxury eyewear for the woman who celebrates her individuality. Be Unique. Be Different.</p>
+      <div class="foot-socials">
+        <a href="https://www.instagram.com/sunnnyseyewear/" target="_blank" rel="noopener noreferrer" class="fsoc" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@sunnys.eyewear?lang=en" target="_blank" rel="noopener noreferrer" class="fsoc" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100064071999064" target="_blank" rel="noopener noreferrer" class="fsoc" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/201035724284?text=Hello%20Sunny%27s!%20I%27m%20interested%20in%20your%20products." target="_blank" rel="noopener noreferrer" class="fsoc" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <p>© 2026 Sunny's Eyewear. All rights reserved.</p>
+    <div class="foot-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Settings</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  let lastScrollY = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 60);
+    nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+    lastScrollY = y;
+  }, { passive: true });
+
+  // Side menu
+  (function() {
+    const hamburger = document.getElementById('navHamburger');
+    const menu      = document.getElementById('sidemenu');
+    const overlay   = document.getElementById('sidemenuOverlay');
+    const closeBtn  = document.getElementById('sidemenuClose');
+
+    function openMenu() {
+      menu.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      hamburger.setAttribute('aria-expanded', 'true');
+    }
+    function closeMenu() {
+      menu.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+    hamburger.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  })();
+
+  // Ethereal hero shadow animation
+  // duration derived from framer-motion mapRange(90, 1, 100, 1000, 50) / 25 ≈ 5.82s per revolution
+  (function() {
+    const hueEl = document.getElementById('heroHueRotate');
+    if (!hueEl || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const duration = 5820;
+    const start = performance.now();
+    function tick(now) {
+      const hue = ((now - start) / duration * 360) % 360;
+      hueEl.setAttribute('values', String(hue));
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Mobile hero carousel — transform track, no scroll events
+  (function() {
+    var mq = window.matchMedia('(max-width: 1024px)');
+    var right = document.querySelector('.hero-right');
+    var panels = right ? Array.from(right.querySelectorAll('.hero-scroll-panel')) : [];
+    if (panels.length < 2) return;
+
+    var track, dotsWrap, timer, cur = 0, initialized = false;
+
+    function updateDots() {
+      Array.from(dotsWrap.children).forEach(function(d, i) {
+        d.classList.toggle('active', i === cur);
+      });
+    }
+
+    function goTo(n, instant) {
+      cur = ((n % panels.length) + panels.length) % panels.length;
+      track.style.transition = instant ? 'none' : 'transform 0.55s cubic-bezier(.4,0,.2,1)';
+      track.style.transform = 'translateX(-' + (cur * right.offsetWidth) + 'px)';
+      updateDots();
+    }
+
+    function advance() {
+      // When wrapping last→first, cut instantly (no backward pendulum)
+      var isLast = cur === panels.length - 1;
+      goTo(cur + 1, isLast);
+    }
+
+    function init() {
+      if (initialized) return;
+      initialized = true;
+
+      // Wrap panels in a flex track
+      track = document.createElement('div');
+      track.style.cssText = 'display:flex;height:100%;';
+      panels.forEach(function(p) { track.appendChild(p); });
+      right.appendChild(track);
+
+      // Dots — placed after hero-right, overlapping it via negative margin
+      dotsWrap = document.createElement('div');
+      dotsWrap.style.cssText = 'display:flex;justify-content:center;gap:8px;margin-top:-32px;position:relative;z-index:10;padding-bottom:8px;';
+      panels.forEach(function(_, i) {
+        var dot = document.createElement('button');
+        dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Image ' + (i + 1));
+        dot.addEventListener('click', function() {
+          clearInterval(timer);
+          goTo(i, false);
+          timer = setInterval(advance, 2000);
+        });
+        dotsWrap.appendChild(dot);
+      });
+      right.parentNode.insertBefore(dotsWrap, right.nextSibling);
+
+      // Touch swipe
+      var sx = 0;
+      right.addEventListener('touchstart', function(e) {
+        sx = e.touches[0].clientX;
+        clearInterval(timer);
+      }, { passive: true });
+      right.addEventListener('touchend', function(e) {
+        var dx = sx - e.changedTouches[0].clientX;
+        if (Math.abs(dx) > 40) goTo(cur + (dx > 0 ? 1 : -1), false);
+        timer = setInterval(advance, 2000);
+      }, { passive: true });
+
+      timer = setInterval(advance, 2000);
+    }
+
+    if (mq.matches) init();
+    mq.addEventListener ? mq.addEventListener('change', function(e) { if (e.matches) init(); }) :
+                          mq.addListener(function(e) { if (e.matches) init(); });
+  })();
+</script>
+
+<script type="module">
+// ── Inventory badges on homepage featured cards ──────────────────────────────
+try {
+  const {initializeApp,getApps} = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js');
+  const {getFirestore,collection,getDocs} = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js');
+  const _cfg = {
+    apiKey:'AIzaSyC5HNrB24BLHeKpZrrHULK_hjGypussFc8',
+    authDomain:'sunny-s-website.firebaseapp.com',
+    projectId:'sunny-s-website',
+    storageBucket:'sunny-s-website.firebasestorage.app',
+    messagingSenderId:'946546687002',
+    appId:'1:946546687002:web:3abbaf98e3abdf4d52a5a3'
+  };
+  const _app = getApps().length ? getApps()[0] : initializeApp(_cfg);
+  const _db  = getFirestore(_app,'default');
+  const snap = await getDocs(collection(_db,'inventory'));
+  const invMap = {};
+  snap.forEach(d => { invMap[d.id] = d.data(); });
+
+  document.querySelectorAll('.pc[data-product]').forEach(card => {
+    const pid = card.getAttribute('data-product');
+    const inv = invMap[pid] || {inventoryQuantity:20,comingSoon:false};
+    const qty = inv.inventoryQuantity ?? 20;
+    const cs  = inv.comingSoon ?? false;
+
+    let label, cls;
+    if (cs)          { label='Coming Soon';      cls='coming-soon'; }
+    else if (qty===0){ label='Out of Stock';      cls='out-of-stock'; }
+    else if (qty<=10){ label=`Only ${qty} Left`; cls='limited'; }
+    else             { label='In Stock';          cls='in-stock'; }
+
+    const badge = document.createElement('div');
+    badge.className = `pc-inv ${cls}`;
+    badge.textContent = label;
+    const priceEl = card.querySelector('.pc-price');
+    if (priceEl) priceEl.parentNode.insertBefore(badge, priceEl);
+  });
+} catch(e) { console.warn('[Inventory]', e.message); }
+</script>
+</body>
+</html>

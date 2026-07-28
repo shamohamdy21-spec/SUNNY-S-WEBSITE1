@@ -110,7 +110,7 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 .pd-name { font-family: var(--fd); font-size: clamp(80px, 9vw, 124px); font-weight: 400; letter-spacing: -0.025em; line-height: 1.0; color: var(--black); margin-bottom: 20px; }
 .pd-charm-desc { display: none; margin-bottom: 28px; }
 .pd-charm-title { font-family: var(--fd); font-size: 22px; font-weight: 500; font-style: italic; color: var(--gold); letter-spacing: 0.01em; margin-bottom: 8px; }
-.pd-charm-body { font-size: 13px; font-weight: 300; color: var(--grey); line-height: 1.75; max-width: 380px; }
+.pd-charm-body { font-size: 15px; font-weight: 400; color: #444; line-height: 1.75; max-width: 380px; }
 .pd-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 36px; }
 .pd-price { font-size: 56px; font-weight: 300; color: var(--black); letter-spacing: -.02em; }
 .pd-currency { font-size: 28px; font-weight: 400; color: var(--grey); }
@@ -167,7 +167,7 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 .return-item::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
 .return-item-text { font-size: 24px; font-weight: 300; color: #5a5a5a; line-height: 1.65; }
 
-.pd-note { font-size: 10px; font-weight: 300; color: var(--grey); line-height: 1.7; padding: 20px; background: var(--cream-2); border-left: 2px solid var(--gold); }
+.pd-note { font-size: 13px; font-weight: 400; color: #444; line-height: 1.7; padding: 20px; background: var(--cream-2); border-left: 2px solid var(--gold); }
 
 /* ── FOOTER ── */
 .pd-footer { border-top: 1px solid rgba(198,161,91,.12); padding: 48px 80px; display: flex; align-items: center; justify-content: space-between; }
@@ -348,6 +348,13 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
           <div class="spec-title">Chain Temple</div>
           <div class="spec-val" id="specChain">—</div>
         </div>
+        <div class="spec-card" id="specAuraCard" style="grid-column: 1 / -1;">
+          <div class="spec-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div class="spec-title">Aura</div>
+          <div class="spec-val" id="specAura"></div>
+        </div>
       </div>
     </div>
 
@@ -375,7 +382,7 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
       </div>
 
       <div class="pd-note">
-        Each Sunny's piece is inspected by hand before dispatch. If your order arrives damaged, photograph it within 24 hours and contact us — we'll resolve it the same day.
+        Kindly note that returns or exchanges cannot be accommodated once the courier has left your doorstep. We appreciate your understanding.
       </div>
     </div>
   </div>
@@ -442,12 +449,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg',
     img2: 'brand_assets/brand%20assets%202/0657C550-9A3B-4107-AE70-88C8EE590015.png',
     specs: {
-      frame:    'Matte black Italian acetate — ultra-lightweight',
-      lens:     'Dark smoke CR-39',
+      frame:    'Matte black classic aviator frame — ultra lightweight',
+      lens:     'Dark smoke PC Anti-UV',
       uv:       'Category 4 — Maximum Glare Protection',
       dims:     'Lens 56 mm · Bridge 16 mm · Temple 145 mm · 21 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Amethyst – Angel Aura Amethyst<br>Celebrated for its aura of serenity, calming presence, and captivating violet brilliance.',
     }
   },
   'rose': {
@@ -457,12 +465,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg',
     img2: 'brand_assets/brand%20assets%202/530BABA6-D93E-42F2-8955-544D3C1BE712.png',
     specs: {
-      frame:    'Blush pink acetate with gold-tone hinges',
-      lens:     'Rose gradient lens',
+      frame:    'Honey crystal classic aviator frame — ultra lightweight',
+      lens:     'Brown Gradient PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 52 mm · Bridge 18 mm · Temple 142 mm · 22 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
   },
   'citrine': {
@@ -472,12 +481,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/DDCA0B31-EFD6-4E36-A832-EBBFF14AF74A.png',
     img2: 'brand_assets/brand%20assets%202/90C4A8D8-AB03-4AEE-B66E-A4C93A1B5E6E.png',
     specs: {
-      frame:    'Amber-tinted acetate with gold hardware',
-      lens:     'Amber gradient CR-39 — anti-reflective coat',
+      frame:    'Leopard classic aviator frame — ultra lightweight',
+      lens:     'Brown Gradient PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 53 mm · Bridge 17 mm · Temple 144 mm · 23 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
   },
   'aurelia': {
@@ -487,12 +497,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/1E5D59D1-C541-4C32-B169-B6C037499F40.png',
     img2: 'brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png',
     specs: {
-      frame:    'Polished gold acetate — hand-finished',
-      lens:     'Warm amber CR-39 with UV400 coating',
+      frame:    'Red vintage pilot frame — ultra lightweight',
+      lens:     'Translucent red PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 54 mm · Bridge 17 mm · Temple 144 mm · 22 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided stainless chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
   },
   'solene': {
@@ -502,12 +513,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png',
     img2: 'brand_assets/brand%20assets%202/F7D8666D-B57B-4A8D-813D-10B746BCB3F7.png',
     specs: {
-      frame:    'Ivory acetate with brushed gold temple detail',
-      lens:     'Soft brown gradient CR-39',
+      frame:    'Green vintage pilot frame — ultra lightweight',
+      lens:     'Translucent green PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 53 mm · Bridge 18 mm · Temple 143 mm · 21 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided stainless chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
   },
   'celeste': {
@@ -518,12 +530,12 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%202/01070F7C-5529-44BA-98C5-EC565A30E07A.png',
     img3: 'brand_assets/brand%20assets%203/IMG-20260720-WA0025.jpg',
     specs: {
-      frame:    'Pearl white acetate — lightweight Italian construction',
-      lens:     'Grey gradient CR-39 with anti-reflective coat',
+      frame:    'Pearl white cat eye frame — lightweight',
+      lens:     'Dark smoke PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 52 mm · Bridge 17 mm · Temple 142 mm · 20 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
     }
   },
   'verona': {
@@ -533,12 +545,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png',
     img2: 'brand_assets/brand%20assets%202/C40AF091-BC10-47E2-AFF7-BB34D08208FA.png',
     specs: {
-      frame:    'Deep tortoise acetate with gold inlay',
-      lens:     'Brown CR-39',
+      frame:    'Classic Havana Tortoise Navigator frame',
+      lens:     'Dark brown PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 55 mm · Bridge 16 mm · Temple 145 mm · 23 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
   },
   'riviera': {
@@ -548,12 +561,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg',
     img2: 'brand_assets/brand%20assets%202/F489181E-B43B-4088-9D32-023B592DAB01.png',
     specs: {
-      frame:    'Translucent sand acetate — resort-ready finish',
-      lens:     'Blue mirror CR-39',
+      frame:    'Sand gold vintage aviator frame',
+      lens:     'Dark smoke PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 54 mm · Bridge 17 mm · Temple 144 mm · 21 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
   },
   'siena': {
@@ -563,12 +577,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/6599B5D7-1468-46B9-B5E6-6178775530B0.png',
     img2: 'brand_assets/brand%20assets%202/19C9BD28-199D-4165-AB84-703580536AE9.png',
     specs: {
-      frame:    'Terracotta acetate with gold-tone hardware',
-      lens:     'Warm copper gradient CR-39',
+      frame:    'Matte black classic Navigator frame — ultra lightweight',
+      lens:     'Dark smoke PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens 53 mm · Bridge 17 mm · Temple 143 mm · 22 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Amethyst – Angel Aura Amethyst<br>Celebrated for its aura of serenity, calming presence, and captivating violet brilliance.',
     }
   },
   'lumiere': {
@@ -578,12 +593,13 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/F8D0426E-A7B2-499B-B07E-81BC8ABD46FA.jpeg',
     img2: 'brand_assets/brand%20assets%202/51D0502D-194A-47D6-AA26-5F855C2EFCAA.png',
     specs: {
-      frame:    'Crystal clear acetate — luminous ultra-light',
-      lens:     'Light gold tint CR-39 with UV400 coating',
+      frame:    'Jet black cat eye frame — lightweight',
+      lens:     'Dark smoke PC Anti-UV',
       uv:       'Category 2 — Soft Light Filtration',
       dims:     'Lens 52 mm · Bridge 18 mm · Temple 142 mm · 19 g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
-      chain:    'Braided chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      aura:     'Amethyst – Angel Aura Amethyst<br>Celebrated for its aura of serenity, calming presence, and captivating violet brilliance.',
     }
   }
 };
@@ -617,6 +633,8 @@ const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
   document.getElementById('specLens').textContent     = p.specs.lens;
   document.getElementById('specGemstone').textContent = p.specs.gemstone;
   document.getElementById('specChain').textContent    = p.specs.chain;
+  document.getElementById('specAura').innerHTML       = p.specs.aura || '';
+  if (!p.specs.aura) document.getElementById('specAuraCard').style.display = 'none';
 })();
 
 // ── Nav scroll ───────────────────────────────────────────────────────────

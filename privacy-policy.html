@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Sunny's Eyewear</title>
+<meta name="description" content="Sunny's Eyewear Privacy Policy. Learn how we collect, use, and protect your personal information when you shop with us.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF7F3; --cream-2:#F4F1EE; --cream-3:#EDE9E4;
+  --gold:#C6A15B; --gold-2:#D8C19A; --gold-pale:rgba(198,161,91,.08);
+  --black:#171717; --grey:#A8A8A8; --grey-2:#E8E4E0;
+  --fd:'Playfair Display',Georgia,serif; --fb:'Montserrat',system-ui,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cream);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%} a{text-decoration:none;color:inherit}
+button{font-family:var(--fb);cursor:pointer;border:none;background:none}
+::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--cream)} ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:10px 64px;background:rgba(250,247,243,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(198,161,91,.1);transition:padding .35s,box-shadow .35s,opacity .3s,transform .3s}
+.nav.scrolled{padding:6px 64px;box-shadow:0 4px 32px rgba(0,0,0,.06)}
+.nav-logo img{height:120px;width:auto;transition:height .35s}
+.nav.scrolled .nav-logo img{height:92px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;text-decoration:none}
+.nav-icon svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s}
+.nav-icon:hover svg{opacity:.5}
+.cart-badge{position:absolute;top:3px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#fff;font-size:8px;font-weight:700;display:none;align-items:center;justify-content:center}
+.cart-badge.show{display:flex}
+.nav-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:44px;height:3px;background:var(--black);border-radius:2px;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
+.nav-icon--cart svg{width:36px;height:36px}
+.nav.nav-hidden{opacity:0;pointer-events:none;transform:translateY(-8px)}
+
+/* ── SIDE MENU ── */
+.sidemenu-overlay{position:fixed;inset:0;z-index:10000;background:transparent;pointer-events:none;transition:background .3s}
+.sidemenu-overlay.open{background:rgba(0,0,0,.46);pointer-events:all}
+.sidemenu{position:fixed;top:0;left:-380px;bottom:0;z-index:10001;width:340px;max-width:85vw;background:#fff;display:flex;flex-direction:column;transition:left .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+.sidemenu.open{left:0;box-shadow:6px 0 48px rgba(0,0,0,.14)}
+.sidemenu-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(198,161,91,.15)}
+.sidemenu-header .sidemenu-logo img{height:72px;width:auto}
+.sidemenu-close{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.sidemenu-close:hover{background:rgba(198,161,91,.12)}
+.sidemenu-close svg{width:18px;height:18px;stroke:var(--black);fill:none;stroke-width:1.6;stroke-linecap:round}
+.sidemenu-nav{flex:1;padding:44px 28px;display:flex;flex-direction:column;overflow-y:auto}
+.sidemenu-nav a{font-family:var(--fd);font-size:26px;font-weight:400;color:var(--black);padding:18px 0;border-bottom:1px solid rgba(23,23,23,.07);display:block;transition:color .2s,padding-left .25s}
+.sidemenu-nav a:first-child{border-top:1px solid rgba(23,23,23,.07)}
+.sidemenu-nav a:hover{color:var(--gold);padding-left:10px}
+.sidemenu-nav a.active{color:var(--gold)}
+.sidemenu-footer{padding:28px 28px 36px;border-top:1px solid rgba(198,161,91,.15)}
+.sidemenu-footer p{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--grey)}
+
+/* ── FADE-IN ── */
+.fade-in{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.25,.46,.45,.94),transform .7s cubic-bezier(.25,.46,.45,.94)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in.d1{transition-delay:.1s}
+.fade-in.d2{transition-delay:.2s}
+.fade-in.d3{transition-delay:.3s}
+.fade-in.d4{transition-delay:.4s}
+
+/* ── HERO ── */
+.hero{padding-top:168px;padding-bottom:80px;text-align:center;background:var(--cream);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(198,161,91,.07) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.hero-title{font-family:var(--fd);font-size:clamp(36px,5vw,68px);font-weight:400;letter-spacing:-0.025em;line-height:1.1;color:var(--black);margin-bottom:28px}
+.hero-rule{width:48px;height:1.5px;background:var(--gold);margin:0 auto 28px}
+.hero-sub{font-family:var(--fd);font-size:clamp(15px,1.8vw,20px);font-weight:400;font-style:italic;color:var(--grey);line-height:1.5;max-width:480px;margin:0 auto}
+
+/* ── CONTENT ── */
+.content{max-width:780px;margin:0 auto;padding:0 40px 100px}
+.effective-date{padding:40px 0 0;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey)}
+
+/* ── SECTIONS ── */
+.policy-section{padding:52px 0;border-bottom:1px solid var(--grey-2)}
+.policy-section:last-child{border-bottom:none}
+.sec-num{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.sec-title{font-family:var(--fd);font-size:clamp(22px,2.8vw,30px);font-weight:400;letter-spacing:-0.015em;color:var(--black);margin-bottom:24px;line-height:1.2}
+.sec-body{font-size:14px;font-weight:300;line-height:1.9;color:#3a3a3a}
+.sec-body p{margin-bottom:16px}
+.sec-body p:last-child{margin-bottom:0}
+.sec-body strong{font-weight:500;color:var(--black)}
+.sec-body ul{margin:16px 0 16px 0;display:flex;flex-direction:column;gap:10px;list-style:none}
+.sec-body ul li{padding-left:20px;position:relative;font-size:14px;font-weight:300;line-height:1.8;color:#3a3a3a}
+.sec-body ul li::before{content:'—';position:absolute;left:0;color:var(--gold);font-weight:400}
+.highlight-box{margin:24px 0;padding:22px 28px;border-left:2.5px solid var(--gold);background:var(--gold-pale);font-family:var(--fd);font-size:16px;font-style:italic;color:var(--black);line-height:1.6}
+
+/* ── CTA ── */
+.cta-section{background:var(--black);padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(198,161,91,.08) 0%,transparent 70%);pointer-events:none}
+.cta-eyebrow{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.cta-heading{font-family:var(--fd);font-size:clamp(32px,4vw,52px);font-weight:400;color:#fff;letter-spacing:-0.02em;margin-bottom:16px}
+.cta-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,.5);margin-bottom:40px;line-height:1.6}
+.btn-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;background:var(--gold);color:#fff;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;text-decoration:none;position:relative;overflow:hidden;transition:box-shadow .3s}
+.btn-cta::before{content:'';position:absolute;inset:0;background:#b8943e;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.btn-cta:hover::before{transform:translateX(0)}
+.btn-cta span{position:relative;z-index:1}
+.btn-cta svg{position:relative;z-index:1;width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}
+.btn-cta:hover{box-shadow:0 8px 32px rgba(198,161,91,.3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){.nav,.nav.scrolled{padding-left:40px;padding-right:40px}}
+@media(max-width:900px){
+  .nav,.nav.scrolled{padding:6px 20px;top:10px}
+  .nav-logo img,.nav.scrolled .nav-logo img{height:68px}
+  .hero{padding-top:148px;padding-bottom:60px}
+}
+@media(max-width:600px){
+  .hero{padding-top:130px;padding-bottom:48px}
+  .content{padding:0 20px 80px}
+  .policy-section{padding:40px 0}
+  .cta-section{padding:60px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav" aria-label="Main navigation">
+  <a href="index.html" class="nav-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's Eyewear"></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right">
+    <a href="cart.html" class="nav-icon nav-icon--cart" id="cartIcon" aria-label="Shopping cart">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="sidemenu-overlay" id="sidemenuOverlay"></div>
+<aside class="sidemenu" id="sidemenu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div class="sidemenu-header">
+    <a href="index.html" class="sidemenu-logo"><img src="brand_assets/brand-logo.png" alt="Sunny's Eyewear"></a>
+    <button class="sidemenu-close" id="sidemenuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="sidemenu-nav" aria-label="Side navigation">
+    <a href="shop.html">Shop Now</a>
+    <a href="refund-exchange-policy.html">Refund &amp; Exchange Policy</a>
+    <a href="story.html">Story</a>
+  </nav>
+  <div class="sidemenu-footer"><p>Be Unique &bull; Be Different</p></div>
+</aside>
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="page-title">
+  <div class="fade-in">
+    <p class="hero-eyebrow">Sunny's Eyewear</p>
+  </div>
+  <div class="fade-in d1">
+    <h1 class="hero-title" id="page-title">Privacy Policy</h1>
+  </div>
+  <div class="fade-in d2">
+    <div class="hero-rule"></div>
+    <p class="hero-sub">Your privacy is at the heart of everything we do</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <p class="effective-date fade-in">Effective Date: July 1, 2026</p>
+
+  <!-- 1. INTRODUCTION -->
+  <section class="policy-section fade-in" aria-labelledby="sec1">
+    <p class="sec-num">01</p>
+    <h2 class="sec-title" id="sec1">Introduction</h2>
+    <div class="sec-body">
+      <p>Welcome to Sunny's Eyewear. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and make purchases from us.</p>
+      <p>Please read this policy carefully. If you disagree with its terms, please discontinue use of our site. By accessing or using our website, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy.</p>
+      <div class="highlight-box">We will never sell your personal information to third parties. Your data is used solely to provide you with the best possible shopping experience.</div>
+    </div>
+  </section>
+
+  <!-- 2. INFORMATION WE COLLECT -->
+  <section class="policy-section fade-in" aria-labelledby="sec2">
+    <p class="sec-num">02</p>
+    <h2 class="sec-title" id="sec2">Information We Collect</h2>
+    <div class="sec-body">
+      <p><strong>Personal Information</strong></p>
+      <p>When you create an account, place an order, or contact us, we may collect the following personal information:</p>
+      <ul>
+        <li>Full name and contact details (email address, phone number)</li>
+        <li>Billing and shipping address</li>
+        <li>Account login credentials</li>
+        <li>Order history and preferences</li>
+        <li>Communications you send us via email, WhatsApp, or contact forms</li>
+      </ul>
+      <p><strong>Payment Information</strong></p>
+      <p>Payment transactions are processed through secure third-party payment providers (including Paymob). We do not store your full credit card number, CVV, or bank account details on our servers. Payment data is encrypted and handled in accordance with PCI DSS standards.</p>
+      <p><strong>Device &amp; Usage Information</strong></p>
+      <p>When you visit our website, we automatically collect certain information about your device, including:</p>
+      <ul>
+        <li>IP address and approximate geographic location</li>
+        <li>Browser type and version</li>
+        <li>Pages viewed and time spent on each page</li>
+        <li>Referring URLs and search terms used to find our site</li>
+        <li>Device type (mobile, tablet, desktop)</li>
+      </ul>
+      <p><strong>Cookies</strong></p>
+      <p>We use cookies and similar tracking technologies to enhance your browsing experience, remember your preferences, and analyse website traffic. You may control cookie settings through your browser at any time. See Section 9 for our full Cookies Policy.</p>
+    </div>
+  </section>
+
+  <!-- 3. HOW WE USE YOUR INFORMATION -->
+  <section class="policy-section fade-in" aria-labelledby="sec3">
+    <p class="sec-num">03</p>
+    <h2 class="sec-title" id="sec3">How We Use Your Information</h2>
+    <div class="sec-body">
+      <p>We use the information we collect to:</p>
+      <ul>
+        <li>Process and fulfil your orders, including shipping and delivery notifications</li>
+        <li>Manage your account and provide customer support</li>
+        <li>Send order confirmations, invoices, and important account updates</li>
+        <li>Personalise your shopping experience and recommend products you may love</li>
+        <li>Send promotional emails and offers (only with your consent — you may unsubscribe at any time)</li>
+        <li>Improve our website, products, and services based on your feedback and behaviour</li>
+        <li>Detect, prevent, and address fraudulent transactions and security issues</li>
+        <li>Comply with legal obligations and enforce our Terms of Service</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. SHARING YOUR INFORMATION -->
+  <section class="policy-section fade-in" aria-labelledby="sec4">
+    <p class="sec-num">04</p>
+    <h2 class="sec-title" id="sec4">Sharing Your Information</h2>
+    <div class="sec-body">
+      <p>We do not sell, trade, or rent your personal information to third parties. We may share your data only in the following limited circumstances:</p>
+      <ul>
+        <li><strong>Service Providers:</strong> We work with trusted third-party companies to help operate our website and deliver orders (e.g., payment processors, shipping couriers, email service providers). These parties are contractually obligated to keep your information confidential and use it only to perform services on our behalf.</li>
+        <li><strong>Legal Requirements:</strong> We may disclose your information if required to do so by law, or in response to valid legal requests from public authorities.</li>
+        <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction. You will be notified via email and/or a prominent notice on our website of any change in ownership.</li>
+        <li><strong>Protection of Rights:</strong> We may disclose information when we believe in good faith that disclosure is necessary to protect the rights, property, or safety of Sunny's Eyewear, our customers, or others.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. DATA SECURITY -->
+  <section class="policy-section fade-in" aria-labelledby="sec5">
+    <p class="sec-num">05</p>
+    <h2 class="sec-title" id="sec5">Data Security</h2>
+    <div class="sec-body">
+      <p>We implement appropriate technical and organisational security measures to protect your personal information against unauthorised access, alteration, disclosure, or destruction. Our website uses SSL/TLS encryption for all data transmitted between your browser and our servers.</p>
+      <p>However, no method of transmission over the internet or electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security. We encourage you to use a strong, unique password for your account and to keep it confidential.</p>
+    </div>
+  </section>
+
+  <!-- 6. YOUR RIGHTS -->
+  <section class="policy-section fade-in" aria-labelledby="sec6">
+    <p class="sec-num">06</p>
+    <h2 class="sec-title" id="sec6">Your Rights</h2>
+    <div class="sec-body">
+      <p>You have the following rights regarding your personal data:</p>
+      <ul>
+        <li><strong>Access:</strong> You may request a copy of the personal information we hold about you.</li>
+        <li><strong>Correction:</strong> You may request that we correct any inaccurate or incomplete information.</li>
+        <li><strong>Deletion:</strong> You may request that we delete your personal information, subject to certain legal exceptions.</li>
+        <li><strong>Objection:</strong> You may object to the processing of your data for direct marketing purposes at any time.</li>
+        <li><strong>Data Portability:</strong> You may request that we provide your data in a structured, commonly used format.</li>
+        <li><strong>Withdraw Consent:</strong> Where processing is based on consent, you may withdraw it at any time without affecting the lawfulness of prior processing.</li>
+      </ul>
+      <p>To exercise any of these rights, please contact us at <a href="mailto:sunnyseyewear0@gmail.com" style="color:var(--gold)">sunnyseyewear0@gmail.com</a>. We will respond to your request within 30 days.</p>
+    </div>
+  </section>
+
+  <!-- 7. INTERNATIONAL DATA TRANSFERS -->
+  <section class="policy-section fade-in" aria-labelledby="sec9">
+    <p class="sec-num">09</p>
+    <h2 class="sec-title" id="sec9">International Data Transfers</h2>
+    <div class="sec-body">
+      <p>Sunny's Eyewear is based in Egypt. If you are accessing our website from outside Egypt, please be aware that your information may be transferred to, stored, and processed in a country different from your country of residence.</p>
+      <p>We take appropriate steps to ensure that any international transfer of your personal data complies with applicable data protection laws and that your data remains protected to the standard described in this policy.</p>
+    </div>
+  </section>
+
+  <!-- 10. DATA RETENTION -->
+  <section class="policy-section fade-in" aria-labelledby="sec10">
+    <p class="sec-num">10</p>
+    <h2 class="sec-title" id="sec10">Data Retention</h2>
+    <div class="sec-body">
+      <p>We retain your personal information for as long as necessary to fulfil the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law.</p>
+      <ul>
+        <li>Account information is retained for as long as your account is active or as needed to provide you with services.</li>
+        <li>Order records are retained for a minimum of 5 years for accounting and legal compliance purposes.</li>
+        <li>Marketing data is retained until you withdraw your consent or request deletion.</li>
+      </ul>
+      <p>When your data is no longer needed, we will securely delete or anonymise it.</p>
+    </div>
+  </section>
+
+  <!-- 8. CHANGES TO THIS POLICY -->
+  <section class="policy-section fade-in" aria-labelledby="sec12">
+    <p class="sec-num">12</p>
+    <h2 class="sec-title" id="sec12">Changes to This Privacy Policy</h2>
+    <div class="sec-body">
+      <p>We reserve the right to update or modify this Privacy Policy at any time. When we make material changes, we will notify you by updating the Effective Date at the top of this page and, where appropriate, sending you an email notification.</p>
+      <p>We encourage you to review this Privacy Policy periodically to stay informed about how we are protecting your information. Your continued use of our website after any changes constitutes your acceptance of the revised policy.</p>
+    </div>
+  </section>
+
+  <!-- 13. CONTACT US -->
+  <section class="policy-section fade-in" aria-labelledby="sec13">
+    <p class="sec-num">13</p>
+    <h2 class="sec-title" id="sec13">Contact Us</h2>
+    <div class="sec-body">
+      <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:sunnyseyewear0@gmail.com" style="color:var(--gold)">sunnyseyewear0@gmail.com</a></li>
+        <li><strong>WhatsApp:</strong> <a href="https://wa.me/201035724284" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">+20 103 572 4284</a></li>
+        <li><strong>Instagram:</strong> <a href="https://www.instagram.com/sunnnys.eyewear/" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">@sunnnyseyewear</a></li>
+      </ul>
+      <p>We are committed to resolving any privacy concerns you may have promptly and transparently.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="fade-in">
+    <p class="cta-eyebrow">Questions?</p>
+    <h2 class="cta-heading">We're Here for You</h2>
+    <p class="cta-sub">Our team is always happy to help with any concerns about your privacy.</p>
+    <a href="mailto:sunnyseyewear0@gmail.com" class="btn-cta">
+      <span>Contact Us</span>
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<script>
+const nav = document.getElementById('nav');
+let lastScrollY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 60);
+  nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+  lastScrollY = y;
+}, { passive: true });
+
+(function(){
+  const h=document.getElementById('navHamburger'),m=document.getElementById('sidemenu'),o=document.getElementById('sidemenuOverlay'),c=document.getElementById('sidemenuClose');
+  function open(){m.classList.add('open');o.classList.add('open');document.body.style.overflow='hidden';h.setAttribute('aria-expanded','true');}
+  function close(){m.classList.remove('open');o.classList.remove('open');document.body.style.overflow='';h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',open);c.addEventListener('click',close);o.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
+
+(function(){
+  try{
+    const c=JSON.parse(localStorage.getItem('sunny_cart')||'[]');
+    const n=c.reduce((s,i)=>s+i.qty,0);
+    const b=document.getElementById('cartBadge');
+    if(b&&n>0){b.textContent=n;b.classList.add('show');}
+  }catch(e){}
+})();
+
+(function(){
+  const els=document.querySelectorAll('.fade-in');
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>

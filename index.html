@@ -330,6 +330,7 @@ a { text-decoration: none; color: inherit; }
   display: flex; align-items: center; justify-content: center;
 }
 .cf-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.cf-text { flex: 1; min-width: 0; }
 .cf-text h4 { font-size: 17px; font-weight: 500; color: var(--black); margin-bottom: 4px; }
 .cf-text p  { font-size: 15px; color: var(--grey); line-height: 1.7; margin: 0; }
 
@@ -510,7 +511,12 @@ footer { background: var(--black); padding: 72px 80px 0; }
 }
 .foot-center p {
   font-size: 17px; font-weight: 300; line-height: 1.85;
-  color: rgba(255,255,255,.35); max-width: 420px; margin-bottom: 24px;
+  color: rgba(255,255,255,.35); max-width: 420px; margin-bottom: 12px;
+}
+.foot-tagline {
+  font-family: var(--fd); font-size: 22px !important; font-weight: 400 !important;
+  font-style: italic; color: var(--gold) !important;
+  letter-spacing: 0.02em; margin-bottom: 24px !important;
 }
 .foot-socials { display: flex; gap: 14px; justify-content: center; }
 .fsoc {
@@ -532,8 +538,8 @@ footer { background: var(--black); padding: 72px 80px 0; }
   display: flex; justify-content: space-between; align-items: center;
 }
 .foot-bottom p { font-size: 10px; color: rgba(255,255,255,.2); }
-.foot-legal { display: flex; gap: 22px; }
-.foot-legal a { font-size: 10px; color: rgba(255,255,255,.2); transition: color .25s; }
+.foot-legal { display: flex; justify-content: center; gap: 28px; margin-top: 20px; }
+.foot-legal a { font-size: 13px; color: rgba(255,255,255,.35); transition: color .25s; }
 .foot-legal a:hover { color: var(--gold-2); }
 
 /* ── SCROLL REVEAL ── */
@@ -566,7 +572,7 @@ footer { background: var(--black); padding: 72px 80px 0; }
 @media (max-width: 1024px) {
   .nav, .nav.scrolled { padding: 6px 20px; top: 10px; }
   .nav-logo img, .nav.scrolled .nav-logo img { height: 68px; }
-  /* Hero: flex column, images on top as transform carousel */
+  /* Hero: crossfade carousel */
   .hero { display: flex; flex-direction: column; align-items: stretch; }
   .hero-right {
     order: -1;
@@ -575,21 +581,33 @@ footer { background: var(--black); padding: 72px 80px 0; }
     aspect-ratio: 4/5;
     overflow: hidden;
     background: var(--cream-2);
-    touch-action: pan-y;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
   }
   .hero-left { position: relative; top: auto; min-height: auto; padding: 52px 40px; }
   .hero-scroll-panel {
-    position: relative;
-    flex-shrink: 0;
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
-    overflow: hidden;
+    opacity: 0;
+    -webkit-transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+    will-change: opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
   }
+  .hero-scroll-panel.cf-active { opacity: 1; }
   .hero-scroll-panel img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center 15%;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
   }
   .hero-carousel-dots { display: flex; }
   /* Chains */
@@ -612,8 +630,6 @@ footer { background: var(--black); padding: 72px 80px 0; }
   .hero-h1 { font-size: 52px; }
   .hero-stats { gap: 24px; }
   .hero-right { aspect-ratio: 4/5; }
-  .hero-scroll-panel { height: 100%; }
-  .hero-scroll-panel img { height: 100%; object-fit: cover; object-position: center 15%; }
   .coll-grid { grid-template-columns: 1fr; }
   .vers-grid { grid-template-columns: 1fr 1fr; }
   .prod-grid { grid-template-columns: 1fr 1fr; }
@@ -786,13 +802,11 @@ footer { background: var(--black); padding: 72px 80px 0; }
       <img class="cc-img" src="brand_assets/brand%20assets%202/8C2831C2-A8E1-43CE-B1C8-97F110DEA8DC.jpeg" alt="The Opaline">
       <div class="cc-overlay"></div>
       <div class="cc-info"><div class="cc-name">The Opaline</div></div>
-      <div class="cc-badge">Bestseller</div>
     </div>
     <div class="cc reveal d1">
       <img class="cc-img" src="brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg" alt="Obsidian Noir">
       <div class="cc-overlay"></div>
       <div class="cc-info"><div class="cc-name">The Noir</div></div>
-      <div class="cc-badge dark">New</div>
     </div>
     <div class="cc reveal d2">
       <img class="cc-img" src="brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png" alt="Rose Quartz">
@@ -808,7 +822,6 @@ footer { background: var(--black); padding: 72px 80px 0; }
       <img class="cc-img" src="brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png" alt="Lapis Luxe">
       <div class="cc-overlay"></div>
       <div class="cc-info"><div class="cc-name">The Maldives</div></div>
-      <div class="cc-badge">Limited</div>
     </div>
   </div>
 </section>
@@ -818,7 +831,7 @@ footer { background: var(--black); padding: 72px 80px 0; }
   <div class="chains-body">
     <div class="lbl">Our Signature</div>
     <h2 class="chains-h2">Jewelry<br>For Your<br><em>Eyewear</em></h2>
-    <p>Every pair of Sunny's comes with an interchangeable gemstone chain that transforms your sunglasses into wearable art.</p>
+    <p>Every pair of Sunny's is adorned with a handcrafted gemstone chain that transforms your sunglasses into wearable art.</p>
     <p>Crafted from genuine crystals, freshwater pearls, and semi-precious stones — each chain is a piece of jewelry in its own right.</p>
     <div class="chain-feats">
       <div class="chain-feat">
@@ -835,8 +848,8 @@ footer { background: var(--black); padding: 72px 80px 0; }
           <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
         </div>
         <div class="cf-text">
-          <h4>Interchangeable Design</h4>
-          <p>Swap your chain to match any outfit, mood, or occasion in seconds.</p>
+          <h4>Signature Chain Temple</h4>
+          <p>Handwoven chain temples with a warm gold-tone finish — where fine jewelry craftsmanship meets all-day wearability.</p>
         </div>
       </div>
       <div class="chain-feat">
@@ -947,7 +960,7 @@ footer { background: var(--black); padding: 72px 80px 0; }
       <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
     </div>
     <div class="ig-item reveal d2">
-      <img src="brand_assets/6E8AE498-076B-4507-9155-D07FDC7C41CF.png" alt="IG 3">
+      <img src="brand_assets/Picsart_26-06-19_03-48-28-776.jpg" alt="IG 3">
       <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
     </div>
     <div class="ig-item reveal d1">
@@ -955,11 +968,11 @@ footer { background: var(--black); padding: 72px 80px 0; }
       <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
     </div>
     <div class="ig-item reveal d2">
-      <img src="brand_assets/Picsart_26-06-19_03-48-28-776.jpg" alt="IG 5">
+      <img src="brand_assets/brand%20assets%203/D1D731D4-0C49-4677-8328-F4388A8AEF09.jpeg" alt="IG 5">
       <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
     </div>
     <div class="ig-item reveal d3">
-      <img src="brand_assets/4C901354-5AB5-4B74-A5E6-1418835E0D4F.png" alt="IG 6">
+      <img src="brand_assets/brand%20assets%203/4C4AFA05-9FED-44D3-BE77-3974497F27E8%20(1).png" alt="IG 6">
       <div class="ig-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
     </div>
   </div>
@@ -982,9 +995,10 @@ footer { background: var(--black); padding: 72px 80px 0; }
   <div class="foot-divider"></div>
   <div class="foot-top">
     <div class="foot-center">
-      <p>Luxury eyewear for the woman who celebrates her individuality. Be Unique. Be Different.</p>
+      <p>Luxury eyewear for the woman who celebrates her individuality.</p>
+      <p class="foot-tagline">Be Unique. Be Different.</p>
       <div class="foot-socials">
-        <a href="https://www.instagram.com/sunnnyseyewear/" target="_blank" rel="noopener noreferrer" class="fsoc" aria-label="Instagram">
+        <a href="https://www.instagram.com/sunnnys.eyewear/" target="_blank" rel="noopener noreferrer" class="fsoc" aria-label="Instagram">
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         </a>
         <a href="https://www.tiktok.com/@sunnys.eyewear?lang=en" target="_blank" rel="noopener noreferrer" class="fsoc" aria-label="TikTok">
@@ -1000,12 +1014,11 @@ footer { background: var(--black); padding: 72px 80px 0; }
     </div>
   </div>
   <div class="foot-bottom">
-    <p>© 2026 Sunny's Eyewear. All rights reserved.</p>
     <div class="foot-legal">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Cookie Settings</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-service.html">Terms of Service</a>
     </div>
+    <p>© 2026 Sunny's Eyewear. All rights reserved.</p>
   </div>
 </footer>
 
@@ -1067,123 +1080,82 @@ footer { background: var(--black); padding: 72px 80px 0; }
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // Mobile hero carousel — transform track, no scroll events
+  // Mobile hero carousel — GPU crossfade, seamless infinite loop
   (function() {
     var mq = window.matchMedia('(max-width: 1024px)');
     var right = document.querySelector('.hero-right');
     var panels = right ? Array.from(right.querySelectorAll('.hero-scroll-panel')) : [];
     if (panels.length < 2) return;
 
-    var track, dotsWrap, timer, cur = 0, initialized = false;
+    var dots = [], dotsWrap, timer, cur = 0, initialized = false;
 
     function updateDots() {
-      Array.from(dotsWrap.children).forEach(function(d, i) {
-        d.classList.toggle('active', i === cur);
-      });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
     }
 
-    function getW() {
-      return right.getBoundingClientRect().width || right.offsetWidth || window.innerWidth;
-    }
-
-    function applySize(w) {
-      panels.forEach(function(p) {
-        p.style.width = w + 'px';
-        p.style.minWidth = w + 'px';
-        p.style.maxWidth = w + 'px';
-      });
-    }
-
-    function snap(instant) {
-      var w = getW();
-      applySize(w);
-      var tx = -(cur * w);
-      track.style.transition = instant ? 'none' : 'transform 0.55s cubic-bezier(.4,0,.2,1)';
-      track.style.webkitTransition = instant ? 'none' : '-webkit-transform 0.55s cubic-bezier(.4,0,.2,1)';
-      track.style.transform = 'translateX(' + tx + 'px)';
-      track.style.webkitTransform = 'translateX(' + tx + 'px)';
-    }
-
-    function goTo(n, instant) {
+    function goTo(n) {
+      panels[cur].classList.remove('cf-active');
       cur = ((n % panels.length) + panels.length) % panels.length;
-      snap(instant);
+      panels[cur].classList.add('cf-active');
       updateDots();
     }
 
-    function advance() {
-      var isLast = cur === panels.length - 1;
-      goTo(cur + 1, isLast);
-    }
+    function advance() { goTo(cur + 1); }
 
     function init() {
       if (initialized) return;
       initialized = true;
 
-      // Build flex track — size panels synchronously before appending
-      // so iOS Safari never sees panels without an explicit pixel width
-      track = document.createElement('div');
-      track.style.cssText = 'display:flex;height:100%;will-change:transform;-webkit-transform:translateX(0);transform:translateX(0);';
-      var w0 = right.offsetWidth || window.innerWidth;
-      panels.forEach(function(p) {
-        p.style.width    = w0 + 'px';
-        p.style.minWidth = w0 + 'px';
-        p.style.maxWidth = w0 + 'px';
-        track.appendChild(p);
-      });
-      right.appendChild(track);
+      // Activate first slide immediately — no layout reads, no JS sizing
+      panels[0].classList.add('cf-active');
 
-      // Re-measure after paint (aspect-ratio height finalises here)
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() { snap(true); });
-      });
-
-      // Re-measure on resize and orientation change
-      window.addEventListener('resize', function() { snap(true); }, { passive: true });
-      window.addEventListener('orientationchange', function() {
-        setTimeout(function() { snap(true); }, 300);
-      });
-
-      // Dots
+      // Dots — injected inside hero-right to overlay images
       dotsWrap = document.createElement('div');
-      dotsWrap.style.cssText = 'display:flex;justify-content:center;gap:8px;margin-top:-32px;position:relative;z-index:10;padding-bottom:8px;';
+      dotsWrap.className = 'hero-carousel-dots';
       panels.forEach(function(_, i) {
         var dot = document.createElement('button');
         dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
         dot.setAttribute('aria-label', 'Image ' + (i + 1));
         dot.addEventListener('click', function() {
           clearInterval(timer);
-          goTo(i, false);
-          timer = setInterval(advance, 3000);
+          goTo(i);
+          timer = setInterval(advance, 4000);
         });
+        dots.push(dot);
         dotsWrap.appendChild(dot);
       });
-      right.parentNode.insertBefore(dotsWrap, right.nextSibling);
+      right.appendChild(dotsWrap);
 
-      // Touch swipe
-      var sx = 0, sy = 0, swiping = false;
+      // Touch swipe with axis lock (prevents scroll fighting)
+      var sx = 0, sy = 0, axisLocked = false, isHoriz = false;
       right.addEventListener('touchstart', function(e) {
-        sx = e.touches[0].clientX;
-        sy = e.touches[0].clientY;
-        swiping = false;
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+        axisLocked = false; isHoriz = false;
         clearInterval(timer);
       }, { passive: true });
       right.addEventListener('touchmove', function(e) {
+        if (axisLocked) return;
         var dx = Math.abs(e.touches[0].clientX - sx);
         var dy = Math.abs(e.touches[0].clientY - sy);
-        if (dx > dy) swiping = true;
+        if (dx > 6 || dy > 6) { axisLocked = true; isHoriz = dx >= dy; }
       }, { passive: true });
       right.addEventListener('touchend', function(e) {
-        var dx = sx - e.changedTouches[0].clientX;
-        if (swiping && Math.abs(dx) > 30) goTo(cur + (dx > 0 ? 1 : -1), false);
-        timer = setInterval(advance, 3000);
+        if (isHoriz) {
+          var dx = sx - e.changedTouches[0].clientX;
+          if (Math.abs(dx) > 30) goTo(cur + (dx > 0 ? 1 : -1));
+        }
+        timer = setInterval(advance, 4000);
       }, { passive: true });
 
-      timer = setInterval(advance, 3000);
+      timer = setInterval(advance, 4000);
     }
 
     if (mq.matches) init();
-    mq.addEventListener ? mq.addEventListener('change', function(e) { if (e.matches) init(); }) :
-                          mq.addListener(function(e) { if (e.matches) init(); });
+    if (mq.addEventListener) {
+      mq.addEventListener('change', function(e) { if (e.matches && !initialized) init(); });
+    } else {
+      mq.addListener(function(e) { if (e.matches && !initialized) init(); });
+    }
   })();
 </script>
 

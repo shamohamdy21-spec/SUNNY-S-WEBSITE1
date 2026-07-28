@@ -355,6 +355,7 @@ function render() {
 }
 
 function changeQty(idx, delta) {
+  if (delta < 0 && items[idx].qty === 1) { removeItem(idx); return; }
   items[idx].qty = Math.max(1, items[idx].qty + delta);
   saveCart();
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);

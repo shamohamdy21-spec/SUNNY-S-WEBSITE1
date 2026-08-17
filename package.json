@@ -1,5 +1,16 @@
 {
+  "name": "sunnys-website",
+  "version": "1.0.0",
+  "description": "Sunny's e-commerce website with Vercel Web Analytics",
+  "scripts": {
+    "build:analytics": "esbuild analytics.js --bundle --format=esm --outfile=analytics-bundle.js",
+    "prebuild": "npm run build:analytics"
+  },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "puppeteer": "^25.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   }
 }

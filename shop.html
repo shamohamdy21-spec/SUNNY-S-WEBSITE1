@@ -155,8 +155,18 @@ button { font-family: var(--fb); }
 .card-info { padding: 22px 24px 32px; }
 .card-collection { font-size: 9px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
 .card-name { font-family: var(--fd); font-size: 44px; font-weight: 400; color: var(--black); letter-spacing: -0.01em; margin-bottom: 8px; line-height: 1.2; }
+.card-price-wrap { display: flex; flex-direction: column; gap: 1px; }
+.card-orig-price { font-size: 18px; font-weight: 300; color: var(--grey); text-decoration: line-through; letter-spacing: -.01em; }
 .card-price { font-size: 28px; font-weight: 400; color: var(--black); }
 .card-price .cur { font-size: 22px; font-weight: 300; color: var(--grey); margin-right: 2px; }
+
+/* ── FLASH SALE TICKER ── */
+.flash-ticker { background: var(--black); overflow: hidden; height: 44px; display: flex; align-items: center; border-top: 1px solid rgba(198,161,91,.15); border-bottom: 1px solid rgba(198,161,91,.15); }
+.flash-ticker-track { display: flex; white-space: nowrap; animation: flashTicker 28s linear infinite; will-change: transform; }
+@keyframes flashTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .flash-ticker-track { animation: none; } }
+.flash-ticker-item { font-family: var(--fb); font-size: 9px; font-weight: 600; letter-spacing: 3.5px; text-transform: uppercase; color: var(--gold); padding: 0 0; flex-shrink: 0; white-space: nowrap; }
+.ft-sep { color: rgba(198,161,91,.5); margin: 0 18px; font-size: 9px; }
 .card-arrow-link {
   display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
   font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
@@ -225,6 +235,12 @@ button { font-family: var(--fb); }
 .card-inv.out-of-stock { background:rgba(153,27,27,.07);  color:#991B1B; }
 .card-inv.coming-soon  { background:rgba(82,82,82,.07);   color:#525252; }
 </style>
+<script src="tracking.js"></script>
+<!-- Meta Pixel 1788781122137161 -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1788781122137161');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1788781122137161&ev=PageView&noscript=1"/></noscript>
+<!-- TikTok Pixel D9N0VARC77U1C011M630 -->
+<script>!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};ttq.load('D9N0VARC77U1C011M630');ttq.page();}(window,document,'ttq');</script>
 </head>
 <body>
 
@@ -270,6 +286,14 @@ button { font-family: var(--fb); }
     </div>
   </div>
 
+  <!-- FLASH SALE TICKER -->
+  <div class="flash-ticker" role="marquee" aria-label="Flash Sale — 30% Off End of Season">
+    <div class="flash-ticker-track">
+      <span class="flash-ticker-item">FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span></span>
+      <span class="flash-ticker-item" aria-hidden="true">FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span></span>
+    </div>
+  </div>
+
   <!-- PRODUCTS GRID -->
   <div class="products-grid">
 
@@ -293,7 +317,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Noir</div>
-        <div class="card-price"><span class="cur">EGP</span>3,000</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,000</div>
+          <div class="card-price"><span class="cur">EGP</span>2,000</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -318,7 +345,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Citrine</div>
-        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 2,800</div>
+          <div class="card-price"><span class="cur">EGP</span>1,800</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -343,7 +373,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Champagne</div>
-        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 2,800</div>
+          <div class="card-price"><span class="cur">EGP</span>1,800</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -369,7 +402,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Ruby</div>
-        <div class="card-price"><span class="cur">EGP</span>3,200</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,200</div>
+          <div class="card-price"><span class="cur">EGP</span>2,200</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -394,7 +430,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Maldives</div>
-        <div class="card-price"><span class="cur">EGP</span>3,000</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,000</div>
+          <div class="card-price"><span class="cur">EGP</span>2,000</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -423,7 +462,10 @@ button { font-family: var(--fb); }
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Opaline</div>
         <div class="card-desc">Scent Stone Pendant To Hold Your Favorite Perfumes</div>
-        <div class="card-price"><span class="cur">EGP</span>3,200</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,200</div>
+          <div class="card-price"><span class="cur">EGP</span>2,200</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -448,7 +490,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Honey Quartz</div>
-        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 2,800</div>
+          <div class="card-price"><span class="cur">EGP</span>1,800</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -473,7 +518,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Golden Aura</div>
-        <div class="card-price"><span class="cur">EGP</span>3,200</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,200</div>
+          <div class="card-price"><span class="cur">EGP</span>2,200</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -498,7 +546,10 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Eclipse</div>
-        <div class="card-price"><span class="cur">EGP</span>2,800</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 2,800</div>
+          <div class="card-price"><span class="cur">EGP</span>1,800</div>
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
@@ -523,7 +574,122 @@ button { font-family: var(--fb); }
       <div class="card-info">
         <div class="card-collection">Core Collection</div>
         <div class="card-name">The Obsidian Noir</div>
-        <div class="card-price"><span class="cur">EGP</span>3,000</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,000</div>
+          <div class="card-price"><span class="cur">EGP</span>2,000</div>
+        </div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- NEW PRODUCTS 11–14  ·  Change name, price, images in each card    -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- 11 · PRODUCT 11 — CHANGE NAME, PRICE AND IMAGES HERE -->
+    <div class="prod-card" data-href="product-detail.html?p=sunnys-product-11">
+      <div class="card-images">
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/ba4/9D2E5C24-BB39-43D2-BA25-E54DA9654AF4.png" alt="Sunny's Product 11 – detail"> <!-- ← REPLACE: Product 11 image 1 -->
+          <img class="card-img" src="brand_assets/ba4/BF2A5AED-92EF-4847-995E-50B933DA1847.png" alt="Sunny's Product 11">          <!-- ← REPLACE: Product 11 image 2 -->
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Sienna</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,200</div>
+          <div class="card-price"><span class="cur">EGP</span>2,200</div> <!-- ← CHANGE PRICE HERE -->
+        </div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 12 · PRODUCT 12 — CHANGE NAME, PRICE AND IMAGES HERE -->
+    <div class="prod-card" data-href="product-detail.html?p=sunnys-product-12">
+      <div class="card-images">
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/ba4/2B73842E-BE64-4961-8308-1598094EECDE.png" alt="Sunny's Product 12 – detail"> <!-- ← REPLACE: Product 12 image 1 -->
+          <img class="card-img" src="brand_assets/ba4/560313B6-E50D-4333-9233-197D54034C83.png" alt="Sunny's Product 12">          <!-- ← REPLACE: Product 12 image 2 -->
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Ambré</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,000</div>
+          <div class="card-price"><span class="cur">EGP</span>2,000</div> <!-- ← CHANGE PRICE HERE -->
+        </div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 13 · PRODUCT 13 — CHANGE NAME, PRICE AND IMAGES HERE -->
+    <div class="prod-card" data-href="product-detail.html?p=sunnys-product-13">
+      <div class="card-images">
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/ba4/795AD56A-255D-4CE0-8983-642E44F46A80.png" alt="Sunny's Product 13 – detail"> <!-- ← REPLACE: Product 13 image 1 -->
+          <img class="card-img" src="brand_assets/ba4/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png" alt="Sunny's Product 13">          <!-- ← REPLACE: Product 13 image 2 -->
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Verdant</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 2,800</div>
+          <div class="card-price"><span class="cur">EGP</span>1,800</div> <!-- ← CHANGE PRICE HERE -->
+        </div>
+        <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 14 · PRODUCT 14 — CHANGE NAME, PRICE AND IMAGES HERE -->
+    <div class="prod-card" data-href="product-detail.html?p=sunnys-product-14">
+      <div class="card-images">
+        <div class="card-track">
+          <img class="card-img" src="brand_assets/ba4/B971C461-B582-4FD5-BA0D-4E1C98A2F2EA.png" alt="Sunny's Product 14 – detail"> <!-- ← REPLACE: Product 14 image 1 -->
+          <img class="card-img" src="brand_assets/ba4/AB12C5A2-171F-4D41-BC74-1051BFFA0016.png" alt="Sunny's Product 14">          <!-- ← REPLACE: Product 14 image 2 -->
+        </div>
+        <div class="card-arrows">
+          <button class="card-arrow prev hidden" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="card-arrow next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div class="card-dots">
+          <span class="card-dot active"></span>
+          <span class="card-dot"></span>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-collection">Core Collection</div>
+        <div class="card-name">The Lavande</div>
+        <div class="card-price-wrap">
+          <div class="card-orig-price">EGP 3,000</div>
+          <div class="card-price"><span class="cur">EGP</span>2,000</div> <!-- ← CHANGE PRICE HERE -->
+        </div>
         <div class="card-arrow-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>

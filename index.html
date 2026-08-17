@@ -163,11 +163,11 @@ a { text-decoration: none; color: inherit; }
 
 /* ── HERO ── */
 .hero {
-  display: grid; grid-template-columns: 1fr 1fr; align-items: start; padding-top: 108px;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: start; padding-top: 184px;
 }
 .hero-left {
-  position: sticky; top: 108px; isolation: isolate;
-  min-height: calc(100vh - 108px);
+  position: sticky; top: 184px; isolation: isolate;
+  min-height: calc(100vh - 184px);
   display: flex; flex-direction: column; justify-content: center;
   padding: 80px 64px 80px 80px;
 }
@@ -253,6 +253,16 @@ a { text-decoration: none; color: inherit; }
 }
 .mk-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); }
 @keyframes mk { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ── FLASH SALE TICKER ── */
+.flash-ticker { position: fixed; top: 140px; left: 0; right: 0; z-index: 9998; background: var(--black); overflow: hidden; height: 44px; display: flex; align-items: center; border-bottom: 1px solid rgba(198,161,91,.15); transition: top .35s ease, opacity .3s ease, transform .3s ease; }
+.flash-ticker.ft-scrolled { top: 104px; }
+.flash-ticker.ft-hidden { opacity: 0; pointer-events: none; transform: translateY(-8px); }
+.flash-ticker-track { display: flex; white-space: nowrap; animation: flashTicker 28s linear infinite; will-change: transform; }
+@keyframes flashTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .flash-ticker-track { animation: none; } }
+.flash-ticker-item { font-family: var(--fb); font-size: 9px; font-weight: 600; letter-spacing: 3.5px; text-transform: uppercase; color: var(--gold); flex-shrink: 0; white-space: nowrap; }
+.ft-sep { color: rgba(198,161,91,.5); margin: 0 18px; font-size: 9px; }
 
 /* ── COLLECTIONS ── */
 .collections { padding: 112px 80px; background: var(--cream); }
@@ -572,8 +582,9 @@ footer { background: var(--black); padding: 72px 80px 0; }
 @media (max-width: 1024px) {
   .nav, .nav.scrolled { padding: 6px 20px; top: 10px; }
   .nav-logo img, .nav.scrolled .nav-logo img { height: 68px; }
+  .flash-ticker, .flash-ticker.ft-scrolled { top: 90px; }
   /* Hero: crossfade carousel */
-  .hero { display: flex; flex-direction: column; align-items: stretch; }
+  .hero { display: flex; flex-direction: column; align-items: stretch; padding-top: 134px; }
   .hero-right {
     order: -1;
     position: relative;
@@ -654,6 +665,12 @@ footer { background: var(--black); padding: 72px 80px 0; }
 .pc-inv.out-of-stock { background:rgba(153,27,27,.07);  color:#991B1B; }
 .pc-inv.coming-soon  { background:rgba(82,82,82,.07);   color:#525252; }
 </style>
+<script src="tracking.js"></script>
+<!-- Meta Pixel 1788781122137161 -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1788781122137161');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1788781122137161&ev=PageView&noscript=1"/></noscript>
+<!-- TikTok Pixel D9N0VARC77U1C011M630 -->
+<script>!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};ttq.load('D9N0VARC77U1C011M630');ttq.page();}(window,document,'ttq');</script>
 </head>
 <body>
 
@@ -690,6 +707,14 @@ footer { background: var(--black); padding: 72px 80px 0; }
     <p>Be Unique &bull; Be Different</p>
   </div>
 </aside>
+
+<!-- FLASH SALE TICKER -->
+<div class="flash-ticker" role="marquee" aria-label="Flash Sale — 30% Off End of Season">
+  <div class="flash-ticker-track">
+    <span class="flash-ticker-item">FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span></span>
+    <span class="flash-ticker-item" aria-hidden="true">FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span></span>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -1025,11 +1050,16 @@ footer { background: var(--black); padding: 72px 80px 0; }
 <script>
   // Nav scroll
   const nav = document.getElementById('nav');
+  const flashTicker = document.querySelector('.flash-ticker');
   let lastScrollY = 0;
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
     nav.classList.toggle('scrolled', y > 60);
     nav.classList.toggle('nav-hidden', y > 80 && y > lastScrollY);
+    if (flashTicker) {
+      flashTicker.classList.toggle('ft-scrolled', y > 60);
+      flashTicker.classList.toggle('ft-hidden', y > 80 && y > lastScrollY);
+    }
     lastScrollY = y;
   }, { passive: true });
 

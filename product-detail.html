@@ -111,7 +111,9 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 .pd-charm-desc { display: none; margin-bottom: 28px; }
 .pd-charm-title { font-family: var(--fd); font-size: 22px; font-weight: 500; font-style: italic; color: var(--gold); letter-spacing: 0.01em; margin-bottom: 8px; }
 .pd-charm-body { font-size: 15px; font-weight: 400; color: #444; line-height: 1.75; max-width: 380px; }
-.pd-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 36px; }
+.pd-price-row { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 36px; }
+.pd-price-inner { display: flex; align-items: baseline; gap: 8px; }
+.pd-orig-price { font-size: 22px; font-weight: 300; color: var(--grey); text-decoration: line-through; letter-spacing: -.01em; display: none; }
 .pd-price { font-size: 56px; font-weight: 300; color: var(--black); letter-spacing: -.02em; }
 .pd-currency { font-size: 28px; font-weight: 400; color: var(--grey); }
 
@@ -232,6 +234,12 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 .pd-hero-dot.active { background: var(--gold); transform: scale(1.3); }
 @media (max-width: 700px) { .pd-hero-dots { display: flex; } }
 </style>
+<script src="tracking.js"></script>
+<!-- Meta Pixel 1788781122137161 -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1788781122137161');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1788781122137161&ev=PageView&noscript=1"/></noscript>
+<!-- TikTok Pixel D9N0VARC77U1C011M630 -->
+<script>!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};ttq.load('D9N0VARC77U1C011M630');ttq.page();}(window,document,'ttq');</script>
 </head>
 <body>
 
@@ -303,8 +311,11 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
         <div class="pd-charm-body">A timeless charm designed to hold a few drops of your favorite perfume and gently diffuse its scent as you wear it.</div>
       </div>
       <div class="pd-price-row">
-        <span class="pd-currency">EGP</span>
-        <span class="pd-price" id="pdPrice">—</span>
+        <span class="pd-orig-price" id="pdOrigPrice"></span>
+        <div class="pd-price-inner">
+          <span class="pd-currency">EGP</span>
+          <span class="pd-price" id="pdPrice">—</span>
+        </div>
       </div>
 
       <div class="pd-ctas">
@@ -445,7 +456,8 @@ const PRODUCTS = {
   'noir': {
     name: 'The Noir',
     collection: 'Core Collection',
-    price: '3000',
+    price: '2000',
+    originalPrice: '3000',
     img1: 'brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg',
     img2: 'brand_assets/brand%20assets%202/0657C550-9A3B-4107-AE70-88C8EE590015.png',
     specs: {
@@ -461,7 +473,8 @@ const PRODUCTS = {
   'rose': {
     name: 'The Citrine',
     collection: 'Core Collection',
-    price: '2800',
+    price: '1800',
+    originalPrice: '2800',
     img1: 'brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg',
     img2: 'brand_assets/brand%20assets%202/530BABA6-D93E-42F2-8955-544D3C1BE712.png',
     specs: {
@@ -477,7 +490,8 @@ const PRODUCTS = {
   'citrine': {
     name: 'The Champagne',
     collection: 'Core Collection',
-    price: '2800',
+    price: '1800',
+    originalPrice: '2800',
     img1: 'brand_assets/brand%20assets%202/DDCA0B31-EFD6-4E36-A832-EBBFF14AF74A.png',
     img2: 'brand_assets/brand%20assets%202/90C4A8D8-AB03-4AEE-B66E-A4C93A1B5E6E.png',
     specs: {
@@ -493,7 +507,8 @@ const PRODUCTS = {
   'aurelia': {
     name: 'The Ruby',
     collection: 'Core Collection',
-    price: '3200',
+    price: '2200',
+    originalPrice: '3200',
     img1: 'brand_assets/brand%20assets%202/1E5D59D1-C541-4C32-B169-B6C037499F40.png',
     img2: 'brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png',
     specs: {
@@ -509,7 +524,8 @@ const PRODUCTS = {
   'solene': {
     name: 'The Maldives',
     collection: 'Core Collection',
-    price: '3000',
+    price: '2000',
+    originalPrice: '3000',
     img1: 'brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png',
     img2: 'brand_assets/brand%20assets%202/F7D8666D-B57B-4A8D-813D-10B746BCB3F7.png',
     specs: {
@@ -525,7 +541,8 @@ const PRODUCTS = {
   'celeste': {
     name: 'The Opaline',
     collection: 'Core Collection',
-    price: '3200',
+    price: '2200',
+    originalPrice: '3200',
     img1: 'brand_assets/brand%20assets%202/8C2831C2-A8E1-43CE-B1C8-97F110DEA8DC.jpeg',
     img2: 'brand_assets/brand%20assets%202/01070F7C-5529-44BA-98C5-EC565A30E07A.png',
     img3: 'brand_assets/brand%20assets%203/IMG-20260720-WA0025.jpg',
@@ -541,7 +558,8 @@ const PRODUCTS = {
   'verona': {
     name: 'The Honey Quartz',
     collection: 'Core Collection',
-    price: '2800',
+    price: '1800',
+    originalPrice: '2800',
     img1: 'brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png',
     img2: 'brand_assets/brand%20assets%202/C40AF091-BC10-47E2-AFF7-BB34D08208FA.png',
     specs: {
@@ -557,7 +575,8 @@ const PRODUCTS = {
   'riviera': {
     name: 'The Golden Aura',
     collection: 'Core Collection',
-    price: '3200',
+    price: '2200',
+    originalPrice: '3200',
     img1: 'brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg',
     img2: 'brand_assets/brand%20assets%202/F489181E-B43B-4088-9D32-023B592DAB01.png',
     specs: {
@@ -573,7 +592,8 @@ const PRODUCTS = {
   'siena': {
     name: 'The Eclipse',
     collection: 'Core Collection',
-    price: '2800',
+    price: '1800',
+    originalPrice: '2800',
     img1: 'brand_assets/brand%20assets%202/6599B5D7-1468-46B9-B5E6-6178775530B0.png',
     img2: 'brand_assets/brand%20assets%202/19C9BD28-199D-4165-AB84-703580536AE9.png',
     specs: {
@@ -589,7 +609,8 @@ const PRODUCTS = {
   'lumiere': {
     name: 'The Obsidian Noir',
     collection: 'Core Collection',
-    price: '3000',
+    price: '2000',
+    originalPrice: '3000',
     img1: 'brand_assets/brand%20assets%202/F8D0426E-A7B2-499B-B07E-81BC8ABD46FA.jpeg',
     img2: 'brand_assets/brand%20assets%202/51D0502D-194A-47D6-AA26-5F855C2EFCAA.png',
     specs: {
@@ -600,6 +621,90 @@ const PRODUCTS = {
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Amethyst – Angel Aura Amethyst<br>Celebrated for its aura of serenity, calming presence, and captivating violet brilliance.',
+    }
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW PRODUCTS 11–14  ·  Change name, price, and images in each block below
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // PRODUCT 11 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-11': {
+    name:       'The Sienna',                  // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '2200',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '3200',                      // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/ba4/9D2E5C24-BB39-43D2-BA25-E54DA9654AF4.png', // ← REPLACE: Product 11 — Main image
+    img2: 'brand_assets/ba4/BF2A5AED-92EF-4847-995E-50B933DA1847.png', // ← REPLACE: Product 11 — Detail image
+    // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Frame specification — replace with actual frame details',
+      lens:     'Lens specification — replace with actual lens details',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 12 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-12': {
+    name:       'The Ambré',                   // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '2000',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '3000',                      // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/ba4/2B73842E-BE64-4961-8308-1598094EECDE.png', // ← REPLACE: Product 12 — Main image
+    img2: 'brand_assets/ba4/560313B6-E50D-4333-9233-197D54034C83.png', // ← REPLACE: Product 12 — Detail image
+    // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Frame specification — replace with actual frame details',
+      lens:     'Lens specification — replace with actual lens details',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 13 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-13': {
+    name:       'The Verdant',                 // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '1800',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '2800',                      // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/ba4/795AD56A-255D-4CE0-8983-642E44F46A80.png', // ← REPLACE: Product 13 — Main image
+    img2: 'brand_assets/ba4/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png', // ← REPLACE: Product 13 — Detail image
+    // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Frame specification — replace with actual frame details',
+      lens:     'Lens specification — replace with actual lens details',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 14 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-14': {
+    name:       'The Lavande',                 // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '2000',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '3000',                      // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/ba4/B971C461-B582-4FD5-BA0D-4E1C98A2F2EA.png', // ← REPLACE: Product 14 — Main image
+    img2: 'brand_assets/ba4/AB12C5A2-171F-4D41-BC74-1051BFFA0016.png', // ← REPLACE: Product 14 — Detail image
+    // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Frame specification — replace with actual frame details',
+      lens:     'Lens specification — replace with actual lens details',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
   }
 };
@@ -614,6 +719,11 @@ const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
   document.getElementById('pdCollection').textContent = p.collection;
   document.getElementById('pdName').textContent      = p.name;
   document.getElementById('pdPrice').textContent     = p.price;
+  const origEl = document.getElementById('pdOrigPrice');
+  if (p.originalPrice) {
+    origEl.textContent = 'EGP ' + Number(p.originalPrice).toLocaleString('en-EG');
+    origEl.style.display = 'block';
+  }
   document.getElementById('pdCharmDesc').style.display = (id === 'celeste') ? 'block' : 'none';
 
   const img1 = document.getElementById('pdImg1');
@@ -636,6 +746,8 @@ const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
   document.getElementById('specAura').innerHTML       = p.specs.aura || '';
   if (!p.specs.aura) document.getElementById('specAuraCard').style.display = 'none';
 })();
+
+if (window.SunnyTracking) SunnyTracking.viewContent(id, p.name, parseInt(p.price));
 
 // ── Nav scroll ───────────────────────────────────────────────────────────
 const nav = document.getElementById('nav');
@@ -677,6 +789,7 @@ document.getElementById('btnCart').addEventListener('click', function() {
     cart.push({ productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: p.img1, qty: 1 });
   }
   localStorage.setItem('sunny_cart', JSON.stringify(cart));
+  if (window.SunnyTracking) SunnyTracking.addToCart(id, p.name, parseInt(p.price));
   window.location.href = 'cart.html';
 });
 

@@ -920,15 +920,19 @@ function renderDashboard() {
     </div>`).join('');
 
   // Revenue chart — last 7 days
-  const revData = last7Days().map(d => ({
-    l: d.toLocaleDateString('en-GB',{month:'short',day:'numeric'}),
-    v: orders.filter(o=>new Date(o.date).toDateString()===d.toDateString()).reduce((s,o)=>s+o.total,0)
-  }));
-  document.getElementById('revenueChart').innerHTML = lineChart(revData, {height:180});
+  try {
+    const revData = last7Days().map(d => ({
+      l: d.toLocaleDateString('en-GB',{month:'short',day:'numeric'}),
+      v: orders.filter(o=>new Date(o.date).toDateString()===d.toDateString()).reduce((s,o)=>s+o.total,0)
+    }));
+    document.getElementById('revenueChart').innerHTML = lineChart(revData, {height:180});
+  } catch(e) { console.error('[Admin] Revenue chart error:', e); }
 
   // Status donut
-  const statusData = STATUS_OPTS.map(s=>({label:STATUS_LABELS[s],v:orders.filter(o=>o.status===s).length,color:STATUS_COLORS[s]})).filter(d=>d.v>0);
-  document.getElementById('statusChart').innerHTML = donutChart(statusData, orders.length);
+  try {
+    const statusData = STATUS_OPTS.map(s=>({label:STATUS_LABELS[s],v:orders.filter(o=>o.status===s).length,color:STATUS_COLORS[s]})).filter(d=>d.v>0);
+    document.getElementById('statusChart').innerHTML = donutChart(statusData, orders.length);
+  } catch(e) { console.error('[Admin] Status chart error:', e); }
 
   // Recent orders
   const recent = [...orders].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,8);
@@ -1198,7 +1202,7 @@ function printInvoice() {
     .section{margin:24px 0}
     .section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:10px;border-bottom:1px solid #eee;padding-bottom:8px}
     @media print{body{margin:20px}}
-  </style></head><body>
+  <\/style><\/head><body>
   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px">
     <div><h1>Sunny's <span class="gold">Eyewear</span></h1><p style="color:#999;font-size:12px;font-family:sans-serif">Invoice</p></div>
     <div style="text-align:right;font-family:sans-serif;font-size:12px;color:#666">
@@ -1234,7 +1238,7 @@ function printInvoice() {
   </table>
   <p style="margin-top:40px;font-size:11px;color:#999;font-family:sans-serif;text-align:center">Payment: ${o.paymentMethod==='cod'?'Cash on Delivery':o.paymentMethod||'—'} &bull; Thank you for choosing Sunny's Eyewear</p>
   <script>window.onload=()=>window.print()<\/script>
-  </body></html>`);
+  <\/body><\/html>`);
   w.document.close();
 }
 
@@ -1296,11 +1300,13 @@ function renderAnalytics() {
   ].map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.value}</div></div>`).join('');
 
   // Revenue last 30 days
-  const revData = last30Days().map(d=>({
-    l: d.toLocaleDateString('en-GB',{month:'short',day:'numeric'}),
-    v: orders.filter(o=>new Date(o.date).toDateString()===d.toDateString()).reduce((s,o)=>s+o.total,0)
-  }));
-  document.getElementById('analyticsRevenueChart').innerHTML = lineChart(revData,{height:200,sparse:true});
+  try {
+    const revData = last30Days().map(d=>({
+      l: d.toLocaleDateString('en-GB',{month:'short',day:'numeric'}),
+      v: orders.filter(o=>new Date(o.date).toDateString()===d.toDateString()).reduce((s,o)=>s+o.total,0)
+    }));
+    document.getElementById('analyticsRevenueChart').innerHTML = lineChart(revData,{height:200,sparse:true});
+  } catch(e) { console.error('[Admin] Analytics chart error:', e); }
 
   // Top products
   const prodSales = {};

@@ -14,28 +14,34 @@
     if (w.ttq && typeof w.ttq.track === 'function') w.ttq.track(event, data);
   }
 
-  // Normalizes Egyptian mobile numbers to E.164 (+201XXXXXXXXX).
-  // Returns an empty string for inputs that cannot be resolved to a valid Egyptian mobile.
-  function normalizeEgyptianPhone(raw) {
+  // Dialing codes for countries available in the checkout country selector.
+  var COUNTRY_DIAL = {
+    ae: '971', sa: '966', kw: '965', bh: '973', qa: '974', om: '968',
+    jo: '962', eg: '20',  lb: '961', gb: '44',  us: '1'
+  };
+
+  // Normalizes a phone number to E.164 for TikTok customer matching.
+  // countryCode: the order's shipping.countryCode (ae, sa, eg, …).
+  // Numbers that already carry a + or 00 international prefix are trusted as-is.
+  // Local-format numbers (no country prefix) are resolved using countryCode.
+  // Returns '' if the result is not a plausible E.164 value (7–15 digits).
+  function normalizePhone(raw, countryCode) {
     if (!raw) return '';
-    // Strip all formatting characters (spaces, hyphens, parentheses, dots, etc.)
-    // while preserving a leading + if present.
     var s = raw.replace(/[^+\d]/g, '');
-    // Translate 00-prefixed international dialing (0020...) to + notation (+20...)
     if (s.indexOf('00') === 0) { s = '+' + s.slice(2); }
-    // Work on the pure digit string (without the + prefix)
-    var digits = (s.charAt(0) === '+') ? s.slice(1) : s;
-    // Prepend Egyptian country code when it is absent
-    if (digits.indexOf('20') === 0) {
-      // Already carries country code: 201012345678 or 20 101 234 5678 stripped
-    } else if (digits.charAt(0) === '0') {
-      // Local format (11 digits, leading 0): 01012345678 → 201012345678
-      digits = '20' + digits.slice(1);
+    var digits;
+    if (s.charAt(0) === '+') {
+      // Already in international format — use digits verbatim.
+      digits = s.slice(1);
+    } else {
+      // Local format: strip leading 0 (common convention in all covered countries),
+      // then prepend the country dialing code. Default to Egypt (20) when unknown.
+      var local = s.charAt(0) === '0' ? s.slice(1) : s;
+      digits = (COUNTRY_DIAL[countryCode] || '20') + local;
     }
     var e164 = '+' + digits;
-    // Valid Egyptian mobile E.164: +20 followed by exactly 10 digits starting with 1
-    // (covers all operators: 010 Vodafone, 011 Etisalat/e&, 012 Orange, 015 WE)
-    return /^\+201\d{9}$/.test(e164) ? e164 : '';
+    // E.164: + followed by 7–15 digits (ITU-T E.164 range).
+    return /^\+\d{7,15}$/.test(e164) ? e164 : '';
   }
 
   w.SunnyTracking = {
@@ -123,7 +129,10 @@
       // the TikTok SDK hashes email/phone before transmitting.
       if (w.ttq && typeof w.ttq.identify === 'function') {
         var custEmail = ((order.customer && order.customer.email) || '').trim().toLowerCase();
-        var custPhone = normalizeEgyptianPhone((order.customer && order.customer.phone) || '');
+        var custPhone = normalizePhone(
+          (order.customer && order.customer.phone) || '',
+          (order.shipping && order.shipping.countryCode) || ''
+        );
         var idPayload = {};
         if (custEmail) idPayload.email = custEmail;
         if (custPhone) idPayload.phone_number = custPhone;

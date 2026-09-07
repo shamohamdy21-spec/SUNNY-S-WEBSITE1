@@ -76,7 +76,8 @@ button{font-family:var(--fb);cursor:pointer;border:none}
 .ci-img{width:96px;height:120px;object-fit:cover;object-position:center top;flex-shrink:0;background:var(--cream-2)}
 .ci-info{min-width:0}
 .ci-name{font-family:var(--fd);font-size:18px;font-weight:400;color:var(--black);line-height:1.2;margin-bottom:5px}
-.ci-col{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ci-col{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.ci-stone{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--black);margin-bottom:8px}
 .ci-unit-price{font-size:12px;font-weight:300;color:var(--grey)}
 .ci-remove{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-top:10px;padding:0;transition:color .2s}
 .ci-remove svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
@@ -343,6 +344,7 @@ function render() {
       <div class="ci-info">
         <div class="ci-name">${it.name}</div>
         <div class="ci-col">${it.collection || ''}</div>
+        ${it.stone ? `<div class="ci-stone">${it.stone}</div>` : ''}
         <div class="ci-unit-price">EGP ${fmt(it.price)} each</div>
         <button class="ci-remove" onclick="removeItem(${idx})" type="button">
           <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>

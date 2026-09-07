@@ -540,7 +540,7 @@ tbody tr:hover td{background:rgba(198,161,91,.03)}
           <div class="page-header-left">
             <div class="page-eyebrow">Store</div>
             <h1 class="page-title">Products</h1>
-            <p class="page-sub">10 products · Core Collection</p>
+            <p class="page-sub">20 products · Core Collection</p>
           </div>
           <a href="shop.html" target="_blank" class="btn btn-outline btn-sm">
             <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -555,9 +555,9 @@ tbody tr:hover td{background:rgba(198,161,91,.03)}
             </div>
             <select class="filter-select" id="priceFilter" onchange="renderProducts()">
               <option value="">All Prices</option>
-              <option value="2800">EGP 2,800</option>
-              <option value="3000">EGP 3,000</option>
-              <option value="3200">EGP 3,200</option>
+              <option value="1800">EGP 1,800</option>
+              <option value="2000">EGP 2,000</option>
+              <option value="2200">EGP 2,200</option>
             </select>
           </div>
           <div class="table-scroll">
@@ -741,22 +741,46 @@ const PRODUCTS_DB = [
    img:'brand_assets/brand%20assets%202/F8D0426E-A7B2-499B-B07E-81BC8ABD46FA.jpeg',
    img2:'brand_assets/brand%20assets%202/51D0502D-194A-47D6-AA26-5F855C2EFCAA.png',
    specs:{frame:'Crystal clear acetate — luminous ultra-light',lens:'Light gold tint CR-39 with UV400 coating',uv:'UV400 · Category 2 — soft light filtration',dims:'Lens 52mm · Bridge 18mm · Temple 142mm · 19g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'sunnys-product-11', name:'The Sienna', collection:'Core Collection', price:2200,
-   img:'brand_assets/ba4/9D2E5C24-BB39-43D2-BA25-E54DA9654AF4.png',
-   img2:'brand_assets/ba4/BF2A5AED-92EF-4847-995E-50B933DA1847.png',
-   specs:{frame:'Frame specification — replace with actual frame details',lens:'Lens specification — replace with actual lens details',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'sunnys-product-12', name:'The Ambré', collection:'Core Collection', price:2000,
+  {id:'sunnys-product-11', name:'The Sienna',     collection:'Core Collection', price:2200,
+   img:'brand_assets/brand%20assets%205/E6F47E09-9835-4662-ABE9-C03BA25753FE.png',
+   img2:'brand_assets/brand%20assets%205/2A92E64C-F2D4-4411-A8FD-B5F4BFF08655.jpeg',
+   specs:{frame:'Brown tortoiseshell front with gold metal detailing — geometric pilot frame',lens:'Warm amber brown PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-12', name:'The Ambré',      collection:'Core Collection', price:2000,
    img:'brand_assets/ba4/2B73842E-BE64-4961-8308-1598094EECDE.png',
    img2:'brand_assets/ba4/560313B6-E50D-4333-9233-197D54034C83.png',
-   specs:{frame:'Frame specification — replace with actual frame details',lens:'Lens specification — replace with actual lens details',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'sunnys-product-13', name:'The Verdant', collection:'Core Collection', price:1800,
-   img:'brand_assets/ba4/795AD56A-255D-4CE0-8983-642E44F46A80.png',
-   img2:'brand_assets/ba4/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png',
-   specs:{frame:'Frame specification — replace with actual frame details',lens:'Lens specification — replace with actual lens details',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'sunnys-product-14', name:'The Lavande', collection:'Core Collection', price:2000,
+   specs:{frame:'Translucent teal green frame with gold metal detailing — Rounded-square silhouette',lens:'Warm amber brown gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-13', name:'The Verdant',    collection:'Core Collection', price:1800,
+   img:'brand_assets/brand%20assets%205/CD22AC64-5A89-4A0F-82F9-0CC6C6F969A3.png',
+   img2:'brand_assets/brand%20assets%205/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png',
+   specs:{frame:'Translucent olive green — square frame — lightweight',lens:'Olive green PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-14', name:'The Lavande',    collection:'Core Collection', price:2000,
    img:'brand_assets/ba4/B971C461-B582-4FD5-BA0D-4E1C98A2F2EA.png',
    img2:'brand_assets/ba4/AB12C5A2-171F-4D41-BC74-1051BFFA0016.png',
-   specs:{frame:'Frame specification — replace with actual frame details',lens:'Lens specification — replace with actual lens details',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+   specs:{frame:'Transparent crystal frame with gold metal detailing — Rounded-square silhouette',lens:'Smoky mauve gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-15', name:'The Azurea',     collection:'Core Collection', price:2000,
+   img:'brand_assets/brand%20assets%205/574EEF5B-E25E-4F72-865A-51E0ECC3C3CA.png',
+   img2:'brand_assets/brand%20assets%205/8D77E8FB-20A4-4F53-B5C7-E76E05941430.png',
+   specs:{frame:'Translucent deep teal blue geometric pilot frame',lens:'Light blue gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-16', name:'The Aviara Classic', collection:'Core Collection', price:2200,
+   img:'brand_assets/brand%20assets%205/4A97DB95-67A9-479C-9E62-E58D2A08FBBC.png',
+   img2:'brand_assets/brand%20assets%205/4C6C9FC4-8EE4-4292-9DCE-7259182E3FE2.png',
+   specs:{frame:'Gold metal aviator frame — classic pilot silhouette — lightweight',lens:'Amber brown gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-17', name:'The Lunelle',    collection:'Core Collection', price:1800,
+   img:'brand_assets/brand%20assets%205/DCAEBE5D-1F0B-4454-A379-907BC4FA353C.jpeg',
+   img2:'brand_assets/brand%20assets%205/IMG_1683.png',
+   specs:{frame:'Translucent smoky grey vintage oval frame — soft rounded silhouette — lightweight',lens:'Smoky grey gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-18', name:'The Mocha Noir', collection:'Core Collection', price:2000,
+   img:'brand_assets/brand%20assets%205/E96F51DF-D269-4AFB-8B23-DBD77C64F952.png',
+   img2:'brand_assets/brand%20assets%205/Picsart_26-09-07_12-54-43-058.jpg',
+   specs:{frame:'Black front with brown back — vintage pilot frame — lightweight',lens:'Smoky grey gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-19', name:'The Olive Aura', collection:'Core Collection', price:2200,
+   img:'brand_assets/brand%20assets%205/938ACCA7-2FB5-46E3-8FC4-56B3208EE8F2.jpeg',
+   img2:'brand_assets/brand%20assets%205/IMG_1948.jpeg',
+   specs:{frame:'Sand gold vintage aviator frame',lens:'Olive green PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-20', name:'The Hazel',      collection:'Core Collection', price:1800,
+   img:'brand_assets/brand%20assets%205/C874F117-E201-458B-9701-CF1E365A30E5.png',
+   img2:'brand_assets/brand%20assets%205/3F107D5F-52DA-4171-8AE2-B6A860B99CFF.png',
+   specs:{frame:'Translucent warm brown cat-eye frame — sculpted vintage silhouette with gold detailing — lightweight',lens:'Smoky brown PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
 ];
 const PAGE_SIZE = 15;
 let currentPage = 1;
@@ -1116,7 +1140,7 @@ function openDetail(orderId) {
             <img class="detail-item-img" src="${it.image||''}" alt="${it.name}" onerror="this.style.background='#F0EDE9'">
             <div>
               <div class="detail-item-name">${it.name}</div>
-              <div class="detail-item-col">${it.collection||''}</div>
+              <div class="detail-item-col">${it.collection||''}${it.stone ? ' — ' + it.stone : ''}</div>
               <div class="detail-item-qty">Qty: ${it.qty} × EGP ${fmt(it.price)}</div>
             </div>
             <div class="detail-item-price">EGP ${fmt(it.price*it.qty)}</div>
@@ -1228,7 +1252,7 @@ function printInvoice() {
   <table>
     <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr></thead>
     <tbody>
-      ${(o.items||[]).map(it=>`<tr><td>${it.name}<br><span style="color:#999;font-size:11px">${it.collection||''}</span></td><td>${it.qty}</td><td>EGP ${it.price.toLocaleString()}</td><td>EGP ${(it.price*it.qty).toLocaleString()}</td></tr>`).join('')}
+      ${(o.items||[]).map(it=>`<tr><td>${it.name}<br><span style="color:#999;font-size:11px">${it.collection||''}${it.stone ? ' — ' + it.stone : ''}</span></td><td>${it.qty}</td><td>EGP ${it.price.toLocaleString()}</td><td>EGP ${(it.price*it.qty).toLocaleString()}</td></tr>`).join('')}
     </tbody>
   </table>
   <table class="totals" style="width:240px;margin-left:auto">

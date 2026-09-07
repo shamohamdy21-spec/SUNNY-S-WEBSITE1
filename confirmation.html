@@ -231,7 +231,7 @@ if(!order){
               <img class="conf-img" src="${it.image}" alt="${it.name}" onerror="this.style.background='var(--cream-2)'">
               <div class="conf-item-info">
                 <div class="conf-item-name">${it.name}</div>
-                <div class="conf-item-meta">${it.collection||''} · Qty ${it.qty}</div>
+                <div class="conf-item-meta">${it.collection||''}${it.stone ? ' · ' + it.stone : ''} · Qty ${it.qty}</div>
               </div>
               <div class="conf-item-price">EGP ${it.price*it.qty}</div>
             </div>

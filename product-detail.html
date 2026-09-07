@@ -233,6 +233,19 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 .pd-hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(23,23,23,.18); border: none; cursor: pointer; padding: 0; transition: background .3s, transform .3s; }
 .pd-hero-dot.active { background: var(--gold); transform: scale(1.3); }
 @media (max-width: 700px) { .pd-hero-dots { display: flex; } }
+
+/* ── Stone variant selector — The Sienna only ── */
+.stone-selector { margin: 20px 0 28px; }
+.stone-selector-label { font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--black); margin-bottom: 16px; }
+.stone-options { display: flex; gap: 24px; align-items: flex-start; }
+.stone-option { display: flex; flex-direction: column; align-items: center; gap: 10px; background: none; border: none; padding: 0; cursor: pointer; }
+.stone-thumb-wrap { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; border: 2px solid transparent; outline: 3px solid transparent; outline-offset: 2px; transition: border-color .25s, outline-color .25s; flex-shrink: 0; }
+.stone-option[aria-pressed="true"] .stone-thumb-wrap { border-color: var(--gold); outline-color: rgba(198,161,91,.3); }
+.stone-option:focus-visible .stone-thumb-wrap { outline-color: var(--gold); }
+.stone-thumb { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+.stone-name { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--black); text-align: center; transition: color .2s; }
+.stone-option[aria-pressed="true"] .stone-name { color: var(--gold); }
+@media (max-width: 700px) { .stone-selector { margin: 16px 0 22px; } .stone-thumb-wrap { width: 60px; height: 60px; } }
 </style>
 <script src="tracking.js"></script>
 <!-- Meta Pixel 1788781122137161 -->
@@ -297,6 +310,9 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
     </div>
     <div class="pd-hero-img" id="pdImg3Wrap" style="display:none">
       <img id="pdImg3" src="" alt="Product image 3">
+    </div>
+    <div class="pd-hero-img" id="pdImg4Wrap" style="display:none">
+      <img id="pdImg4" src="" alt="Product image 4">
     </div>
   </div>
 
@@ -578,8 +594,8 @@ const PRODUCTS = {
     collection: 'Core Collection',
     price: '2200',
     originalPrice: '3200',
-    img1: 'brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg',
-    img2: 'brand_assets/brand%20assets%202/F489181E-B43B-4088-9D32-023B592DAB01.png',
+    img1: 'brand_assets/brand%20assets%205/12048E1F-A339-4A02-B408-5AD99B58B50D.png',
+    img2: 'brand_assets/brand%20assets%205/085160AF-5F29-431E-A720-084E38D3E366.png',
     specs: {
       frame:    'Sand gold vintage aviator frame',
       lens:     'Dark smoke PC Anti-UV',
@@ -635,12 +651,13 @@ const PRODUCTS = {
     collection: 'Core Collection',
     price:      '2200',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
     originalPrice: '3200',                      // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/ba4/9D2E5C24-BB39-43D2-BA25-E54DA9654AF4.png', // ← REPLACE: Product 11 — Main image
-    img2: 'brand_assets/ba4/BF2A5AED-92EF-4847-995E-50B933DA1847.png', // ← REPLACE: Product 11 — Detail image
-    // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
+    img1: 'brand_assets/brand%20assets%205/E6F47E09-9835-4662-ABE9-C03BA25753FE.png',
+    img2: 'brand_assets/brand%20assets%205/2A92E64C-F2D4-4411-A8FD-B5F4BFF08655.jpeg',
+    img3: 'brand_assets/brand%20assets%205/FE66DBA9-08FD-4F41-B0F8-6E21B1022B74.png',
+    img4: 'brand_assets/brand%20assets%205/7285C4AD-A4CF-413F-878B-CBE5CA3D0A73.png',
     specs: {
-      frame:    'Frame specification — replace with actual frame details',
-      lens:     'Lens specification — replace with actual lens details',
+      frame:    'Brown tortoiseshell front with gold metal detailing — geometric pilot frame',
+      lens:     'Warm amber brown PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
@@ -659,8 +676,8 @@ const PRODUCTS = {
     img2: 'brand_assets/ba4/560313B6-E50D-4333-9233-197D54034C83.png', // ← REPLACE: Product 12 — Detail image
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
-      frame:    'Frame specification — replace with actual frame details',
-      lens:     'Lens specification — replace with actual lens details',
+      frame:    'Translucent teal green frame with gold metal detailing — Rounded-square silhouette',
+      lens:     'Warm amber brown gradient PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
@@ -675,12 +692,12 @@ const PRODUCTS = {
     collection: 'Core Collection',
     price:      '1800',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
     originalPrice: '2800',                      // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/ba4/795AD56A-255D-4CE0-8983-642E44F46A80.png', // ← REPLACE: Product 13 — Main image
-    img2: 'brand_assets/ba4/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png', // ← REPLACE: Product 13 — Detail image
+    img1: 'brand_assets/brand%20assets%205/CD22AC64-5A89-4A0F-82F9-0CC6C6F969A3.png', // ← Product 13 — Main image
+    img2: 'brand_assets/brand%20assets%205/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png', // ← Product 13 — Detail image
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
-      frame:    'Frame specification — replace with actual frame details',
-      lens:     'Lens specification — replace with actual lens details',
+      frame:    'Translucent olive green — square frame — lightweight',
+      lens:     'Olive green PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
@@ -699,15 +716,140 @@ const PRODUCTS = {
     img2: 'brand_assets/ba4/AB12C5A2-171F-4D41-BC74-1051BFFA0016.png', // ← REPLACE: Product 14 — Detail image
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
-      frame:    'Frame specification — replace with actual frame details',
-      lens:     'Lens specification — replace with actual lens details',
+      frame:    'Transparent crystal frame with gold metal detailing — Rounded-square silhouette',
+      lens:     'Smoky mauve gradient PC Anti-UV',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
       gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
-  }
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW PRODUCTS 15–21  ·  Change name, price, and images in each block below
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // PRODUCT 15 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-15': {
+    name:       'The Azurea',                    // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '2000',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '3000',                        // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/brand%20assets%205/574EEF5B-E25E-4F72-865A-51E0ECC3C3CA.png', // ← Product 15 — Main image
+    img2: 'brand_assets/brand%20assets%205/8D77E8FB-20A4-4F53-B5C7-E76E05941430.png', // ← Product 15 — Detail image
+    // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Translucent deep teal blue geometric pilot frame',
+      lens:     'Light blue gradient PC Anti-UV',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 16 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-16': {
+    name:       'The Aviara Classic',              // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '2200',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '3200',                        // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/brand%20assets%205/4A97DB95-67A9-479C-9E62-E58D2A08FBBC.png', // ← Product 16 — Main image
+    img2: 'brand_assets/brand%20assets%205/4C6C9FC4-8EE4-4292-9DCE-7259182E3FE2.png', // ← Product 16 — Detail image
+    // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Gold metal aviator frame — classic pilot silhouette — lightweight',
+      lens:     'Amber brown gradient PC Anti-UV',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 17 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-17': {
+    name:       'The Lunelle',                   // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '1800',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '2800',                        // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/brand%20assets%205/DCAEBE5D-1F0B-4454-A379-907BC4FA353C.jpeg', // ← Product 17 — Main image
+    img2: 'brand_assets/brand%20assets%205/IMG_1683.png',                               // ← Product 17 — Detail image
+    // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Translucent smoky grey vintage oval frame — soft rounded silhouette — lightweight',
+      lens:     'Smoky grey gradient PC Anti-UV',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 18 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-18': {
+    name:       'The Mocha Noir',                // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '2000',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '3000',                        // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/brand%20assets%205/E96F51DF-D269-4AFB-8B23-DBD77C64F952.png',   // ← Product 18 — Main image
+    img2: 'brand_assets/brand%20assets%205/Picsart_26-09-07_12-54-43-058.jpg',           // ← Product 18 — Detail image
+    img3: 'brand_assets/brand%20assets%205/Picsart_26-09-07_12-56-26-093.jpg',           // ← Product 18 — View 3
+    specs: {
+      frame:    'Black front with brown back — vintage pilot frame — lightweight',
+      lens:     'Smoky grey gradient PC Anti-UV',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 19 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-19': {
+    name:       'The Olive Aura',                // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '2200',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '3200',                        // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/brand%20assets%205/938ACCA7-2FB5-46E3-8FC4-56B3208EE8F2.jpeg', // ← Product 19 — Main image
+    img2: 'brand_assets/brand%20assets%205/IMG_1948.jpeg',                               // ← Product 19 — Detail image
+    // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Sand gold vintage aviator frame',
+      lens:     'Olive green PC Anti-UV',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 20 — CHANGE NAME, PRICE AND IMAGES HERE
+  'sunnys-product-20': {
+    name:       'The Hazel',                     // ← CHANGE PRODUCT NAME HERE
+    collection: 'Core Collection',
+    price:      '1800',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
+    originalPrice: '2800',                        // ← CHANGE original price for strikethrough
+    img1: 'brand_assets/brand%20assets%205/C874F117-E201-458B-9701-CF1E365A30E5.png', // ← Product 20 — Main image
+    img2: 'brand_assets/brand%20assets%205/3F107D5F-52DA-4171-8AE2-B6A860B99CFF.png', // ← Product 20 — Detail image
+    // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Translucent warm brown cat-eye frame — sculpted vintage silhouette with gold detailing — lightweight',
+      lens:     'Smoky brown PC Anti-UV',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
 };
 
 // ── Load product ─────────────────────────────────────────────────────────
@@ -737,7 +879,13 @@ const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
     const img3  = document.getElementById('pdImg3');
     img3.src = p.img3; img3.alt = p.name + ' — view 3';
     wrap3.style.display = '';
-    document.getElementById('pdHero').style.gridTemplateColumns = '1fr 1fr 1fr';
+    document.getElementById('pdHero').style.gridTemplateColumns = p.img4 ? '1fr 1fr' : '1fr 1fr 1fr';
+  }
+  if (p.img4) {
+    const wrap4 = document.getElementById('pdImg4Wrap');
+    const img4  = document.getElementById('pdImg4');
+    img4.src = p.img4; img4.alt = p.name + ' — view 4';
+    wrap4.style.display = '';
   }
 
   document.getElementById('specFrame').textContent    = p.specs.frame;
@@ -747,6 +895,54 @@ const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
   document.getElementById('specAura').innerHTML       = p.specs.aura || '';
   if (!p.specs.aura) document.getElementById('specAuraCard').style.display = 'none';
 })();
+
+// ── Stone variant selector — sunnys-product-11 (The Sienna) only ─────────────
+let selectedStone = 'Natural Citrine';
+
+function initStoneSelector() {
+  const pdName = document.getElementById('pdName');
+  if (!pdName) return;
+  const sel = document.createElement('div');
+  sel.className = 'stone-selector';
+  sel.id = 'stoneSelector';
+  sel.innerHTML =
+    '<div class="stone-selector-label">Choose Your Stone</div>' +
+    '<div class="stone-options" role="group" aria-label="Necklace-end stone">' +
+      '<button class="stone-option" id="stoneCitrine" type="button"' +
+              ' aria-label="Natural Citrine Gemstone" aria-pressed="true">' +
+        '<div class="stone-thumb-wrap">' +
+          '<img class="stone-thumb" src="brand_assets/brand%20assets%205/citrine-stone.jpg" alt="The Sienna with natural citrine gemstone">' +
+        '</div>' +
+        '<span class="stone-name">Natural Citrine</span>' +
+      '</button>' +
+      '<button class="stone-option" id="stonePearl" type="button"' +
+              ' aria-label="Natural Pearl" aria-pressed="false">' +
+        '<div class="stone-thumb-wrap">' +
+          '<img class="stone-thumb" src="brand_assets/brand%20assets%205/pearl-stone.jpg" alt="The Sienna with natural pearl">' +
+        '</div>' +
+        '<span class="stone-name">Natural Pearl</span>' +
+      '</button>' +
+    '</div>';
+  pdName.insertAdjacentElement('afterend', sel);
+  // Default: Citrine — show img1 + img2, hide img3 + img4
+  document.getElementById('pdImg3Wrap').style.display = 'none';
+  document.getElementById('pdImg4Wrap').style.display = 'none';
+  document.getElementById('stoneCitrine').addEventListener('click', function() { selectStone('Natural Citrine'); });
+  document.getElementById('stonePearl').addEventListener('click', function() { selectStone('Natural Pearl'); });
+}
+
+function selectStone(stone) {
+  selectedStone = stone;
+  document.getElementById('stoneCitrine').setAttribute('aria-pressed', stone === 'Natural Citrine' ? 'true' : 'false');
+  document.getElementById('stonePearl').setAttribute('aria-pressed', stone === 'Natural Pearl' ? 'true' : 'false');
+  const citrine = stone === 'Natural Citrine';
+  document.getElementById('pdImg1').parentElement.style.display = citrine ? '' : 'none';
+  document.getElementById('pdImg2').parentElement.style.display = citrine ? '' : 'none';
+  document.getElementById('pdImg3Wrap').style.display = citrine ? 'none' : '';
+  document.getElementById('pdImg4Wrap').style.display = citrine ? 'none' : '';
+}
+
+if (id === 'sunnys-product-11') initStoneSelector();
 
 if (window.SunnyTracking) SunnyTracking.viewContent(id, p.name, parseInt(p.price));
 
@@ -785,9 +981,14 @@ window.addEventListener('scroll', () => {
 // ── CTA: Add to Cart ──────────────────────────────────────────────────────
 document.getElementById('btnCart').addEventListener('click', function() {
   const cart = JSON.parse(localStorage.getItem('sunny_cart') || '[]');
-  const existing = cart.find(i => i.productId === id);
+  const isSienna = id === 'sunnys-product-11';
+  const stone = isSienna ? selectedStone : undefined;
+  const cartImage = (isSienna && selectedStone === 'Natural Pearl') ? p.img3 : p.img1;
+  const existing = cart.find(function(i) { return i.productId === id && i.stone === stone; });
   if (existing) { existing.qty++; } else {
-    cart.push({ productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: p.img1, qty: 1 });
+    const item = { productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: cartImage, qty: 1 };
+    if (isSienna) item.stone = stone;
+    cart.push(item);
   }
   localStorage.setItem('sunny_cart', JSON.stringify(cart));
   if (window.SunnyTracking) SunnyTracking.addToCart(id, p.name, parseInt(p.price));
@@ -797,6 +998,7 @@ document.getElementById('btnCart').addEventListener('click', function() {
 // ── Mobile image carousel dots ─────────────────────────────────────────────
 (function() {
   if (window.innerWidth > 700) return;
+  if (id === 'sunnys-product-11') return; // stone selector handles image pairs; no dots needed
   const hero = document.getElementById('pdHero');
   const imgs = hero.querySelectorAll('.pd-hero-img');
   const dotsEl = document.createElement('div');
@@ -821,9 +1023,11 @@ document.getElementById('btnCart').addEventListener('click', function() {
 
 // ── CTA: Buy Now ──────────────────────────────────────────────────────────
 document.getElementById('btnBuy').addEventListener('click', function() {
-  localStorage.setItem('sunny_buynow', JSON.stringify([
-    { productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: p.img1, qty: 1 }
-  ]));
+  const isSienna = id === 'sunnys-product-11';
+  const cartImage = (isSienna && selectedStone === 'Natural Pearl') ? p.img3 : p.img1;
+  const item = { productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: cartImage, qty: 1 };
+  if (isSienna) item.stone = selectedStone;
+  localStorage.setItem('sunny_buynow', JSON.stringify([item]));
   window.location.href = 'checkout.html';
 });
 </script>

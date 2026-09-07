@@ -105,10 +105,11 @@ input,select,textarea{font-family:var(--fb)}
 .btn-place:hover{background:#b8943e;box-shadow:0 8px 28px rgba(198,161,91,.35)}
 .btn-place:disabled{background:var(--grey);box-shadow:none;cursor:not-allowed}
 .btn-place svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round}
-.order-init{display:none;padding:12px 16px;margin-top:14px;background:rgba(198,161,91,.06);border-left:3px solid var(--gold);font-size:11px;font-weight:300;color:var(--grey);line-height:1.5}
-.order-init.show{display:block}
 .order-err{display:none;padding:12px 16px;margin-top:14px;background:rgba(192,57,43,.06);border-left:3px solid #c0392b;font-size:11px;font-weight:300;color:#c0392b;line-height:1.5}
 .order-err.show{display:block}
+.order-recovery{display:none;padding:12px 16px;margin-bottom:20px;background:rgba(198,161,91,.06);border-left:3px solid var(--gold);font-size:11px;font-weight:300;color:var(--grey);line-height:1.6}
+.order-recovery.show{display:block}
+.order-recovery a{color:var(--gold);text-decoration:underline;cursor:pointer}
 .secure-note{text-align:center;margin-top:14px;font-size:10px;color:var(--grey);display:flex;align-items:center;justify-content:center;gap:5px}
 .secure-note svg{width:11px;height:11px;stroke:var(--grey);fill:none;stroke-width:2}
 
@@ -307,11 +308,10 @@ input,select,textarea{font-family:var(--fb)}
         </div>
       </div>
 
-      <button type="submit" class="btn-place" id="btnPlace" disabled>
+      <button type="submit" class="btn-place" id="btnPlace">
         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         Place Order Securely
       </button>
-      <div id="orderInit" class="order-init show">Connecting to order system…</div>
       <div id="orderError" class="order-err"></div>
       <p class="secure-note">
         <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -358,7 +358,7 @@ function renderItems(){
       <img class="sum-img" src="${it.image}" alt="${it.name}" onerror="this.style.background='var(--cream-2)'">
       <div class="sum-info">
         <div class="sum-name">${it.name}</div>
-        <div class="sum-col">${it.collection||''}</div>
+        <div class="sum-col">${it.collection||''}${it.stone ? ' · ' + it.stone : ''}</div>
         <div class="qty-row">
           <button class="qty-btn" onclick="chgQty(${i},-1)" type="button">−</button>
           <span class="qty-num" id="qn${i}">${it.qty}</span>
@@ -423,10 +423,108 @@ function validate(){
   ['input','change'].forEach(ev=>el.addEventListener(ev,()=>{el.classList.remove('err');const e=document.getElementById(id+'-err');if(e)e.classList.remove('show');}));
 });
 
-// Order ID
+// Order ID — format SUN- + 8 uppercase alphanumeric chars (matches server validation)
 function genId(){return'SUN-'+Date.now().toString(36).toUpperCase().slice(-8);}
 
-// Submit — Firestore-first: only redirect after a confirmed write
+// ── Recovery check: find pending orders from this submission flow only ─────────
+// Only records explicitly written by the new checkout flow with syncStatus:'pending'
+// and schemaVersion:1 are eligible. Legacy sunny_orders entries (old browser code),
+// records with wrong schema versions, records older than 24 hours, and records whose
+// tracking pixel already fired are all ignored. The customer must press "Retry order"
+// explicitly — no automatic resubmission.
+(function checkPendingOrders(){
+  const WINDOW_MS=24*60*60*1000;
+  const now=Date.now();
+  const recoverable=[];
+
+  // Collect keys first so we can safely removeItem during the loop
+  const keys=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k&&k.startsWith('sunny_pending_')) keys.push(k);
+  }
+
+  for(const key of keys){
+    try{
+      const rec=JSON.parse(localStorage.getItem(key)||'null');
+      if(!rec){localStorage.removeItem(key);continue;}
+      // Schema guard — only records written by the new flow
+      if(rec.schemaVersion!==1){localStorage.removeItem(key);continue;}
+      if(rec.syncStatus!=='pending'){localStorage.removeItem(key);continue;}
+      // Time window — stale records are cleaned up silently
+      const age=now-new Date(rec.createdAt).getTime();
+      if(isNaN(age)||age>WINDOW_MS){localStorage.removeItem(key);continue;}
+      // If tracking already fired the order was confirmed elsewhere (e.g. different tab)
+      if(localStorage.getItem('px_purchased_'+(rec.orderId||''))){localStorage.removeItem(key);continue;}
+      recoverable.push({key,rec});
+    }catch(_){localStorage.removeItem(key);}
+  }
+
+  if(!recoverable.length) return;
+
+  // Show only the most recent pending order to keep the UI simple
+  const {key:pKey,rec:pRec}=recoverable[0];
+  const itemSummary=(pRec.items||[]).map(function(i){return i.qty+'× '+i.name;}).join(', ');
+
+  const banner=document.createElement('div');
+  banner.id='recoveryBanner';
+  banner.className='order-recovery show';
+  banner.innerHTML=
+    '<strong>Unconfirmed order detected.</strong> Your previous order '
+    +'(<strong>'+pRec.orderId+'</strong> — '+itemSummary+', EGP '+pRec.total+')'
+    +' was not confirmed. Press “Retry order” to resubmit, or “Abandon” to discard it.'
+    +'<br><br>'
+    +'<a id="recoverBtn" href="#">Retry order</a>'
+    +'&nbsp;·&nbsp;'
+    +'<a id="dismissRecovery" href="#">Abandon this order</a>';
+
+  const form=document.getElementById('checkoutForm');
+  if(form) form.prepend(banner);
+
+  document.getElementById('dismissRecovery').addEventListener('click',function(e){
+    e.preventDefault();
+    try{localStorage.removeItem(pKey);}catch(_){}
+    banner.remove();
+  });
+
+  document.getElementById('recoverBtn').addEventListener('click',async function(e){
+    e.preventDefault();
+    const rBtn=document.getElementById('recoverBtn');
+    if(rBtn) rBtn.textContent='Retrying…';
+    try{
+      const resp=await fetch('/api/orders',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(pRec),
+      });
+      if(resp.ok){
+        try{localStorage.removeItem(pKey);}catch(_){}
+        // Save as confirmed in sunny_orders if not already present
+        try{
+          const ex=JSON.parse(localStorage.getItem('sunny_orders')||'[]');
+          if(!ex.some(function(o){return o.orderId===pRec.orderId;})){
+            ex.unshift(Object.assign({},pRec,{serverConfirmed:true,syncStatus:'confirmed'}));
+            localStorage.setItem('sunny_orders',JSON.stringify(ex));
+          }
+        }catch(_){}
+        // Redirect to confirmation — tracking.js purchase() fires (or dedup guard skips it)
+        window.location.href='confirmation.html?order='+encodeURIComponent(pRec.orderId);
+      }else{
+        if(rBtn) rBtn.textContent='Retry order';
+        banner.insertAdjacentHTML('beforeend','<br><em>Retry failed. Please try again later or contact us.</em>');
+      }
+    }catch(_){
+      if(rBtn) rBtn.textContent='Retry order';
+    }
+  });
+})();
+
+// ── Submit — server API with bounded retry ────────────────────────────────────
+// orderId is generated once and reused across retries so the server's idempotency
+// key prevents duplicate Firestore documents even if the browser retries.
+const _BTN_IDLE='<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Place Order Securely';
+let _pendingOrderId=null; // stable across retries for this submission attempt
+
 document.getElementById('checkoutForm').addEventListener('submit',async function(e){
   e.preventDefault();
   if(!validate()){
@@ -439,14 +537,18 @@ document.getElementById('checkoutForm').addEventListener('submit',async function
   errEl.classList.remove('show');
   errEl.textContent='';
   btn.disabled=true;
-  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round"><polyline points="20 6 9 17 4 12"/></svg> Placing Order…';
+
+  // Generate orderId once — reuse on all retry attempts
+  if(!_pendingOrderId) _pendingOrderId=genId();
+  const orderId=_pendingOrderId;
+  const _pendingKey='sunny_pending_'+orderId;
 
   const country=document.getElementById('country').value;
   const sc=shipCost(country);
   const sub=items.reduce((s,i)=>s+i.price*i.qty,0);
 
   const order={
-    orderId:genId(),
+    orderId,
     date:new Date().toISOString(),
     status:'pending',
     customer:{
@@ -471,39 +573,85 @@ document.getElementById('checkoutForm').addEventListener('submit',async function
     total:sub+sc,
   };
 
-  // ── Step 1: Save to Firestore — do not proceed until confirmed ──
-  // Cart is NOT cleared and confirmation page is NOT shown until the write succeeds.
-  // This prevents phantom orders in Meta without a matching admin dashboard entry.
-  console.log('[Order] Saving to Firestore:', order.orderId);
+  // Write a pending record to localStorage BEFORE the first API call.
+  // If the page crashes or the network cuts after the server saves but before we
+  // receive the response, checkPendingOrders() will find this record on the next
+  // visit and offer the customer a "Retry order" button.
+  // The record is removed on success; it stays on failure for next-visit recovery.
   try{
-    await window.saveOrderToFirestore(order);
-    console.log('[Order] ✓ Firestore confirmed');
-  }catch(err){
-    const code=err?.code||'';
-    console.error('[Order] ✗ Firestore write failed — code:',code,'message:',err?.message);
+    const pendingRecord=Object.assign({},order,{
+      syncStatus:'pending',
+      schemaVersion:1,
+      createdAt:new Date().toISOString(),
+    });
+    localStorage.setItem(_pendingKey,JSON.stringify(pendingRecord));
+  }catch(_){}
+
+  // ── POST /api/orders with up to 3 attempts, exponential backoff ──
+  const MAX=3;
+  let result=null;
+  for(let attempt=1;attempt<=MAX;attempt++){
+    btn.innerHTML=attempt===1
+      ?'<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round"><polyline points="20 6 9 17 4 12"/></svg> Placing Order…'
+      :'<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round"><polyline points="20 6 9 17 4 12"/></svg> Retrying ('+attempt+'/'+MAX+')…';
+    console.log('[Order] Attempt',attempt,'orderId:',orderId);
+    try{
+      const resp=await fetch('/api/orders',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(order),
+      });
+      let json={};
+      try{json=await resp.json();}catch(_){}
+      if(resp.ok){result={ok:true,json};break;}
+      // 4xx = validation / client error — do not retry
+      if(resp.status>=400&&resp.status<500){result={ok:false,retryable:false,json};break;}
+      // 5xx — retry if attempts remain
+      result={ok:false,retryable:true,json};
+    }catch(netErr){
+      // Network error — retry
+      result={ok:false,retryable:true,json:{error:'network_error'}};
+      console.warn('[Order] Network error attempt',attempt,netErr.message);
+    }
+    if(attempt<MAX&&result&&!result.ok&&result.retryable){
+      await new Promise(r=>setTimeout(r,Math.pow(2,attempt-1)*1000)); // 1s, 2s
+    }
+  }
+
+  if(!result||!result.ok){
+    // Leave _pendingKey in localStorage — checkPendingOrders() will offer recovery on next visit
     btn.disabled=false;
-    btn.innerHTML='<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Place Order Securely';
-    errEl.textContent='We couldn’t confirm your order because of a connection problem. Please try again — your information has not been lost.';
+    btn.innerHTML=_BTN_IDLE;
+    const isValidation=result?.json?.error==='validation_failed';
+    const isOutOfStock=result?.json?.error==='out_of_stock';
+    errEl.textContent=isValidation
+      ?'We couldn\'t process your order. Please check your details and try again.'
+      :isOutOfStock
+      ?'Sorry, one or more items in your order are no longer available. Please return to the shop to update your cart.'
+      :'We couldn\'t confirm your order because of a connection problem. Please try again — your information has not been lost.';
     errEl.classList.add('show');
     errEl.scrollIntoView({behavior:'smooth',block:'center'});
     return;
   }
 
-  // ── Step 2: Firestore confirmed — save locally and redirect ──
-  // localStorage is written only after the confirmed Firestore write so
-  // confirmation.html (and Meta Purchase) only runs for real orders.
-  console.log('[Order] Saving to localStorage and redirecting');
-  const orders=JSON.parse(localStorage.getItem('sunny_orders')||'[]');
-  orders.unshift(order);
-  localStorage.setItem('sunny_orders',JSON.stringify(orders));
+  // ── Server confirmed ── clean up pending record, save to localStorage, redirect ──
+  console.log('[Order] ✓ Server confirmed orderId:',orderId);
+  _pendingOrderId=null;
+
+  // Remove the pending record — order is now durably confirmed server-side
+  try{localStorage.removeItem(_pendingKey);}catch(_){}
+
+  const confirmedOrder={
+    ...order,
+    serverConfirmed:true,
+  };
+  const existingOrders=JSON.parse(localStorage.getItem('sunny_orders')||'[]');
+  existingOrders.unshift(confirmedOrder);
+  localStorage.setItem('sunny_orders',JSON.stringify(existingOrders));
   if(localStorage.getItem('sunny_buynow'))localStorage.removeItem('sunny_buynow');
   else localStorage.removeItem('sunny_cart');
 
-  if(typeof window.decrementInventory==='function'){
-    window.decrementInventory(order.items).catch(e=>console.warn('[Inventory] decrement error:',e));
-  }
-
-  window.location.href='confirmation.html?order='+order.orderId;
+  window.location.href='confirmation.html?order='+orderId;
 });
 
 // Cart badge
@@ -524,154 +672,5 @@ window.addEventListener('scroll',()=>{const y=window.scrollY;nav.classList.toggl
 })();
 </script>
 
-<!-- Firebase: saves each order to Firestore so the admin dashboard can see it from any device -->
-<script type="module">
-// ── Closure variables populated once Firebase loads ──────────────────────────
-let _db=null,_col,_addDoc,_getDocs,_limit,_query,_doc,_getDoc,_setDoc,_SDK_VERSION='(not yet loaded)';
-
-// ── Register functions FIRST (synchronous, before any await) ─────────────────
-// This guarantees window.testFirestore is always a function, even if Firebase
-// hasn't finished loading yet.
-
-window.testFirestore=async function(){
-  console.log('[testFirestore] called');
-  if(!_db){
-    console.error('[testFirestore] Firebase not initialized yet.');
-    return;
-  }
-  console.log('DB databaseId:',_db._databaseId);
-  console.log('TEST START');
-  const q=_query(_col(_db,'orders'),_limit(1));
-  const snap=await _getDocs(q);
-  console.log('READ SUCCESS',snap.size);
-
-  console.log('BEFORE addDoc');
-  const writePromise=_addDoc(_col(_db,'orders'),{test:true,createdAt:new Date().toISOString()});
-  writePromise.then(
-    r=>console.log('PROMISE RESOLVED',r.id),
-    e=>console.error('PROMISE REJECTED',e)
-  );
-  setTimeout(()=>console.error('WRITE STILL PENDING AFTER 15 SECONDS'),15000);
-};
-console.log('[Firebase] ✓ testFirestore registered on window');
-
-// REST API test — bypasses the SDK entirely to isolate SDK vs Firebase issue
-window.testFirestoreREST=async function(){
-  const projectId='sunny-s-website';
-  const base=`https://firestore.googleapis.com/v1/projects/${projectId}/databases/default/documents/orders`;
-  console.log('--- REST GET (list) ---');
-  try{
-    const r=await fetch(base);
-    const d=await r.json();
-    console.log('GET status:',r.status);
-    console.log('GET body:',d);
-  }catch(e){console.error('GET failed:',e.message);}
-  console.log('--- REST POST (write) ---');
-  try{
-    const r=await fetch(base,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({fields:{test:{booleanValue:true},src:{stringValue:'rest-test'},at:{stringValue:new Date().toISOString()}}})
-    });
-    const d=await r.json();
-    console.log('POST status:',r.status);
-    console.log('POST body:',d);
-  }catch(e){console.error('POST failed:',e.message);}
-};
-console.log('[Firebase] ✓ testFirestoreREST registered — run window.testFirestoreREST()');
-
-window.saveOrderToFirestore=async function(order){
-  if(!_db) throw new Error('[Firebase] Firestore not initialized — check CDN errors');
-  console.log('[Firestore] About to call addDoc');
-  try{
-    const ref=await _addDoc(_col(_db,'orders'),order);
-    console.log('[Firestore] SUCCESS',ref.id);
-    return ref.id;
-  }catch(err){
-    console.error('[Firestore] FULL ERROR OBJECT:',err);
-    console.error('[Firestore] CODE:',err?.code);
-    console.error('[Firestore] MESSAGE:',err?.message);
-    console.error('[Firestore] STACK:',err?.stack);
-    throw err;
-  }
-};
-console.log('[Firebase] ✓ saveOrderToFirestore registered on window');
-
-window.decrementInventory=async function(items){
-  if(!_db) return;
-  for(const item of items){
-    try{
-      const ref=_doc(_db,'inventory',item.productId);
-      const snap=await _getDoc(ref);
-      const inv=snap.exists()?snap.data():{inventoryQuantity:20,comingSoon:false};
-      if(inv.comingSoon) continue;
-      const newQty=Math.max(0,(inv.inventoryQuantity??20)-item.qty);
-      let status;
-      if(newQty===0) status='out_of_stock';
-      else if(newQty<=10) status='limited';
-      else status='in_stock';
-      await _setDoc(ref,{...inv,inventoryQuantity:newQty,inventoryStatus:status},{ merge:true });
-    }catch(e){ console.warn('[Inventory] decrement failed for',item.productId,e.message); }
-  }
-};
-
-// ── Initialize Firebase (async — populates closure vars above) ───────────────
-try{
-  console.log('[Firebase] Loading SDK v10.13.0 from CDN…');
-  const appMod=await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js');
-  const{initializeApp,setLogLevel}=appMod;
-  const fs=await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js');
-  setLogLevel('debug');
-  _SDK_VERSION=appMod.SDK_VERSION||fs.SDK_VERSION||'(SDK_VERSION not exported)';
-  console.log('[Firebase] SDK loaded, SDK_VERSION=',_SDK_VERSION);
-
-  const firebaseConfig={
-    apiKey:"AIzaSyC5HNrB24BLHeKpZrrHULK_hjGypussFc8",
-    authDomain:"sunny-s-website.firebaseapp.com",
-    projectId:"sunny-s-website",
-    storageBucket:"sunny-s-website.firebasestorage.app",
-    messagingSenderId:"946546687002",
-    appId:"1:946546687002:web:3abbaf98e3abdf4d52a5a3"
-  };
-  console.log('[Firebase] firebaseConfig:',firebaseConfig);
-
-  const app=initializeApp(firebaseConfig);
-  console.log('[Firebase] app.options:',app.options);
-
-  _db=fs.getFirestore(app,'default');
-  _col=fs.collection;
-  _addDoc=fs.addDoc;
-  _getDocs=fs.getDocs;
-  _limit=fs.limit;
-  _query=fs.query;
-  _doc=fs.doc;
-  _getDoc=fs.getDoc;
-  _setDoc=fs.setDoc;
-
-  console.log('[Firebase] db.app.options:',_db.app.options);
-  console.log('[Firebase] db._databaseId:',_db._databaseId);
-  console.log('[Firebase] db._settings:',JSON.stringify(_db._settings||{}));
-  console.log('[Firebase] ✓ Firestore connected — project:',firebaseConfig.projectId);
-  console.log('[Firebase] ✓ _db is ready — window.testFirestore() will now work');
-
-  // ── Enable the submit button now that Firestore is ready ──
-  const _initEl=document.getElementById('orderInit');
-  const _btn=document.getElementById('btnPlace');
-  if(_initEl)_initEl.classList.remove('show');
-  if(_btn)_btn.disabled=false;
-
-}catch(initErr){
-  console.error('[Firebase] ✗ SDK init failed:',initErr?.message||initErr);
-  console.error('[Firebase] Full init error:',initErr);
-  // ── Keep button disabled; show customer-facing error ──
-  const _initEl=document.getElementById('orderInit');
-  const _errEl=document.getElementById('orderError');
-  if(_initEl)_initEl.classList.remove('show');
-  if(_errEl){
-    _errEl.textContent='Order system temporarily unavailable. Please refresh the page and try again.';
-    _errEl.classList.add('show');
-  }
-}
-</script>
 </body>
 </html>

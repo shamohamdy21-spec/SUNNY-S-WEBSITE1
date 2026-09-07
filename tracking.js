@@ -122,6 +122,9 @@
       var contents = (order.items || []).map(function (i) {
         return { content_id: i.productId, quantity: i.qty };
       });
+      var metaContents = (order.items || []).map(function (i) {
+        return { id: String(i.productId), quantity: Number(i.qty), item_price: Number(i.price) };
+      });
       var total = parseFloat(order.total) || 0;
 
       // TikTok Manual Advanced Matching — must run before CompletePayment so the
@@ -143,10 +146,11 @@
         value:        total,
         currency:     'EGP',
         content_ids:  ids,
+        contents:     metaContents,
         content_type: 'product',
         num_items:    num,
         order_id:     order.orderId
-      });
+      }, { eventID: order.orderId }); // enables Meta deduplication against server CAPI event
       ttq('CompletePayment', {
         content_id:   ids[0] || '',
         content_type: 'product',

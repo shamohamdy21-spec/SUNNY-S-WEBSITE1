@@ -1219,6 +1219,41 @@ await test('52. Catalog CSV contains exactly the 10 new product slugs — no old
   PASS('52. Catalog CSV — all 10 new product slugs present, 0 old slugs, 0 extra rows');
 });
 
+// ── TEST 53: Firebase credentials missing → 503, no CAPI, no order ───────────
+// Reproduces the exact production failure: service-account env vars not set in
+// Vercel. The new getDb() fail-fast logic throws before require('firebase-admin'),
+// the handler catches it, returns 503 firestore_unavailable, CAPI is never called.
+await test('53. Missing Firebase credentials → 503 firestore_unavailable, no CAPI fired', async () => {
+  const FB_VARS = ['FIREBASE_PROJECT_ID', 'FIREBASE_CLIENT_EMAIL', 'FIREBASE_PRIVATE_KEY', 'FIREBASE_SERVICE_ACCOUNT'];
+  const saved = {};
+  for (const v of FB_VARS) { saved[v] = process.env[v]; delete process.env[v]; }
+
+  let capiCalled = false;
+  _setCapiSender(async () => { capiCalled = true; });
+
+  let result;
+  try {
+    // _resetTestDb() was already called by the test runner — getDb() will take the real path
+    const r = makeReqRes(validOrder());
+    await handler(r.req, r.res);
+    result = r.result;
+  } finally {
+    // Always restore, even if the test throws
+    for (const v of FB_VARS) {
+      if (saved[v] !== undefined) process.env[v] = saved[v];
+      else delete process.env[v];
+    }
+    _resetTestDb();
+    _resetCapiSender();
+  }
+
+  assert.equal(result.status, 503);
+  assert.equal((result.body || {}).error, 'firestore_unavailable');
+  assert.equal((result.body || {}).retryable, true);
+  assert.equal(capiCalled, false, 'CAPI must not fire when Firebase is unconfigured');
+  PASS('53. Missing Firebase credentials → 503 firestore_unavailable, no CAPI fired');
+});
+
 // ═════════════════════════════════════════════════════════════════════════════
 console.log('\n=== RESULTS ===');
 console.log(`  Passed: ${passed}`);

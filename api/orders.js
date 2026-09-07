@@ -125,7 +125,7 @@ const PRODUCTS = new Map([
   ['sunnys-product-13', { name: 'The Verdant',        price: 1800, collection: 'Core Collection' }],
   ['sunnys-product-14', { name: 'The Lavande',        price: 2000, collection: 'Core Collection' }],
   ['sunnys-product-15', { name: 'The Azurea',         price: 2000, collection: 'Core Collection' }],
-  ['sunnys-product-16', { name: 'The Aviara',          price: 2200, collection: 'Core Collection' }],
+  ['sunnys-product-16', { name: 'The Aviara Classic',   price: 2200, collection: 'Core Collection' }],
   ['sunnys-product-17', { name: 'The Lunelle',         price: 1800, collection: 'Core Collection' }],
   ['sunnys-product-18', { name: 'The Mocha Noir',      price: 2000, collection: 'Core Collection' }],
   ['sunnys-product-19', { name: 'The Olive Aura',      price: 2200, collection: 'Core Collection' }],
@@ -381,14 +381,46 @@ let _realDb     = null;
 function getDb() {
   if (_injectedDb) return _injectedDb;
   if (_realDb)     return _realDb;
+
+  // Resolve Firebase service-account credentials.
+  // Option A (individual vars): FIREBASE_PROJECT_ID + FIREBASE_CLIENT_EMAIL + FIREBASE_PRIVATE_KEY
+  // Option B (single JSON):     FIREBASE_SERVICE_ACCOUNT = full service-account JSON string
+  //   How to get Option B value: Firebase Console → Project Settings → Service Accounts →
+  //   "Generate new private key" → download JSON → paste entire file contents as the env var.
+  let projectId   = process.env.FIREBASE_PROJECT_ID;
+  let clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  let privateKey  = (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
+
+  const saJson = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (saJson) {
+    try {
+      const sa = JSON.parse(saJson);
+      if (!projectId)   projectId   = sa.project_id;
+      if (!clientEmail) clientEmail = sa.client_email;
+      if (!privateKey)  privateKey  = sa.private_key || '';
+    } catch (_) {
+      log('firebase_sa_json_parse_error', null);
+    }
+  }
+
+  // Fail fast with a structured log before touching firebase-admin, so the
+  // try-catch in the handler always intercepts the error and returns 503.
+  // In Vercel logs this appears as stage: "firebase_credentials_missing" with the
+  // exact list of missing variable names — which tells you exactly what to set.
+  if (!projectId || !clientEmail || !privateKey) {
+    const missing = ['FIREBASE_PROJECT_ID', 'FIREBASE_CLIENT_EMAIL', 'FIREBASE_PRIVATE_KEY']
+      .filter(v => !process.env[v]);
+    log('firebase_credentials_missing', null, {
+      missing,
+      hint: 'Set individual vars in Vercel dashboard, or set FIREBASE_SERVICE_ACCOUNT to the full service-account JSON string',
+    });
+    throw new Error('firebase_credentials_not_configured');
+  }
+
   const admin = require('firebase-admin');
   if (!admin.apps.length) {
     admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId:   process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey:  (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
-      }),
+      credential: admin.credential.cert({ projectId, clientEmail, privateKey }),
     });
   }
   _realDb = admin.firestore();
@@ -552,7 +584,10 @@ module.exports = async function handler(req, res) {
       return { success: true };
     });
   } catch (dbErr) {
-    log('firestore_failed', orderId, { code: dbErr.code || 'unknown' });
+    log('firestore_failed', orderId, {
+      code:    dbErr.code    || 'none',
+      message: (dbErr.message || '').slice(0, 200), // safe: Firebase init errors contain no PII or secrets
+    });
     return res.status(503).json({ error: 'firestore_unavailable', retryable: true });
   }
 

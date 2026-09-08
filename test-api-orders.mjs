@@ -1254,6 +1254,28 @@ await test('53. Missing Firebase credentials → 503 firestore_unavailable, no C
   PASS('53. Missing Firebase credentials → 503 firestore_unavailable, no CAPI fired');
 });
 
+// ── TEST 54: Firestore NOT_FOUND (code 5) → 503, no CAPI ─────────────────────
+// Reproduces the second production failure: Admin SDK targeted (default) database
+// instead of the named 'default' database. gRPC code 5 = NOT_FOUND.
+// The error surfaces on the first tx.get() inside runTransaction — before any write.
+await test('54. Firestore NOT_FOUND (code 5) → 503 firestore_unavailable, no CAPI', async () => {
+  const db = new MockFirestore();
+  db._getErr = Object.assign(new Error('5 NOT_FOUND: database not found'), { code: 5 });
+  _setTestDb(db);
+
+  let capiCalled = false;
+  _setCapiSender(async () => { capiCalled = true; });
+
+  const r = makeReqRes(validOrder());
+  await handler(r.req, r.res);
+
+  assert.equal(r.result.status, 503);
+  assert.equal((r.result.body || {}).error, 'firestore_unavailable');
+  assert.equal((r.result.body || {}).retryable, true);
+  assert.equal(capiCalled, false, 'CAPI must not fire when Firestore returns NOT_FOUND');
+  PASS('54. Firestore NOT_FOUND (code 5) → 503 firestore_unavailable, no CAPI');
+});
+
 // ═════════════════════════════════════════════════════════════════════════════
 console.log('\n=== RESULTS ===');
 console.log(`  Passed: ${passed}`);

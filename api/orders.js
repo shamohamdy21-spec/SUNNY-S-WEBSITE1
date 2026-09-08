@@ -423,7 +423,11 @@ function getDb() {
       credential: admin.credential.cert({ projectId, clientEmail, privateKey }),
     });
   }
-  _realDb = admin.firestore();
+  // All client pages call getFirestore(app, 'default') — a named database, not (default).
+  // Admin SDK admin.firestore() targets (default) which doesn't exist → gRPC 5 NOT_FOUND.
+  const databaseId = process.env.FIREBASE_DATABASE_ID || 'default';
+  const { getFirestore } = require('firebase-admin/firestore');
+  _realDb = getFirestore(admin.app(), databaseId);
   return _realDb;
 }
 

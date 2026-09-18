@@ -130,6 +130,7 @@ const PRODUCTS = new Map([
   ['sunnys-product-18', { name: 'The Mocha Noir',      price: 2000, collection: 'Core Collection' }],
   ['sunnys-product-19', { name: 'The Olive Aura',      price: 2200, collection: 'Core Collection' }],
   ['sunnys-product-20', { name: 'The Hazel',           price: 1800, collection: 'Core Collection' }],
+  ['sunnys-product-21', { name: 'The Astrelle',        price: 1800, collection: 'Core Collection' }],
 ]);
 
 // Shipping destinations and costs.

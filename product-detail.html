@@ -151,6 +151,10 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 .spec-icon svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
 .spec-title { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
 .spec-val { font-size: 26px; font-weight: 300; color: var(--black); line-height: 1.55; }
+.gold-shine {
+  font-weight: 700;
+  color: #c8960c;
+}
 
 /* Right col: shipping + returns */
 .pd-right {}
@@ -439,7 +443,7 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg',
     specs: {
       frame: 'Premium Italian Acetate — hand-polished Mazzucchelli',
-      lens:  'CR-39 with UV400 multi-layer coating',
+      lens:  'CR-39 with UV400 multi-layer coating — Polycarbonate, UV400 protection',
       uv:    'Category 3',
       dims:  'Lens 52 mm · Bridge 18 mm · Temple 145 mm · 22 g'
     }
@@ -452,7 +456,7 @@ const PRODUCTS = {
     img2: 'brand_assets/ea231f26-8f4f-4ecc-aad9-55871e62dae9.jpeg',
     specs: {
       frame: 'Premium Italian Acetate — glossy scarlet finish',
-      lens:  'Gradient mineral glass with crimson tint',
+      lens:  'Gradient mineral glass with crimson tint — Polycarbonate, UV400 protection',
       uv:    'Category 3',
       dims:  'Lens 54 mm · Bridge 17 mm · Temple 140 mm · 24 g'
     }
@@ -465,7 +469,7 @@ const PRODUCTS = {
     img2: 'brand_assets/9365A1C7-F671-4B4A-B3E9-41C40B7012A4.png',
     specs: {
       frame: 'Titanium wire core with acetate overlay',
-      lens:  'Mirrored lens — ocean teal tint',
+      lens:  'Mirrored lens — ocean teal tint — Polycarbonate, UV400 protection',
       uv:    'Category 3',
       dims:  'Lens 50 mm · Bridge 19 mm · Temple 143 mm · 18 g'
     }
@@ -478,11 +482,11 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg',
     img2: 'brand_assets/brand%20assets%202/0657C550-9A3B-4107-AE70-88C8EE590015.png',
     specs: {
-      frame:    'Matte black classic aviator frame — ultra lightweight',
-      lens:     'Dark smoke PC Anti-UV',
+      frame:    'Matte black classic aviator frame',
+      lens:     'Dark smoke PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 4 — Maximum Glare Protection',
       dims:     'Lens 56 mm · Bridge 16 mm · Temple 145 mm · 21 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Amethyst – Angel Aura Amethyst<br>Celebrated for its aura of serenity, calming presence, and captivating violet brilliance.',
     }
@@ -495,11 +499,11 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg',
     img2: 'brand_assets/brand%20assets%202/530BABA6-D93E-42F2-8955-544D3C1BE712.png',
     specs: {
-      frame:    'Honey crystal classic aviator frame — ultra lightweight',
-      lens:     'Brown Gradient PC Anti-UV',
+      frame:    'Honey crystal classic aviator frame',
+      lens:     'Brown Gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 52 mm · Bridge 18 mm · Temple 142 mm · 22 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
@@ -512,11 +516,11 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/DDCA0B31-EFD6-4E36-A832-EBBFF14AF74A.png',
     img2: 'brand_assets/brand%20assets%202/90C4A8D8-AB03-4AEE-B66E-A4C93A1B5E6E.png',
     specs: {
-      frame:    'Leopard classic aviator frame — ultra lightweight',
-      lens:     'Brown Gradient PC Anti-UV',
+      frame:    'Leopard classic aviator frame',
+      lens:     'Brown Gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 53 mm · Bridge 17 mm · Temple 144 mm · 23 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
@@ -529,11 +533,11 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/1E5D59D1-C541-4C32-B169-B6C037499F40.png',
     img2: 'brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png',
     specs: {
-      frame:    'Red vintage pilot frame — ultra lightweight',
-      lens:     'Translucent red PC Anti-UV',
+      frame:    'Red vintage pilot frame',
+      lens:     'Translucent red PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 54 mm · Bridge 17 mm · Temple 144 mm · 22 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided stainless chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
@@ -546,11 +550,11 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png',
     img2: 'brand_assets/brand%20assets%202/F7D8666D-B57B-4A8D-813D-10B746BCB3F7.png',
     specs: {
-      frame:    'Green vintage pilot frame — ultra lightweight',
-      lens:     'Translucent green PC Anti-UV',
+      frame:    'Green vintage pilot frame',
+      lens:     'Translucent green PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 53 mm · Bridge 18 mm · Temple 143 mm · 21 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided stainless chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
@@ -564,11 +568,11 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%202/01070F7C-5529-44BA-98C5-EC565A30E07A.png',
     img3: 'brand_assets/brand%20assets%203/IMG-20260720-WA0025.jpg',
     specs: {
-      frame:    'Pearl white cat eye frame — lightweight',
-      lens:     'Dark smoke PC Anti-UV',
+      frame:    'Pearl white cat eye frame',
+      lens:     'Dark smoke PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 52 mm · Bridge 17 mm · Temple 142 mm · 20 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
     }
   },
@@ -581,10 +585,10 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%202/C40AF091-BC10-47E2-AFF7-BB34D08208FA.png',
     specs: {
       frame:    'Classic Havana Tortoise Navigator frame',
-      lens:     'Dark brown PC Anti-UV',
+      lens:     'Dark brown PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 55 mm · Bridge 16 mm · Temple 145 mm · 23 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
@@ -598,10 +602,10 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%205/085160AF-5F29-431E-A720-084E38D3E366.png',
     specs: {
       frame:    'Sand gold vintage aviator frame',
-      lens:     'Dark smoke PC Anti-UV',
+      lens:     'Dark smoke PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 54 mm · Bridge 17 mm · Temple 144 mm · 21 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Citrine – The Merchant\'s Stone<br>Celebrated for its aura of golden sunshine, inspiring joy, confidence, and long associated with prosperity and success.',
     }
@@ -614,11 +618,11 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/6599B5D7-1468-46B9-B5E6-6178775530B0.png',
     img2: 'brand_assets/brand%20assets%202/19C9BD28-199D-4165-AB84-703580536AE9.png',
     specs: {
-      frame:    'Matte black classic Navigator frame — ultra lightweight',
-      lens:     'Dark smoke PC Anti-UV',
+      frame:    'Matte black classic Navigator frame',
+      lens:     'Dark smoke PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens 53 mm · Bridge 17 mm · Temple 143 mm · 22 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Amethyst – Angel Aura Amethyst<br>Celebrated for its aura of serenity, calming presence, and captivating violet brilliance.',
     }
@@ -631,11 +635,11 @@ const PRODUCTS = {
     img1: 'brand_assets/brand%20assets%202/F8D0426E-A7B2-499B-B07E-81BC8ABD46FA.jpeg',
     img2: 'brand_assets/brand%20assets%202/51D0502D-194A-47D6-AA26-5F855C2EFCAA.png',
     specs: {
-      frame:    'Jet black cat eye frame — lightweight',
-      lens:     'Dark smoke PC Anti-UV',
+      frame:    'Jet black cat eye frame',
+      lens:     'Dark smoke PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 2 — Soft Light Filtration',
       dims:     'Lens 52 mm · Bridge 18 mm · Temple 142 mm · 19 g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       aura:     'Amethyst – Angel Aura Amethyst<br>Celebrated for its aura of serenity, calming presence, and captivating violet brilliance.',
     }
@@ -657,10 +661,10 @@ const PRODUCTS = {
     img4: 'brand_assets/brand%20assets%205/7285C4AD-A4CF-413F-878B-CBE5CA3D0A73.png',
     specs: {
       frame:    'Brown tortoiseshell front with gold metal detailing — geometric pilot frame',
-      lens:     'Warm amber brown PC Anti-UV',
+      lens:     'Warm amber brown PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -677,10 +681,10 @@ const PRODUCTS = {
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Translucent teal green frame with gold metal detailing — Rounded-square silhouette',
-      lens:     'Warm amber brown gradient PC Anti-UV',
+      lens:     'Warm amber brown gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -696,11 +700,11 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%205/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png', // ← Product 13 — Detail image
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
-      frame:    'Translucent olive green — square frame — lightweight',
-      lens:     'Olive green PC Anti-UV',
+      frame:    'Translucent olive green — square frame',
+      lens:     'Olive green PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -717,10 +721,10 @@ const PRODUCTS = {
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Transparent crystal frame with gold metal detailing — Rounded-square silhouette',
-      lens:     'Smoky mauve gradient PC Anti-UV',
+      lens:     'Smoky mauve gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -741,10 +745,10 @@ const PRODUCTS = {
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Translucent deep teal blue geometric pilot frame',
-      lens:     'Light blue gradient PC Anti-UV',
+      lens:     'Light blue gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -760,11 +764,11 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%205/4C6C9FC4-8EE4-4292-9DCE-7259182E3FE2.png', // ← Product 16 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
-      frame:    'Gold metal aviator frame — classic pilot silhouette — lightweight',
-      lens:     'Amber brown gradient PC Anti-UV',
+      frame:    'Gold metal aviator frame — classic pilot silhouette',
+      lens:     'Amber brown gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -780,11 +784,11 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%205/IMG_1683.png',                               // ← Product 17 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
-      frame:    'Translucent smoky grey vintage oval frame — soft rounded silhouette — lightweight',
-      lens:     'Smoky grey gradient PC Anti-UV',
+      frame:    'Translucent smoky grey vintage oval frame — soft rounded silhouette',
+      lens:     'Smoky grey gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -800,11 +804,11 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%205/Picsart_26-09-07_12-54-43-058.jpg',           // ← Product 18 — Detail image
     img3: 'brand_assets/brand%20assets%205/Picsart_26-09-07_12-56-26-093.jpg',           // ← Product 18 — View 3
     specs: {
-      frame:    'Black front with brown back — vintage pilot frame — lightweight',
-      lens:     'Smoky grey gradient PC Anti-UV',
+      frame:    'Black front with brown back — vintage pilot frame',
+      lens:     'Smoky grey gradient PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -821,10 +825,10 @@ const PRODUCTS = {
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Sand gold vintage aviator frame',
-      lens:     'Olive green PC Anti-UV',
+      lens:     'Olive green PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -840,11 +844,32 @@ const PRODUCTS = {
     img2: 'brand_assets/brand%20assets%205/3F107D5F-52DA-4171-8AE2-B6A860B99CFF.png', // ← Product 20 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
-      frame:    'Translucent warm brown cat-eye frame — sculpted vintage silhouette with gold detailing — lightweight',
-      lens:     'Smoky brown PC Anti-UV',
+      frame:    'Translucent warm brown cat-eye frame — sculpted vintage silhouette with gold detailing',
+      lens:     'Smoky brown PC Anti-UV — Polycarbonate, UV400 protection',
       uv:       'Category 3',
       dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
-      gemstone: 'Natural gemstone accents featuring warm golden tones and unique organic textures for a refined luxury finish',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+      // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
+    }
+  },
+
+  // PRODUCT 21 — THE ASTRELLE
+  'sunnys-product-21': {
+    name:       'The Astrelle',                // ← Product name
+    collection: 'Core Collection',
+    price:      '1800',                         // ← Sale price (EGP, numbers only)
+    originalPrice: '2800',                      // ← Original price for strikethrough
+    // ↓ REPLACE EACH PLACEHOLDER WITH THE ACTUAL IMAGE PATH WHEN PHOTOS ARE READY
+    img1: 'brand_assets/ba4/newnew%202.png',
+    img2: 'brand_assets/ba4/newnew1.png',
+    // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
+    specs: {
+      frame:    'Jet black vintage oval frame — soft rounded silhouette',
+      lens:     'Dusty mauve-purple — Polycarbonate, UV400 protection',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g', // ← UPDATE with measurements
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
       chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
       // aura: 'Aura Name — Description text here', // ← UNCOMMENT & FILL IN if this product has an aura
     }
@@ -890,7 +915,7 @@ const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
 
   document.getElementById('specFrame').textContent    = p.specs.frame;
   document.getElementById('specLens').textContent     = p.specs.lens;
-  document.getElementById('specGemstone').textContent = p.specs.gemstone;
+  document.getElementById('specGemstone').innerHTML = p.specs.gemstone;
   document.getElementById('specChain').textContent    = p.specs.chain;
   document.getElementById('specAura').innerHTML       = p.specs.aura || '';
   if (!p.specs.aura) document.getElementById('specAuraCard').style.display = 'none';

@@ -290,6 +290,15 @@ tbody tr:hover td{background:rgba(198,161,91,.03)}
 .inv-save-btn{align-self:flex-start;padding:9px 18px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;background:var(--gold);color:#fff;border:none;cursor:pointer;transition:opacity .2s,background .2s;margin-top:4px}
 .inv-save-btn:hover{opacity:.85}
 .inv-save-btn:disabled{background:var(--border-2);color:var(--grey);cursor:not-allowed;opacity:1}
+.inv-variant{border-top:1.5px solid var(--border);padding-top:14px;margin-top:4px;display:flex;flex-direction:column;gap:12px}
+.inv-variant-label{display:flex;align-items:center;gap:8px;padding-bottom:2px}
+.inv-dot-ngp,.inv-dot-gp{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.inv-dot-ngp{background:#D1CFC9;border:1.5px solid #9A978E}
+.inv-dot-gp{background:var(--gold);border:1.5px solid #B89040}
+.inv-variant-name{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--black)}
+.inv-variant-sku{font-family:'Courier New',monospace;font-size:10px;color:var(--gold);letter-spacing:.5px;margin-left:6px}
+.inv-variant-sold{margin-left:auto;font-size:9px;color:var(--grey);font-weight:400}
+.inv-variant .inv-save-btn{padding:7px 14px;font-size:9px}
 </style>
 </head>
 <body>
@@ -565,10 +574,10 @@ tbody tr:hover td{background:rgba(198,161,91,.03)}
               <thead><tr>
                 <th style="width:72px"></th>
                 <th>Product</th>
-                <th>Slug / ID</th>
+                <th>Variant / Catalog SKU</th>
                 <th>Price (EGP)</th>
                 <th>Stock Status</th>
-                <th>Units Sold</th>
+                <th>Variant Sold</th>
                 <th></th>
               </tr></thead>
               <tbody id="productsBody"></tbody>
@@ -701,46 +710,6 @@ const STATUS_OPTS = ['pending','confirmed','processing','shipped','delivered','r
 const STATUS_LABELS = {pending:'Pending',confirmed:'Confirmed',processing:'Processing',shipped:'Shipped',delivered:'Delivered',returned:'Returned',cancelled:'Cancelled'};
 const STATUS_COLORS = {pending:'#F59E0B',confirmed:'#3B82F6',processing:'#8B5CF6',shipped:'#06B6D4',delivered:'#10B981',returned:'#EF4444',cancelled:'#9CA3AF'};
 const PRODUCTS_DB = [
-  {id:'noir',    name:'The Noir',          collection:'Core Collection', price:2000,
-   img:'brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg',
-   img2:'brand_assets/brand%20assets%202/0657C550-9A3B-4107-AE70-88C8EE590015.png',
-   specs:{frame:'Matte black Italian acetate — ultra-lightweight',lens:'Dark smoke CR-39',uv:'UV400 · Category 4 — maximum glare protection',dims:'Lens 56mm · Bridge 16mm · Temple 145mm · 21g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'rose',    name:'The Citrine',       collection:'Core Collection', price:1800,
-   img:'brand_assets/brand%20assets%202/AC8B2426-38D5-4750-9537-F7AAA0655CF9.jpeg',
-   img2:'brand_assets/brand%20assets%202/530BABA6-D93E-42F2-8955-544D3C1BE712.png',
-   specs:{frame:'Blush pink acetate with gold-tone hinges',lens:'Rose gradient lens',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 52mm · Bridge 18mm · Temple 142mm · 22g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'citrine', name:'The Champagne',     collection:'Core Collection', price:1800,
-   img:'brand_assets/brand%20assets%202/DDCA0B31-EFD6-4E36-A832-EBBFF14AF74A.png',
-   img2:'brand_assets/brand%20assets%202/90C4A8D8-AB03-4AEE-B66E-A4C93A1B5E6E.png',
-   specs:{frame:'Amber-tinted acetate with gold hardware',lens:'Amber gradient CR-39 — anti-reflective coat',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 53mm · Bridge 17mm · Temple 144mm · 23g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'aurelia', name:'The Ruby',          collection:'Core Collection', price:2200,
-   img:'brand_assets/brand%20assets%202/1E5D59D1-C541-4C32-B169-B6C037499F40.png',
-   img2:'brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png',
-   specs:{frame:'Polished gold acetate — hand-finished',lens:'Warm amber CR-39 with UV400 coating',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 54mm · Bridge 17mm · Temple 144mm · 22g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'solene',  name:'The Maldives',      collection:'Core Collection', price:2000,
-   img:'brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png',
-   img2:'brand_assets/brand%20assets%202/F7D8666D-B57B-4A8D-813D-10B746BCB3F7.png',
-   specs:{frame:'Ivory acetate with brushed gold temple detail',lens:'Soft brown gradient CR-39',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 53mm · Bridge 18mm · Temple 143mm · 21g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'celeste', name:'The Opaline',       collection:'Core Collection', price:2200,
-   img:'brand_assets/brand%20assets%202/8C2831C2-A8E1-43CE-B1C8-97F110DEA8DC.jpeg',
-   img2:'brand_assets/brand%20assets%202/01070F7C-5529-44BA-98C5-EC565A30E07A.png',
-   specs:{frame:'Pearl white acetate — lightweight Italian construction',lens:'Grey gradient CR-39 with anti-reflective coat',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 52mm · Bridge 17mm · Temple 142mm · 20g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'verona',  name:'The Honey Quartz',  collection:'Core Collection', price:1800,
-   img:'brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png',
-   img2:'brand_assets/brand%20assets%202/C40AF091-BC10-47E2-AFF7-BB34D08208FA.png',
-   specs:{frame:'Deep tortoise acetate with gold inlay',lens:'Brown polarized CR-39',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 55mm · Bridge 16mm · Temple 145mm · 23g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'riviera', name:'The Golden Aura',   collection:'Core Collection', price:2200,
-   img:'brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg',
-   img2:'brand_assets/brand%20assets%202/F489181E-B43B-4088-9D32-023B592DAB01.png',
-   specs:{frame:'Translucent sand acetate — resort-ready finish',lens:'Blue mirror polarized CR-39',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 54mm · Bridge 17mm · Temple 144mm · 21g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'siena',   name:'The Eclipse',       collection:'Core Collection', price:1800,
-   img:'brand_assets/brand%20assets%202/6599B5D7-1468-46B9-B5E6-6178775530B0.png',
-   img2:'brand_assets/brand%20assets%202/19C9BD28-199D-4165-AB84-703580536AE9.png',
-   specs:{frame:'Terracotta acetate with gold-tone hardware',lens:'Warm copper gradient CR-39',uv:'UV400 · Category 3 — blocks 100% of UVA & UVB',dims:'Lens 53mm · Bridge 17mm · Temple 143mm · 22g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'lumiere', name:'The Obsidian Noir', collection:'Core Collection', price:2000,
-   img:'brand_assets/brand%20assets%202/F8D0426E-A7B2-499B-B07E-81BC8ABD46FA.jpeg',
-   img2:'brand_assets/brand%20assets%202/51D0502D-194A-47D6-AA26-5F855C2EFCAA.png',
-   specs:{frame:'Crystal clear acetate — luminous ultra-light',lens:'Light gold tint CR-39 with UV400 coating',uv:'UV400 · Category 2 — soft light filtration',dims:'Lens 52mm · Bridge 18mm · Temple 142mm · 19g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
   {id:'sunnys-product-11', name:'The Sienna',     collection:'Core Collection', price:2200,
    img:'brand_assets/brand%20assets%205/E6F47E09-9835-4662-ABE9-C03BA25753FE.png',
    img2:'brand_assets/brand%20assets%205/2A92E64C-F2D4-4411-A8FD-B5F4BFF08655.jpeg',
@@ -749,10 +718,6 @@ const PRODUCTS_DB = [
    img:'brand_assets/ba4/2B73842E-BE64-4961-8308-1598094EECDE.png',
    img2:'brand_assets/ba4/560313B6-E50D-4333-9233-197D54034C83.png',
    specs:{frame:'Translucent teal green frame with gold metal detailing — Rounded-square silhouette',lens:'Warm amber brown gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
-  {id:'sunnys-product-13', name:'The Verdant',    collection:'Core Collection', price:1800,
-   img:'brand_assets/brand%20assets%205/CD22AC64-5A89-4A0F-82F9-0CC6C6F969A3.png',
-   img2:'brand_assets/brand%20assets%205/15FD2A0B-435B-4B49-A004-D08CB8CA25E5.png',
-   specs:{frame:'Translucent olive green — square frame — lightweight',lens:'Olive green PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
   {id:'sunnys-product-14', name:'The Lavande',    collection:'Core Collection', price:2000,
    img:'brand_assets/ba4/B971C461-B582-4FD5-BA0D-4E1C98A2F2EA.png',
    img2:'brand_assets/ba4/AB12C5A2-171F-4D41-BC74-1051BFFA0016.png',
@@ -770,8 +735,8 @@ const PRODUCTS_DB = [
    img2:'brand_assets/brand%20assets%205/IMG_1683.png',
    specs:{frame:'Translucent smoky grey vintage oval frame — soft rounded silhouette — lightweight',lens:'Smoky grey gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
   {id:'sunnys-product-18', name:'The Mocha Noir', collection:'Core Collection', price:2000,
-   img:'brand_assets/brand%20assets%205/E96F51DF-D269-4AFB-8B23-DBD77C64F952.png',
-   img2:'brand_assets/brand%20assets%205/Picsart_26-09-07_12-54-43-058.jpg',
+   img:'brand_assets/BA7/1000338045.png',
+   img2:'brand_assets/BA7/1000338083.jpg',
    specs:{frame:'Black front with brown back — vintage pilot frame — lightweight',lens:'Smoky grey gradient PC Anti-UV',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
   {id:'sunnys-product-19', name:'The Olive Aura', collection:'Core Collection', price:2200,
    img:'brand_assets/brand%20assets%205/938ACCA7-2FB5-46E3-8FC4-56B3208EE8F2.jpeg',
@@ -785,6 +750,18 @@ const PRODUCTS_DB = [
    img:'brand_assets/ba4/newnew%202.png',
    img2:'brand_assets/ba4/newnew1.png',
    specs:{frame:'Jet black vintage oval frame — soft rounded silhouette',lens:'Dusty mauve-purple — Polycarbonate, UV400 protection',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents featuring warm golden tones and unique organic textures',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-22', name:'The Aviara Emerelle', collection:'Core Collection', price:1800,
+   img:'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+   img2:'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+   specs:{frame:'— Add frame description —',lens:'— Add lens description — Polycarbonate, UV400 protection',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-23', name:'The Aruoya',    collection:'Core Collection', price:1800,
+   img:'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+   img2:'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+   specs:{frame:'— Add frame description —',lens:'— Add lens description — Polycarbonate, UV400 protection',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
+  {id:'sunnys-product-24', name:'The Aviara Rosie',   collection:'Core Collection', price:1800,
+   img:'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+   img2:'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+   specs:{frame:'— Add frame description —',lens:'— Add lens description — Polycarbonate, UV400 protection',uv:'Category 3',dims:'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',gemstone:'Natural gemstone accents',chain:'Braided copper chain temples with a luxurious gold-tone finish'}},
 ];
 const PAGE_SIZE = 15;
 let currentPage = 1;
@@ -1144,7 +1121,7 @@ function openDetail(orderId) {
             <img class="detail-item-img" src="${it.image||''}" alt="${it.name}" onerror="this.style.background='#F0EDE9'">
             <div>
               <div class="detail-item-name">${it.name}</div>
-              <div class="detail-item-col">${it.collection||''}${it.stone ? ' — ' + it.stone : ''}</div>
+              <div class="detail-item-col">${it.collection||''}${it.stone ? ' — ' + it.stone : ''}${it.finish ? `<span style="display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 7px;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:${it.finish==='Gold-Plated'?'rgba(198,161,91,.15)':'rgba(0,0,0,.06)'};color:${it.finish==='Gold-Plated'?'#8B6914':'#555'}">${it.finish==='Gold-Plated'?'18K GP':'NGP'}</span>` : ''}</div>
               <div class="detail-item-qty">Qty: ${it.qty} × EGP ${fmt(it.price)}</div>
             </div>
             <div class="detail-item-price">EGP ${fmt(it.price*it.qty)}</div>
@@ -1256,7 +1233,7 @@ function printInvoice() {
   <table>
     <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr></thead>
     <tbody>
-      ${(o.items||[]).map(it=>`<tr><td>${it.name}<br><span style="color:#999;font-size:11px">${it.collection||''}${it.stone ? ' — ' + it.stone : ''}</span></td><td>${it.qty}</td><td>EGP ${it.price.toLocaleString()}</td><td>EGP ${(it.price*it.qty).toLocaleString()}</td></tr>`).join('')}
+      ${(o.items||[]).map(it=>`<tr><td>${it.name}${it.finish ? ` <span style="font-size:10px;font-weight:700;color:${it.finish==='Gold-Plated'?'#8B6914':'#555'}">[${it.finish==='Gold-Plated'?'18K GP':'NGP'}]</span>` : ''}<br><span style="color:#999;font-size:11px">${it.collection||''}${it.stone ? ' — ' + it.stone : ''}</span></td><td>${it.qty}</td><td>EGP ${it.price.toLocaleString()}</td><td>EGP ${(it.price*it.qty).toLocaleString()}</td></tr>`).join('')}
     </tbody>
   </table>
   <table class="totals" style="width:240px;margin-left:auto">
@@ -1381,16 +1358,85 @@ function renderInventory() {
   if (!grid) return;
   const orders = getOrders();
   const soldMap = {};
-  orders.forEach(o=>(o.items||[]).forEach(it=>{soldMap[it.productId]=(soldMap[it.productId]||0)+it.qty;}));
+  orders.forEach(o => (o.items || []).forEach(it => {
+    soldMap[it.productId] = (soldMap[it.productId] || 0) + it.qty;
+    if (it.finish) {
+      const vk = it.productId + '-' + (it.finish === 'Gold-Plated' ? 'GP' : 'NGP');
+      soldMap[vk] = (soldMap[vk] || 0) + it.qty;
+    }
+  }));
 
   grid.innerHTML = PRODUCTS_DB.map(p => {
+    const isNew = p.id.startsWith('sunnys-product-');
+    const totalSold = soldMap[p.id] || 0;
+
+    if (isNew) {
+      const num = p.id.replace('sunnys-product-', '');
+      const base = 'SNS-0' + num;
+
+      const renderVariant = (suffix, label, dotClass) => {
+        const key = p.id + '-' + suffix;
+        const catalogSku = base + '-' + suffix;
+        const inv = inventoryData[key] || {};
+        const qty = inv.inventoryQuantity ?? 20;
+        const cs = inv.comingSoon ?? false;
+        const threshold = inv.lowStockThreshold ?? 10;
+        const chip = invChip(qty, cs, threshold);
+        const sold = soldMap[key] || 0;
+        return `
+        <div class="inv-variant">
+          <div class="inv-variant-label">
+            <span class="${dotClass}"></span>
+            <span class="inv-variant-name">${label}</span>
+            <span class="inv-variant-sku">${catalogSku}</span>
+            <span class="inv-variant-sold">${sold} sold</span>
+          </div>
+          <div class="inv-row">
+            <span class="inv-row-label">Status</span>
+            <span class="inv-chip ${chip.type}" id="invChip-${key}">${chip.label}</span>
+          </div>
+          <div class="inv-row">
+            <span class="inv-row-label">Available Qty</span>
+            <input type="number" class="inv-qty-input" id="invQty-${key}" value="${qty}" min="0" max="9999" oninput="updateInvChip('${key}')">
+          </div>
+          <div class="inv-row">
+            <span class="inv-row-label">Low Stock Alert</span>
+            <input type="number" class="inv-qty-input" id="invThreshold-${key}" value="${threshold}" min="1" max="999" oninput="updateInvChip('${key}')">
+          </div>
+          <div class="inv-row">
+            <span class="inv-row-label">Coming Soon</span>
+            <label class="inv-toggle">
+              <input type="checkbox" id="invCs-${key}" ${cs ? 'checked' : ''} onchange="updateInvChip('${key}')">
+              <span class="inv-toggle-slider"></span>
+            </label>
+            <span class="inv-coming-label" style="font-size:10px;color:var(--grey)">Hides stock, disables purchase</span>
+          </div>
+          <button class="inv-save-btn" id="invBtn-${key}" onclick="saveInventory('${key}')">Save</button>
+        </div>`;
+      };
+
+      return `
+      <div class="inv-card">
+        <div class="inv-card-header">
+          <img class="inv-card-img" src="${p.img}" alt="${p.name}">
+          <div>
+            <div class="inv-card-name">${p.name}</div>
+            <div class="inv-card-collection">${p.collection}</div>
+            <div style="font-size:10px;color:var(--grey);margin-top:4px">${totalSold} unit${totalSold !== 1 ? 's' : ''} sold</div>
+          </div>
+        </div>
+        ${renderVariant('NGP', 'Non-Gold-Plated', 'inv-dot-ngp')}
+        ${renderVariant('GP', '18K Gold-Plated', 'inv-dot-gp')}
+      </div>`;
+    }
+
+    // Legacy product — single card
     const inv = inventoryData[p.id] || {};
     const qty = inv.inventoryQuantity ?? 20;
     const cs  = inv.comingSoon ?? false;
     const sku = inv.sku ?? '';
     const threshold = inv.lowStockThreshold ?? 10;
     const chip = invChip(qty, cs, threshold);
-    const sold = soldMap[p.id] || 0;
     return `
     <div class="inv-card">
       <div class="inv-card-header">
@@ -1398,7 +1444,7 @@ function renderInventory() {
         <div>
           <div class="inv-card-name">${p.name}</div>
           <div class="inv-card-collection">${p.collection}</div>
-          <div style="font-size:10px;color:var(--grey);margin-top:4px">${sold} unit${sold!==1?'s':''} sold</div>
+          <div style="font-size:10px;color:var(--grey);margin-top:4px">${totalSold} unit${totalSold !== 1 ? 's' : ''} sold</div>
         </div>
       </div>
       <div class="inv-row">
@@ -1407,27 +1453,20 @@ function renderInventory() {
       </div>
       <div class="inv-row">
         <span class="inv-row-label">Available Qty</span>
-        <input type="number" class="inv-qty-input" id="invQty-${p.id}"
-          value="${qty}" min="0" max="9999"
-          oninput="updateInvChip('${p.id}')">
+        <input type="number" class="inv-qty-input" id="invQty-${p.id}" value="${qty}" min="0" max="9999" oninput="updateInvChip('${p.id}')">
       </div>
       <div class="inv-row">
         <span class="inv-row-label">Low Stock Alert</span>
-        <input type="number" class="inv-qty-input" id="invThreshold-${p.id}"
-          value="${threshold}" min="1" max="999" title="Show 'Limited' badge when stock falls at or below this number"
-          oninput="updateInvChip('${p.id}')">
+        <input type="number" class="inv-qty-input" id="invThreshold-${p.id}" value="${threshold}" min="1" max="999" oninput="updateInvChip('${p.id}')">
       </div>
       <div class="inv-row">
         <span class="inv-row-label">SKU</span>
-        <input type="text" class="inv-qty-input" id="invSku-${p.id}"
-          value="${sku}" placeholder="e.g. SUN-NOIR-001"
-          style="width:140px;font-family:'Courier New',monospace;font-size:11px">
+        <input type="text" class="inv-qty-input" id="invSku-${p.id}" value="${sku}" placeholder="e.g. SUN-NOIR-001" style="width:140px;font-family:'Courier New',monospace;font-size:11px">
       </div>
       <div class="inv-row">
         <span class="inv-row-label">Coming Soon</span>
         <label class="inv-toggle">
-          <input type="checkbox" id="invCs-${p.id}" ${cs ? 'checked' : ''}
-            onchange="updateInvChip('${p.id}')">
+          <input type="checkbox" id="invCs-${p.id}" ${cs ? 'checked' : ''} onchange="updateInvChip('${p.id}')">
           <span class="inv-toggle-slider"></span>
         </label>
         <span class="inv-coming-label" style="font-size:10px;color:var(--grey)">Hides stock, disables purchase</span>
@@ -1496,7 +1535,13 @@ async function saveInventory(productId) {
 function renderProducts() {
   const orders = getOrders();
   const soldMap = {};
-  orders.forEach(o=>(o.items||[]).forEach(it=>{soldMap[it.productId]=(soldMap[it.productId]||0)+it.qty;}));
+  orders.forEach(o => (o.items || []).forEach(it => {
+    soldMap[it.productId] = (soldMap[it.productId] || 0) + it.qty;
+    if (it.finish) {
+      const vk = it.productId + '-' + (it.finish === 'Gold-Plated' ? 'GP' : 'NGP');
+      soldMap[vk] = (soldMap[vk] || 0) + it.qty;
+    }
+  }));
 
   const q = (document.getElementById('productSearch')?.value||'').toLowerCase();
   const priceF = document.getElementById('priceFilter')?.value||'';
@@ -1514,29 +1559,45 @@ function renderProducts() {
   }
 
   tbody.innerHTML = filtered.map(p => {
-    const inv = inventoryData[p.id] || {};
-    const qty = inv.inventoryQuantity ?? 20;
-    const cs  = inv.comingSoon ?? false;
-    const threshold = inv.lowStockThreshold ?? 10;
-    const chip = invChip(qty, cs, threshold);
-    const sold = soldMap[p.id] || 0;
-    return `
-    <tr onclick="openProductPanel('${p.id}')">
-      <td style="padding:8px 12px">
-        <img src="${p.img}" style="width:52px;height:66px;object-fit:cover;object-position:top center;display:block">
-      </td>
-      <td>
-        <div class="td-name" style="margin-bottom:2px">${p.name}</div>
-        <div style="font-size:10px;color:var(--grey);letter-spacing:1px;text-transform:uppercase">${p.collection}</div>
-      </td>
-      <td><span class="prod-slug-chip">${p.id}</span></td>
-      <td class="td-amount">EGP ${fmt(p.price)}</td>
-      <td><span class="inv-chip ${chip.type}">${chip.label}</span></td>
-      <td style="color:var(--grey)">${sold} unit${sold!==1?'s':''}</td>
-      <td onclick="event.stopPropagation()">
-        <button class="btn btn-ghost btn-sm" onclick="openProductPanel('${p.id}')">View</button>
-      </td>
-    </tr>`;
+    const num = p.id.replace('sunnys-product-', '');
+    const base = 'SNS-0' + num;
+    const totalSold = soldMap[p.id] || 0;
+
+    const variantRow = (suffix, label, dotClass, priceVal) => {
+      const key = p.id + '-' + suffix;
+      const inv = inventoryData[key] || {};
+      const qty = inv.inventoryQuantity ?? 20;
+      const cs = inv.comingSoon ?? false;
+      const threshold = inv.lowStockThreshold ?? 10;
+      const chip = invChip(qty, cs, threshold);
+      const sold = soldMap[key] || 0;
+      const isNGP = suffix === 'NGP';
+      return `
+      <tr onclick="openProductPanel('${p.id}')" style="${isNGP ? '' : 'background:rgba(198,161,91,.03)'}">
+        ${isNGP ? `<td style="padding:8px 12px" rowspan="2"><img src="${p.img}" style="width:52px;height:66px;object-fit:cover;object-position:top center;display:block"></td>
+        <td rowspan="2" style="vertical-align:top;padding-top:16px">
+          <div class="td-name" style="margin-bottom:2px">${p.name}</div>
+          <div style="font-size:10px;color:var(--grey);letter-spacing:1px;text-transform:uppercase">${p.collection}</div>
+          <div style="font-size:10px;color:var(--grey);margin-top:4px">${totalSold} total sold</div>
+        </td>` : ''}
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="${dotClass}" style="width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block;${suffix==='GP'?'background:var(--gold);border:1.5px solid #B89040':'background:#D1CFC9;border:1.5px solid #9A978E'}"></span>
+            <span style="font-size:10px;font-weight:600;letter-spacing:.5px">${label}</span>
+            <span style="font-family:'Courier New',monospace;font-size:10px;color:var(--gold);margin-left:4px">${base}-${suffix}</span>
+          </div>
+        </td>
+        <td class="td-amount">EGP ${fmt(priceVal)}</td>
+        <td><span class="inv-chip ${chip.type}">${chip.label}</span></td>
+        <td style="color:var(--grey)">${sold} unit${sold!==1?'s':''}</td>
+        <td onclick="event.stopPropagation()">
+          ${isNGP ? `<button class="btn btn-ghost btn-sm" onclick="openProductPanel('${p.id}')">View</button>` : ''}
+        </td>
+      </tr>`;
+    };
+
+    return variantRow('NGP', 'Non-Gold-Plated', 'ngp-dot', p.price) +
+           variantRow('GP',  '18K Gold-Plated',  'gp-dot',  p.price + 800);
   }).join('');
 }
 
@@ -1569,9 +1630,39 @@ function openProductPanel(productId) {
         <div class="detail-field"><div class="detail-field-label">Display Name</div><div class="detail-field-value">${p.name}</div></div>
         <div class="detail-field"><div class="detail-field-label">Slug / URL ID</div><div class="detail-field-value" style="font-family:'Courier New',monospace;font-size:12px">${p.id}</div></div>
         <div class="detail-field"><div class="detail-field-label">Collection</div><div class="detail-field-value">${p.collection}</div></div>
-        <div class="detail-field"><div class="detail-field-label">Price</div><div class="detail-field-value">EGP ${fmt(p.price)}</div></div>
-        <div class="detail-field"><div class="detail-field-label">Stock Status</div><div class="detail-field-value"><span class="inv-chip ${chip.type}">${chip.label}</span></div></div>
-        <div class="detail-field"><div class="detail-field-label">Units Sold</div><div class="detail-field-value">${sold} unit${sold!==1?'s':''}</div></div>
+        <div class="detail-field"><div class="detail-field-label">Units Sold (total)</div><div class="detail-field-value">${sold} unit${sold!==1?'s':''}</div></div>
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-sec-title">Variants — Finish &amp; Pricing</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        ${(()=>{
+          const num = p.id.replace('sunnys-product-','');
+          const base = 'SNS-0'+num;
+          return ['NGP','GP'].map(sfx => {
+            const key = p.id+'-'+sfx;
+            const vi = inventoryData[key]||{};
+            const vq = vi.inventoryQuantity??20;
+            const vc = vi.comingSoon??false;
+            const vt = vi.lowStockThreshold??10;
+            const vc2 = invChip(vq,vc,vt);
+            const vsold = orders.reduce((s,o)=>s+(o.items||[]).filter(it=>it.productId===productId&&it.finish===(sfx==='GP'?'Gold-Plated':'Non-Gold-Plated')).reduce((a,it)=>a+it.qty,0),0);
+            const isGP = sfx==='GP';
+            return `<div style="border:1px solid var(--border);padding:16px;background:${isGP?'rgba(198,161,91,.04)':'var(--bg)'}">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                <span style="width:9px;height:9px;border-radius:50%;flex-shrink:0;display:inline-block;${isGP?'background:var(--gold);border:1.5px solid #B89040':'background:#D1CFC9;border:1.5px solid #9A978E'}"></span>
+                <span style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase">${isGP?'18K Gold-Plated':'Non-Gold-Plated'}</span>
+              </div>
+              <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--gold);margin-bottom:10px">${base}-${sfx}</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--grey)">Price</span><span style="font-weight:500">EGP ${fmt(isGP?p.price+800:p.price)}</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--grey)">Status</span><span class="inv-chip ${vc2.type}" style="padding:2px 8px">${vc2.label}</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--grey)">In Stock</span><span style="font-weight:500">${vq}</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--grey)">Units Sold</span><span style="font-weight:500">${vsold}</span></div>
+              </div>
+            </div>`;
+          }).join('');
+        })()}
       </div>
     </div>
 

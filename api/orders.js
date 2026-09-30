@@ -100,6 +100,30 @@ async function checkRateLimit(req) {
   }
 }
 
+// ── Catalog SKU mapping ────────────────────────────────────────────────────────
+// Mirrors the mapping in tracking.js. Both must stay in sync with sunnys-meta-catalog.csv.
+// Non-Gold-Plated → -NGP suffix; Gold-Plated (18K) → -GP suffix.
+const CATALOG_SKU_MAP = {
+  'sunnys-product-11': 'SNS-011',
+  'sunnys-product-12': 'SNS-012',
+  'sunnys-product-14': 'SNS-014',
+  'sunnys-product-15': 'SNS-015',
+  'sunnys-product-16': 'SNS-016',
+  'sunnys-product-17': 'SNS-017',
+  'sunnys-product-18': 'SNS-018',
+  'sunnys-product-19': 'SNS-019',
+  'sunnys-product-20': 'SNS-020',
+  'sunnys-product-21': 'SNS-021',
+  'sunnys-product-22': 'SNS-022',
+  'sunnys-product-23': 'SNS-023',
+  'sunnys-product-24': 'SNS-024',
+};
+function catalogSku(productId, finish) {
+  const base = CATALOG_SKU_MAP[productId];
+  if (!base) return productId;
+  return base + (finish === 'Gold-Plated' ? '-GP' : '-NGP');
+}
+
 // ── Authoritative product catalog ─────────────────────────────────────────────
 // Must match admin.html PRODUCTS_DB exactly. To change a price:
 //   1. Update the price here;
@@ -131,6 +155,9 @@ const PRODUCTS = new Map([
   ['sunnys-product-19', { name: 'The Olive Aura',      price: 2200, collection: 'Core Collection' }],
   ['sunnys-product-20', { name: 'The Hazel',           price: 1800, collection: 'Core Collection' }],
   ['sunnys-product-21', { name: 'The Astrelle',        price: 1800, collection: 'Core Collection' }],
+  ['sunnys-product-22', { name: 'The Aviara Emerelle', price: 1800, collection: 'Core Collection' }],
+  ['sunnys-product-23', { name: 'The Aruoya',          price: 1800, collection: 'Core Collection' }],
+  ['sunnys-product-24', { name: 'The Aviara Rosie',    price: 1800, collection: 'Core Collection' }],
 ]);
 
 // Shipping destinations and costs.
@@ -215,12 +242,14 @@ function validateOrder(body) {
     if (qty < 1 || qty > 10) { errors.push(`invalid_qty:${item.productId}`); continue; }
     totalQty += qty;
     if (totalQty > 20) { errors.push('total_qty_exceeded'); break; }
+    const finish = item.finish === 'Gold-Plated' ? 'Gold-Plated' : 'Non-Gold-Plated';
     validatedItems.push({
       productId:  item.productId,
       name:       product.name,
       collection: product.collection,
       price:      product.price,
       qty,
+      finish,
       image: typeof item.image === 'string' ? item.image.slice(0, 500) : '',
     });
     recalcSubtotal += product.price * qty;
@@ -336,8 +365,8 @@ async function fireMetaCAPI(db, orderId, total, items, req) {
       custom_data:      {
         value:        total,     // server-recalculated — matches browser order.total
         currency:     'EGP',
-        content_ids:  items.map(i => i.productId),
-        contents:     items.map(i => ({ id: String(i.productId), quantity: Number(i.qty), item_price: Number(i.price) })),
+        content_ids:  items.map(i => catalogSku(i.productId, i.finish)),
+        contents:     items.map(i => ({ id: catalogSku(i.productId, i.finish), quantity: Number(i.qty), item_price: Number(i.price) })),
         content_type: 'product',
         num_items:    items.reduce((s, i) => s + i.qty, 0),
         order_id:     orderId,

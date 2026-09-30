@@ -175,7 +175,210 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 
 .pd-note { font-size: 13px; font-weight: 400; color: #444; line-height: 1.7; padding: 20px; background: var(--cream-2); border-left: 2px solid var(--gold); }
 
+/* ── Plating selector ── */
+.plating-selector { margin: 0 0 32px; }
+.plating-selector-intro { margin-bottom: 16px; }
+.plating-selector-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px;
+}
+.plating-selector-sub {
+  font-size: 13px; font-weight: 300; color: #777; line-height: 1.65;
+}
+.plating-options { display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.plating-option {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  cursor: pointer; background: none; border: none; padding: 0;
+}
+.plating-swatch-wrap {
+  width: 64px; height: 64px; border-radius: 50%; overflow: hidden;
+  border: 2px solid transparent; transition: border-color .2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+}
+.plating-option[aria-pressed="true"] .plating-swatch-wrap {
+  border-color: var(--gold);
+}
+.plating-swatch {
+  width: 100%; height: 100%; border-radius: 50%;
+}
+.plating-swatch.swatch-gold {
+  background: radial-gradient(circle at 35% 35%, #f0d98c, #c8960c 45%, #8a6000 100%);
+}
+.plating-swatch.swatch-silver {
+  background: radial-gradient(circle at 35% 35%, #c9a84c, #8a6010 45%, #4a3800 100%);
+}
+.plating-name {
+  font-size: 11px; font-weight: 500; letter-spacing: .3px; color: var(--black);
+  text-align: center;
+}
+.plating-option[aria-pressed="true"] .plating-name { color: var(--gold); }
+
+/* ── Mobile sticky bar ── */
+.sticky-buy-bar {
+  display: none;
+}
+@media (max-width: 700px) {
+  .sticky-buy-bar {
+    display: block;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 300;
+    background: var(--cream);
+    border-top: 1px solid rgba(198,161,91,.2);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 -4px 24px rgba(198,161,91,.1);
+  }
+  .sticky-buy-bar.visible { transform: translateY(0); }
+  .sticky-bar-main {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px 16px; gap: 12px;
+  }
+  .sticky-bar-name {
+    font-family: var(--fd); font-size: 18px; font-weight: 400;
+    color: var(--black); letter-spacing: -.02em; line-height: 1.1;
+  }
+  .sticky-bar-price { font-family: var(--fb); font-size: 12px; color: #888; margin-top: 4px; letter-spacing: .02em; }
+  .sticky-bar-price strong { color: var(--black); font-weight: 500; font-size: 13px; }
+  .sticky-bar-btn {
+    background: var(--gold); color: #fff; border: none; cursor: pointer;
+    padding: 13px 22px; border-radius: 2px;
+    font-family: var(--fb); font-size: 11px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    transition: background .2s, opacity .2s;
+  }
+  .sticky-bar-btn:active { opacity: .85; }
+  .sticky-bar-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+}
+
+/* ── Feature strip (UV400 / gold-plated / 4 ways) ── */
+.pd-features {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  background: var(--cream);
+  border-top: 1px solid rgba(198,161,91,.15);
+  border-bottom: 1px solid rgba(198,161,91,.15);
+}
+.pd-feature {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 28px 20px;
+  border-right: 1px solid rgba(198,161,91,.12);
+}
+.pd-feature:last-child { border-right: none; }
+.pd-feature-icon {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid rgba(198,161,91,.28);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.pd-feature-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.pd-feature-label {
+  font-size: 11px; font-weight: 500; letter-spacing: .2px; color: var(--black);
+  text-align: center; line-height: 1.55;
+}
+@media (max-width: 480px) {
+  .pd-feature { padding: 20px 12px; }
+  .pd-feature-label { font-size: 10px; }
+}
+
+/* ── Info + accordion section ── */
+.pd-info-section {
+  display: grid; grid-template-columns: 38% 1fr;
+  border-top: 1px solid rgba(198,161,91,.15);
+  background: var(--cream);
+}
+.pd-info-left {
+  padding: 80px 56px 80px 80px;
+  border-right: 1px solid rgba(198,161,91,.12);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.pd-info-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 22px;
+}
+.pd-info-title {
+  font-family: var(--fd); font-size: clamp(36px, 3.8vw, 56px); font-weight: 400;
+  letter-spacing: -0.03em; color: var(--black); line-height: 1.1; margin: 0 0 20px;
+}
+.pd-info-title em { font-style: italic; color: var(--gold); font-weight: 400; }
+.pd-info-sub { font-size: 14px; font-weight: 300; color: #999; line-height: 1.75; }
+.pd-info-right {}
+.pd-acc { border-bottom: 1px solid rgba(198,161,91,.15); }
+.pd-acc:first-child { border-top: 1px solid rgba(198,161,91,.15); }
+.pd-acc-hd {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 48px; background: none; border: none; cursor: pointer; text-align: left;
+  font-size: 16px; font-weight: 400; color: var(--black); transition: color .2s;
+}
+.pd-acc-hd.is-open { color: var(--gold); }
+.pd-acc-icon { font-size: 20px; font-weight: 300; line-height: 1; color: #aaa; flex-shrink: 0; }
+.pd-acc-hd.is-open .pd-acc-icon { color: var(--gold); }
+.pd-acc-body { padding: 0 48px 32px; }
+.pd-spec-table {}
+.pd-spec-row {
+  display: flex; align-items: baseline; gap: 28px;
+  padding: 13px 0; border-bottom: 1px solid rgba(198,161,91,.08);
+}
+.pd-spec-row:last-child { border-bottom: none; }
+.pd-spec-key { font-size: 13px; font-weight: 400; color: var(--gold); min-width: 80px; flex-shrink: 0; }
+.pd-spec-v { font-size: 14px; font-weight: 300; color: var(--black); line-height: 1.6; }
+.pd-spec-note { margin-top: 14px; font-size: 12px; font-style: italic; color: #aaa; line-height: 1.65; }
+.pd-spec-chain-block { padding: 13px 0; border-bottom: 1px solid rgba(198,161,91,.08); }
+.pd-spec-chain-label { font-size: 13px; font-weight: 400; color: var(--gold); margin-bottom: 12px; }
+.pd-spec-chain-sub { display: flex; align-items: baseline; gap: 20px; padding: 8px 0 8px 12px; border-left: 2px solid rgba(198,161,91,.18); margin-bottom: 8px; }
+.pd-spec-chain-sub:last-child { margin-bottom: 0; }
+.pd-spec-chain-sub-key { font-size: 11px; font-weight: 500; letter-spacing: .4px; color: var(--gold); min-width: 120px; flex-shrink: 0; opacity: .85; }
+.pd-spec-chain-sub-v { font-size: 13px; font-weight: 300; color: var(--black); line-height: 1.65; }
+.pd-acc-text { font-size: 14px; font-weight: 300; color: #5a5a5a; line-height: 1.75; margin-bottom: 18px; }
+.pd-acc-text:last-child { margin-bottom: 0; }
+@media (max-width: 1024px) {
+  .pd-info-section { grid-template-columns: 1fr; }
+  .pd-info-left { padding: 52px 40px; border-right: none; border-bottom: 1px solid rgba(198,161,91,.12); }
+  .pd-acc-hd { padding: 20px 28px; }
+  .pd-acc-body { padding: 0 28px 24px; }
+}
+@media (max-width: 700px) {
+  .pd-info-left { padding: 44px 20px; }
+  .pd-acc-hd { padding: 18px 20px; font-size: 15px; }
+  .pd-acc-body { padding: 0 20px 22px; }
+}
+
 /* ── FOOTER ── */
+/* ── Shop CTA Banner ── */
+.shop-cta-banner {
+  background: var(--black);
+  padding: 120px 80px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 0;
+}
+.shop-cta-line1 {
+  font-family: var(--fd); font-size: clamp(42px, 6vw, 80px); font-weight: 400;
+  color: #fff; letter-spacing: -0.03em; line-height: 1.0; margin-bottom: 4px;
+}
+.shop-cta-line2 {
+  font-family: var(--fd); font-size: clamp(42px, 6vw, 80px); font-weight: 400;
+  font-style: italic; color: var(--gold); letter-spacing: -0.02em; line-height: 1.0;
+  margin-bottom: 56px;
+}
+.shop-cta-btn {
+  display: inline-flex; align-items: center; gap: 16px;
+  padding: 18px 40px; border: 1px solid rgba(198,161,91,.5);
+  font-family: var(--fb); font-size: 11px; font-weight: 500;
+  letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,.85);
+  text-decoration: none; background: none;
+  transition: border-color .25s, color .25s, gap .25s;
+}
+.shop-cta-btn:hover { border-color: var(--gold); color: var(--gold); gap: 22px; }
+.shop-cta-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+@media (max-width: 900px) { .shop-cta-banner { padding: 96px 40px; } }
+@media (max-width: 600px) {
+  .shop-cta-banner { padding: 80px 28px 100px; }
+}
+@media (max-width: 700px) {
+  /* Extra bottom padding so sticky buy bar doesn't cover button */
+  .shop-cta-banner { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+}
+
 .pd-footer { border-top: 1px solid rgba(198,161,91,.12); padding: 48px 80px; display: flex; align-items: center; justify-content: space-between; }
 .pd-footer-brand { font-family: var(--fd); font-size: 13px; font-weight: 400; letter-spacing: .5px; color: var(--grey); }
 .pd-footer-back a { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); transition: gap .2s; }
@@ -250,6 +453,486 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
 .stone-name { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--black); text-align: center; transition: color .2s; }
 .stone-option[aria-pressed="true"] .stone-name { color: var(--gold); }
 @media (max-width: 700px) { .stone-selector { margin: 16px 0 22px; } .stone-thumb-wrap { width: 60px; height: 60px; } }
+
+/* ═══════════════════════════════════════════════════════════════
+   ENRICHMENT SECTIONS — shared, reusable across all product pages
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── In-page secondary nav ── */
+.pd-subnav {
+  display: flex; border-top: 1px solid rgba(198,161,91,.14);
+  border-bottom: 1px solid rgba(198,161,91,.14);
+  padding: 0 80px; overflow-x: auto; scrollbar-width: none;
+}
+.pd-subnav::-webkit-scrollbar { display: none; }
+.pd-subnav a {
+  font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--grey); padding: 17px 24px 15px; border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: color .2s, border-color .2s; display: inline-block;
+}
+.pd-subnav a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── Shared section wrapper ── */
+.pd-enrich { padding: 96px 80px; border-top: 1px solid rgba(198,161,91,.12); }
+.pd-enrich-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 18px;
+}
+.pd-enrich-heading {
+  font-family: var(--fd); font-size: clamp(34px, 4vw, 54px); font-weight: 400;
+  letter-spacing: -0.025em; color: var(--black); margin-bottom: 16px; line-height: 1.05;
+}
+.pd-enrich-sub {
+  font-size: 15px; font-weight: 300; color: #666; line-height: 1.8; max-width: 520px;
+}
+
+/* ── Four ways to wear v2 ── */
+.ways-v2-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 40px; margin-bottom: 36px; flex-wrap: wrap;
+}
+.ways-v2-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+}
+.ways-v2-title {
+  font-family: var(--fd); font-size: clamp(34px, 5vw, 62px); font-weight: 400;
+  letter-spacing: -0.03em; color: var(--black); line-height: 1.05; margin: 0;
+}
+.ways-v2-title em { font-style: italic; color: var(--gold); font-weight: 400; }
+.ways-v2-tagline {
+  font-size: 14px; font-weight: 300; color: #888; line-height: 1.75;
+  text-align: right; max-width: 260px; padding-top: 10px; flex-shrink: 0;
+}
+.ways-v2-thumbs {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid rgba(198,161,91,.12);
+}
+.ways-v2-thumb { cursor: pointer; }
+.ways-v2-thumb-img-wrap {
+  aspect-ratio: 4/3; background: var(--cream-2); overflow: hidden;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.ways-v2-thumb-img-wrap img {
+  width: 100%; height: 100%; object-fit: contain; object-position: center center;
+  transition: opacity .3s;
+}
+.ways-v2-thumb:not(.active) .ways-v2-thumb-img-wrap img { opacity: .65; }
+.ways-v2-thumb:hover .ways-v2-thumb-img-wrap img { opacity: 1; }
+.ways-v2-thumb-img-ph {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px; color: rgba(198,161,91,.38);
+}
+.ways-v2-thumb-img-ph svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1; }
+.ways-v2-thumb-num {
+  position: absolute; top: 10px; left: 12px;
+  font-family: var(--fd); font-size: 13px; font-weight: 400; color: #fff;
+  letter-spacing: .02em; text-shadow: 0 1px 4px rgba(0,0,0,.35);
+}
+.ways-v2-thumb-label {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 10px 11px; margin: 0 1px;
+  border-bottom: 2px solid transparent; transition: border-color .25s;
+}
+.ways-v2-thumb.active .ways-v2-thumb-label { border-bottom-color: var(--gold); }
+.ways-v2-label-text { font-size: 11px; font-weight: 500; letter-spacing: .3px; color: var(--black); }
+.ways-v2-toggle { font-size: 18px; font-weight: 300; color: var(--grey); line-height: 1; }
+.ways-v2-thumb.active .ways-v2-toggle { color: var(--gold); }
+.ways-v2-panel {
+  display: grid; grid-template-columns: 58% 1fr;
+  background: var(--cream-2);
+}
+.ways-v2-panel-img {
+  position: relative; overflow: hidden; background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 480px;
+}
+.ways-v2-panel-img img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
+  position: absolute; inset: 0;
+}
+.ways-v2-panel-img-ph {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; color: rgba(198,161,91,.35); width: 100%;
+}
+.ways-v2-panel-img-ph svg { width: 48px; height: 48px; stroke: currentColor; fill: none; stroke-width: .8; }
+.ways-v2-panel-img-ph span { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+.ways-v2-counter {
+  position: absolute; bottom: 18px; left: 22px;
+  font-size: 11px; font-weight: 400; color: rgba(255,255,255,.8); letter-spacing: .5px;
+  text-shadow: 0 1px 4px rgba(0,0,0,.4); z-index: 1;
+}
+.ways-v2-body {
+  padding: 44px 44px 36px; display: flex; flex-direction: column;
+}
+.ways-v2-body-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+}
+.ways-v2-body-title {
+  font-family: var(--fd); font-size: clamp(26px, 2.8vw, 40px); font-weight: 400;
+  letter-spacing: -0.025em; color: var(--black); line-height: 1.1; margin-bottom: 14px;
+}
+.ways-v2-body-desc { font-size: 14px; font-weight: 300; color: #5a5a5a; line-height: 1.85; flex: 1; }
+.ways-v2-divider { width: 100%; height: 1px; background: rgba(198,161,91,.15); margin: 22px 0 18px; }
+.ways-v2-detail-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--grey); margin-bottom: 7px;
+}
+.ways-v2-detail-text { font-size: 13px; font-weight: 300; color: #5a5a5a; line-height: 1.75; }
+.ways-v2-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(198,161,91,.12);
+}
+.ways-v2-guide { font-size: 10px; font-weight: 400; color: rgba(198,161,91,.55); font-style: italic; }
+.ways-v2-arrows { display: flex; gap: 8px; }
+.ways-v2-arrow {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(198,161,91,.3); background: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: var(--black);
+  transition: background .2s, border-color .2s, color .2s;
+}
+.ways-v2-arrow:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+.ways-v2-arrow svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 900px) {
+  .ways-v2-panel { grid-template-columns: 1fr; }
+  .ways-v2-panel-img { min-height: unset; aspect-ratio: 4/5; }
+  .ways-v2-panel-img img { object-fit: cover; object-position: center 15%; }
+  .ways-v2-body { padding: 28px 24px; }
+}
+@media (max-width: 700px) {
+  .ways-v2-header { flex-direction: column; gap: 10px; }
+  .ways-v2-tagline { text-align: left; max-width: 100%; padding-top: 0; }
+  .ways-v2-thumbs { grid-template-columns: repeat(2, 1fr); }
+  .pd-enrich { overflow: hidden; }
+}
+
+/* ── Gemstone story ── */
+.gem-strip {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px; margin-top: 52px; background: rgba(23,23,23,.05);
+}
+.gem-card { background: var(--cream); padding: 40px 34px 44px; }
+.gem-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(198,161,91,.28);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 28px;
+}
+.gem-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.4; }
+.gem-name {
+  font-family: var(--fd); font-size: 28px; font-weight: 400; font-style: italic;
+  color: var(--black); letter-spacing: -0.01em; margin-bottom: 10px;
+}
+.gem-tags {
+  font-size: 9px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.gem-body { font-size: 14px; font-weight: 300; color: #5a5a5a; line-height: 1.85; }
+.gem-note {
+  margin-top: 36px; padding: 20px 24px;
+  background: var(--cream-2); border-left: 2px solid rgba(198,161,91,.3);
+  font-size: 12px; font-weight: 400; color: #777; line-height: 1.7; font-style: italic;
+}
+
+/* ── Gemstone feature image ── */
+.gem-feature-wrap {
+  display: flex; justify-content: center;
+  padding: 0 80px 80px;
+}
+.gem-feature-frame {
+  position: relative;
+  border-radius: 24px;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(198,161,91,1) 0%, rgba(240,215,140,0.7) 40%, rgba(198,161,91,0.5) 60%, rgba(212,175,95,1) 100%);
+  box-shadow:
+    0 0 0 8px rgba(198,161,91,0.07),
+    0 24px 64px rgba(198,161,91,0.2),
+    0 8px 24px rgba(0,0,0,0.1);
+  max-width: 720px; width: 100%;
+}
+.gem-feature-frame img {
+  width: 100%; height: auto; display: block;
+  border-radius: 22px;
+}
+@media (max-width: 900px) { .gem-feature-wrap { padding: 0 40px 64px; } }
+@media (max-width: 700px) { .gem-feature-wrap { padding: 0 20px 52px; } .gem-feature-frame { border-radius: 16px; } .gem-feature-frame img { border-radius: 14px; } }
+
+/* ── Atelier gallery ── */
+/* ── Atelier section — dark editorial ── */
+#atelier {
+  background: #1c1c14; color: #e8e0d0;
+  padding: 80px 100px;
+}
+.atelier-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 40px; margin-bottom: 52px; flex-wrap: wrap;
+}
+.atelier-header-left {}
+.atelier-header-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+}
+.atelier-header-title {
+  font-family: var(--fd); font-size: clamp(34px, 4.5vw, 58px); font-weight: 400;
+  letter-spacing: -0.03em; color: #e8e0d0; line-height: 1.05; margin: 0;
+}
+.atelier-header-title em { font-style: italic; color: var(--gold); font-weight: 400; }
+.atelier-header-tagline {
+  font-size: 14px; font-weight: 300; color: rgba(232,224,208,.45); line-height: 1.75;
+  text-align: right; max-width: 240px; padding-top: 10px; flex-shrink: 0;
+}
+.atelier-tabs {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid rgba(198,161,91,.18); border-bottom: 1px solid rgba(198,161,91,.18);
+  overflow-x: auto; scrollbar-width: none; margin-bottom: 0;
+}
+.atelier-tabs::-webkit-scrollbar { display: none; }
+.atelier-tab {
+  padding: 18px 0; display: flex; align-items: center; gap: 14px;
+  font-family: var(--fb); font-size: 11px; font-weight: 500;
+  letter-spacing: .3px; color: rgba(232,224,208,.45);
+  background: none; border: none; border-right: 1px solid rgba(198,161,91,.12);
+  cursor: pointer; white-space: nowrap; padding-left: 24px;
+  transition: background .2s, color .2s;
+}
+.atelier-tab:last-child { border-right: none; }
+.atelier-tab-num {
+  font-family: var(--fd); font-size: 13px; font-weight: 400;
+  color: rgba(198,161,91,.5); flex-shrink: 0;
+}
+.atelier-tab.active { background: #2a2a1e; color: #e8e0d0; }
+.atelier-tab.active .atelier-tab-num { color: var(--gold); }
+.atelier-tab:hover:not(.active) { background: rgba(255,255,255,.03); color: rgba(232,224,208,.75); }
+.atelier-panels { background: transparent; }
+.atelier-panel { display: none; }
+.atelier-panel.active { display: grid; grid-template-columns: 58% 1fr; align-items: stretch; }
+.atelier-panel-img {
+  background: #111108; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.atelier-panel-img img {
+  width: 100%; height: 100%; object-fit: cover; cursor: zoom-in;
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+}
+.atelier-panel-img:hover img { transform: scale(1.04); }
+.atelier-panel-img-ph {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; width: 100%; height: 100%; color: rgba(198,161,91,.28);
+}
+.atelier-panel-img-ph svg { width: 38px; height: 38px; stroke: currentColor; fill: none; stroke-width: 1; }
+.atelier-panel-img-ph span { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+.btn-explore-closer {
+  position: absolute; bottom: 20px; left: 20px;
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px;
+  background: rgba(23,23,15,.75); backdrop-filter: blur(8px);
+  border: 1px solid rgba(198,161,91,.25); color: rgba(232,224,208,.85);
+  font-family: var(--fb); font-size: 10px; font-weight: 500; letter-spacing: 1px;
+  cursor: pointer; transition: background .2s, color .2s;
+}
+.btn-explore-closer:hover { background: rgba(40,40,28,.9); color: #fff; }
+.btn-explore-closer svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.atelier-panel-body {
+  padding: 52px 48px; display: flex; flex-direction: column; justify-content: space-between;
+  background: #1c1c14;
+}
+.atelier-panel-num {
+  font-family: var(--fd); font-size: 56px; font-weight: 400; color: var(--gold);
+  letter-spacing: -0.04em; line-height: 1; margin-bottom: 28px;
+  display: flex; align-items: baseline; gap: 10px;
+}
+.atelier-panel-num-total {
+  font-family: var(--fb); font-size: 12px; font-weight: 300; color: rgba(232,224,208,.35);
+  letter-spacing: .5px;
+}
+.atelier-panel-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+}
+.atelier-panel-title {
+  font-family: var(--fd); font-size: clamp(26px, 2.8vw, 40px); font-weight: 400;
+  letter-spacing: -0.025em; color: #e8e0d0; margin-bottom: 18px; line-height: 1.1;
+}
+.atelier-panel-desc { font-size: 14px; font-weight: 300; color: rgba(232,224,208,.55); line-height: 1.85; }
+.btn-view-detail {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 32px;
+  padding: 14px 28px; background: none;
+  border: 1px solid rgba(198,161,91,.4); color: rgba(232,224,208,.8);
+  font-family: var(--fb); font-size: 10px; font-weight: 500; letter-spacing: 1.5px;
+  text-transform: uppercase; cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+  align-self: flex-start;
+}
+.btn-view-detail:hover { border-color: var(--gold); color: #e8e0d0; background: rgba(198,161,91,.08); }
+.btn-view-detail svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.atelier-panel-caption {
+  margin-top: auto; padding-top: 28px;
+  font-size: 10px; font-weight: 400; color: rgba(232,224,208,.3);
+  font-style: italic;
+}
+
+/* ── Lightbox ── */
+.pd-lightbox {
+  position: fixed; inset: 0; z-index: 20000;
+  background: rgba(23,23,23,.93); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.pd-lightbox.open { opacity: 1; pointer-events: all; }
+.pd-lightbox-inner {
+  max-width: 88vw; max-height: 88vh;
+  transform: scale(.94); transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.pd-lightbox.open .pd-lightbox-inner { transform: scale(1); }
+.pd-lightbox-inner img { max-width: 88vw; max-height: 88vh; object-fit: contain; display: block; }
+.pd-lightbox-close {
+  position: absolute; top: 20px; right: 24px; width: 44px; height: 44px;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,.65); transition: color .2s;
+}
+.pd-lightbox-close:hover { color: #fff; }
+.pd-lightbox-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+
+/* ── The Muse ── */
+.muse-section {
+  padding: 100px 80px 96px;
+  border-top: 1px solid rgba(198,161,91,.12);
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.muse-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 3.5px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+}
+.muse-heading {
+  font-family: var(--fd); font-size: clamp(30px, 3.6vw, 48px); font-weight: 400;
+  letter-spacing: -0.025em; color: var(--black); margin-bottom: 14px; line-height: 1.05;
+}
+.muse-sub {
+  font-size: 14px; font-weight: 300; color: #888; line-height: 1.75;
+  max-width: 400px; margin-bottom: 60px;
+}
+.muse-portrait-wrap {
+  position: relative;
+  width: clamp(220px, 28vw, 340px);
+  border-radius: 4px;
+  padding: 2px;
+  background: linear-gradient(160deg,
+    rgba(198,161,91,0.9) 0%,
+    rgba(240,215,140,0.5) 40%,
+    rgba(198,161,91,0.3) 60%,
+    rgba(212,175,95,0.85) 100%
+  );
+  box-shadow:
+    0 0 0 6px rgba(198,161,91,.06),
+    0 20px 60px rgba(198,161,91,.14),
+    0 6px 20px rgba(0,0,0,.08);
+  margin-bottom: 36px;
+}
+.muse-portrait-inner {
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--cream-2);
+}
+.muse-portrait-inner img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.muse-name {
+  font-family: var(--fd); font-size: clamp(22px, 2.4vw, 32px); font-weight: 400;
+  letter-spacing: -0.015em; color: var(--black); margin-bottom: 10px;
+}
+.muse-title {
+  font-size: 11px; font-weight: 400; letter-spacing: 2px;
+  color: var(--gold); text-transform: uppercase; font-style: italic;
+}
+.muse-divider {
+  width: 40px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 28px auto 0;
+}
+@media (max-width: 900px) {
+  .muse-section { padding: 80px 40px 80px; }
+}
+@media (max-width: 600px) {
+  .muse-section { padding: 64px 24px 64px; }
+  .muse-portrait-wrap { width: clamp(180px, 68vw, 280px); }
+}
+
+/* ── You may also like ── */
+.ymal-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; margin-top: 48px; background: rgba(23,23,23,.05);
+}
+.ymal-card { background: var(--cream); cursor: pointer; transition: background .2s; }
+.ymal-card:hover { background: var(--cream-2); }
+.ymal-card-img { aspect-ratio: 4/5; overflow: hidden; background: var(--cream-2); }
+.ymal-card-img img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center top;
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+}
+.ymal-card:hover .ymal-card-img img { transform: scale(1.04); }
+.ymal-card-info { padding: 20px 22px 28px; }
+.ymal-eyebrow { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.ymal-name { font-family: var(--fd); font-size: 22px; font-weight: 400; letter-spacing: -0.01em; color: var(--black); margin-bottom: 10px; }
+.ymal-price { display: flex; align-items: baseline; gap: 8px; }
+.ymal-price-orig { font-size: 13px; font-weight: 300; color: var(--grey); text-decoration: line-through; }
+.ymal-price-cur { font-size: 16px; font-weight: 400; color: var(--black); }
+.ymal-link {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); transition: gap .2s;
+}
+.ymal-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ymal-card:hover .ymal-link { gap: 10px; }
+.ymal-footer { margin-top: 44px; padding-bottom: 16px; text-align: center; }
+.btn-shop-all {
+  display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px;
+  background: none; border: 1.5px solid rgba(198,161,91,.4); color: var(--gold);
+  font-family: var(--fb); font-size: 10px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase; text-decoration: none;
+  transition: border-color .2s, color .2s;
+}
+.btn-shop-all:hover { border-color: var(--gold); color: var(--black); }
+.btn-shop-all svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* ── Responsive — enrichment ── */
+@media (max-width: 1200px) {
+  .pd-enrich { padding: 80px 40px; }
+  .pd-subnav { padding: 0 40px; }
+  #atelier { padding: 72px 40px; }
+  .atelier-panel-body { padding: 40px 36px; }
+}
+@media (max-width: 1024px) {
+  .pd-enrich { padding: 64px 28px; }
+  .pd-subnav { padding: 0 28px; }
+  #atelier { padding: 60px 28px; }
+  .atelier-panel.active { grid-template-columns: 55% 1fr; }
+  .atelier-panel-body { padding: 36px 32px; }
+  .atelier-panel-num { font-size: 44px; }
+}
+@media (max-width: 800px) {
+  .atelier-tabs { grid-template-columns: repeat(2, 1fr); }
+  .atelier-panel.active { grid-template-columns: 1fr; }
+  .atelier-panel-img { aspect-ratio: 4/3; }
+  .atelier-panel-body { padding: 32px 24px 36px; }
+  .atelier-header { flex-direction: column; gap: 12px; }
+  .atelier-header-tagline { text-align: left; max-width: 100%; }
+}
+@media (max-width: 700px) {
+  .pd-enrich { padding: 52px 20px; }
+  .pd-subnav { padding: 0 20px; }
+  #atelier { padding: 52px 20px; }
+  .gem-strip { grid-template-columns: 1fr; }
+  .atelier-tab { padding: 14px 16px; font-size: 10px; }
+  .ymal-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) { .ymal-grid { grid-template-columns: 1fr; } }
 </style>
 <script src="tracking.js"></script>
 <!-- Meta Pixel 1788781122137161 -->
@@ -339,6 +1022,28 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
         </div>
       </div>
 
+      <!-- PLATING SELECTOR -->
+      <div class="plating-selector">
+        <div class="plating-selector-intro">
+          <div class="plating-selector-label">Chain Finish</div>
+          <div class="plating-selector-sub">Choose the finish that speaks to you — pure brilliance in 18K gold, or the refined warmth of gold-tone stainless steel.</div>
+        </div>
+        <div class="plating-options">
+          <button class="plating-option" data-finish="Non-Gold-Plated" aria-pressed="true" onclick="selectFinish(this)">
+            <div class="plating-swatch-wrap">
+              <div class="plating-swatch swatch-silver"></div>
+            </div>
+            <span class="plating-name">Non-Gold-Plated</span>
+          </button>
+          <button class="plating-option" data-finish="Gold-Plated" aria-pressed="false" onclick="selectFinish(this)">
+            <div class="plating-swatch-wrap">
+              <div class="plating-swatch swatch-gold"></div>
+            </div>
+            <span class="plating-name">Gold-Plated</span>
+          </button>
+        </div>
+      </div>
+
       <div class="pd-ctas">
         <button class="btn-cart" id="btnCart">
           <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -347,77 +1052,430 @@ button { font-family: var(--fb); cursor: pointer; border: none; }
         <button class="btn-buy" id="btnBuy">Buy Now</button>
       </div>
 
-      <div class="pd-divider"></div>
-
-      <div class="pd-specs-label">Specifications</div>
-      <div class="specs-grid">
-        <div class="spec-card">
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
-          </div>
-          <div class="spec-title">Frame</div>
-          <div class="spec-val" id="specFrame">—</div>
-        </div>
-        <div class="spec-card">
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20.188 10.934c.326.327.326.923 0 1.25L12 21.25l-8.188-9.066c-.326-.327-.326-.923 0-1.25L12 2.75l8.188 8.184z"/></svg>
-          </div>
-          <div class="spec-title">Lens</div>
-          <div class="spec-val" id="specLens">—</div>
-        </div>
-
-        <div class="spec-card">
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          </div>
-          <div class="spec-title">Gemstone</div>
-          <div class="spec-val" id="specGemstone">—</div>
-        </div>
-        <div class="spec-card">
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24"><path d="M2 12c0 0 4-6 10-6s10 6 10 6-4 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2"/><path d="M12 6V2M12 22v-4"/></svg>
-          </div>
-          <div class="spec-title">Chain Temple</div>
-          <div class="spec-val" id="specChain">—</div>
-        </div>
-        <div class="spec-card" id="specAuraCard" style="grid-column: 1 / -1;">
-          <div class="spec-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-          </div>
-          <div class="spec-title">Aura</div>
-          <div class="spec-val" id="specAura"></div>
-        </div>
-      </div>
     </div>
 
-    <!-- RIGHT: shipping + returns -->
-    <div class="pd-right">
-      <div class="pd-section-title">Shipping</div>
-      <div class="shipping-rows">
-        <div class="shipping-row">
-          <div class="shipping-icon">
-            <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          </div>
-          <div class="shipping-text">
-            <div class="shipping-title">Standard Delivery</div>
-            <div class="shipping-sub">5–7 business days</div>
-          </div>
-        </div>
-      </div>
+    <!-- right col intentionally empty — details in pd-info-section below -->
+    <div class="pd-right"></div>
+  </div>
 
-      <div class="pd-section-title">Returns &amp; Exchange</div>
-      <div class="returns-rows">
-        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">10-Minute Try-On Experience</strong><br>Take up to 10 minutes to try your Sunny's upon delivery and ensure they are the perfect fit.</span></div>
-        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">Instant Return at Delivery</strong><br>If they're not the right match, simply return them to the courier on the spot.</span></div>
-        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">Original Condition Required</strong><br>Items must remain unworn, unscratched, and returned with all original packaging and accessories.</span></div>
-        <div class="return-item"><span class="return-item-text"><strong style="font-weight:500;color:var(--black)">Hassle-Free Luxury Shopping</strong><br>Experience the confidence of shopping from home with our curated try-before-you-keep service.</span></div>
+  <!-- FEATURE STRIP -->
+  <div class="pd-features">
+    <div class="pd-feature">
+      <div class="pd-feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
       </div>
-
-      <div class="pd-note">
-        Kindly note that returns or exchanges cannot be accommodated once the courier has left your doorstep. We appreciate your understanding.
+      <span class="pd-feature-label">UV400 lenses</span>
+    </div>
+    <div class="pd-feature">
+      <div class="pd-feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="3" x2="6" y2="9"/><line x1="12" y1="3" x2="18" y2="9"/></svg>
       </div>
+      <span class="pd-feature-label">18K gold-plated caps</span>
+    </div>
+    <div class="pd-feature">
+      <div class="pd-feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+      </div>
+      <span class="pd-feature-label">Four ways to wear</span>
     </div>
   </div>
+
+  <!-- SPECS + INFO ACCORDION -->
+  <section class="pd-info-section">
+    <div class="pd-info-left">
+      <div class="pd-info-eyebrow">Made to be worn</div>
+      <h2 class="pd-info-title">Considered,<br><em>in every way.</em></h2>
+      <p class="pd-info-sub">All the details before<br>you make it yours.</p>
+    </div>
+    <div class="pd-info-right">
+
+      <!-- Accordion 1: Materials & specs (open by default) -->
+      <div class="pd-acc">
+        <button class="pd-acc-hd is-open" data-target="accSpecsBody">
+          Materials &amp; specifications <span class="pd-acc-icon">×</span>
+        </button>
+        <div class="pd-acc-body" id="accSpecsBody">
+          <div class="pd-spec-table">
+            <div class="pd-spec-row">
+              <span class="pd-spec-key">Frame</span>
+              <span class="pd-spec-v" id="specFrame">—</span>
+            </div>
+            <div class="pd-spec-row">
+              <span class="pd-spec-key">Lenses</span>
+              <span class="pd-spec-v" id="specLens">—</span>
+            </div>
+            <div class="pd-spec-chain-block">
+              <div class="pd-spec-chain-label">Chain</div>
+              <div class="pd-spec-chain-sub">
+                <span class="pd-spec-chain-sub-key">Non-Gold-Plated</span>
+                <span class="pd-spec-chain-sub-v">Braided stainless chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance</span>
+              </div>
+              <div class="pd-spec-chain-sub">
+                <span class="pd-spec-chain-sub-key">Gold-Plated</span>
+                <span class="pd-spec-chain-sub-v">Braided chain temples plated in 18-karat gold, delivering a warm luminous finish with the look of fine jewellery and long-lasting radiance</span>
+              </div>
+            </div>
+            <div class="pd-spec-row">
+              <span class="pd-spec-key">Pendants</span>
+              <span class="pd-spec-v" id="specGemstone">—</span>
+            </div>
+          </div>
+          <div id="specAuraCard" style="display:none">
+            <p class="pd-spec-note" id="specAura"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion 2: Delivery & payment (closed by default) -->
+      <div class="pd-acc">
+        <button class="pd-acc-hd" data-target="accDeliveryBody">
+          Delivery &amp; payment <span class="pd-acc-icon">+</span>
+        </button>
+        <div class="pd-acc-body" id="accDeliveryBody" hidden>
+          <p class="pd-acc-text"><strong style="font-weight:500;color:var(--black)">Standard Delivery</strong> — 5–7 business days</p>
+          <p class="pd-acc-text">We accept all major credit cards and Apple Pay at checkout. Payment is processed securely at the time of order.</p>
+        </div>
+      </div>
+
+      <!-- Accordion 3: Try-on, returns & exchange (open by default) -->
+      <div class="pd-acc">
+        <button class="pd-acc-hd is-open" data-target="accReturnsBody">
+          Try-on, returns &amp; exchange <span class="pd-acc-icon">×</span>
+        </button>
+        <div class="pd-acc-body" id="accReturnsBody">
+          <p class="pd-acc-text"><strong style="font-weight:500;color:var(--black)">10-Minute Try-On Experience</strong><br>Take up to 10 minutes to try your Sunny's upon delivery and ensure they are the perfect fit.</p>
+          <p class="pd-acc-text"><strong style="font-weight:500;color:var(--black)">Instant Return at Delivery</strong><br>If they're not the right match, simply return them to the courier on the spot.</p>
+          <p class="pd-acc-text"><strong style="font-weight:500;color:var(--black)">Original Condition Required</strong><br>Items must remain unworn, unscratched, and returned with all original packaging and accessories.</p>
+          <p class="pd-acc-text"><strong style="font-weight:500;color:var(--black)">Hassle-Free Luxury Shopping</strong><br>Experience the confidence of shopping from home with our curated try-before-you-keep service.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- IN-PAGE SUBNAV -->
+  <nav class="pd-subnav" aria-label="Page sections">
+    <a href="#waysToWear">Ways to wear</a>
+    <a href="#atelier">The maison</a>
+    <a href="#gemstoneStory">The gemstones</a>
+    <a href="#youMayLike">You may also like</a>
+  </nav>
+
+  <!-- FOUR WAYS TO WEAR -->
+  <section class="pd-enrich" id="waysToWear">
+
+    <div class="ways-v2-header">
+      <div>
+        <div class="ways-v2-eyebrow">One pair. Four possibilities.</div>
+        <h2 class="ways-v2-title">Wear it <em>your way.</em></h2>
+      </div>
+      <p class="ways-v2-tagline">From sunlit moments to after-hours.<br>Your Sunny's moves with you.</p>
+    </div>
+
+    <!-- thumbnail strip -->
+    <div class="ways-v2-thumbs" id="wtwThumbs">
+
+      <div class="ways-v2-thumb active" data-way="0">
+        <div class="ways-v2-thumb-img-wrap" id="wtwThumb1">
+          <div class="ways-v2-thumb-img-ph">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span class="ways-v2-thumb-num">01</span>
+        </div>
+        <div class="ways-v2-thumb-label">
+          <span class="ways-v2-label-text">On your eyes</span>
+          <span class="ways-v2-toggle">×</span>
+        </div>
+      </div>
+
+      <div class="ways-v2-thumb" data-way="1">
+        <div class="ways-v2-thumb-img-wrap" id="wtwThumb2">
+          <div class="ways-v2-thumb-img-ph">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span class="ways-v2-thumb-num">02</span>
+        </div>
+        <div class="ways-v2-thumb-label">
+          <span class="ways-v2-label-text">On your head</span>
+          <span class="ways-v2-toggle">+</span>
+        </div>
+      </div>
+
+      <div class="ways-v2-thumb" data-way="2">
+        <div class="ways-v2-thumb-img-wrap" id="wtwThumb3">
+          <div class="ways-v2-thumb-img-ph">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span class="ways-v2-thumb-num">03</span>
+        </div>
+        <div class="ways-v2-thumb-label">
+          <span class="ways-v2-label-text">On your chest</span>
+          <span class="ways-v2-toggle">+</span>
+        </div>
+      </div>
+
+      <div class="ways-v2-thumb" data-way="3">
+        <div class="ways-v2-thumb-img-wrap" id="wtwThumb4">
+          <div class="ways-v2-thumb-img-ph">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span class="ways-v2-thumb-num">04</span>
+        </div>
+        <div class="ways-v2-thumb-label">
+          <span class="ways-v2-label-text">As a necklace</span>
+          <span class="ways-v2-toggle">+</span>
+        </div>
+      </div>
+
+    </div><!-- /thumbs -->
+
+    <!-- expanded panel -->
+    <div class="ways-v2-panel">
+      <div class="ways-v2-panel-img" id="waysLargeImg">
+        <div class="ways-v2-panel-img-ph" id="waysLargePh">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Photo coming soon</span>
+        </div>
+        <div class="ways-v2-counter" id="waysCounter">01 / 04</div>
+      </div>
+      <div class="ways-v2-body">
+        <div>
+          <div class="ways-v2-body-eyebrow" id="waysEyebrow">ON YOUR EYES</div>
+          <div class="ways-v2-body-title" id="waysTitle">Born to be worn.</div>
+          <div class="ways-v2-body-desc" id="waysDesc">Wear the frame on your eyes, with the jewellery chains resting naturally behind your ears. Sun protection elevated to an art form.</div>
+        </div>
+        <div>
+          <div class="ways-v2-divider"></div>
+          <div class="ways-v2-detail-label">THE LITTLE DETAIL</div>
+          <div class="ways-v2-detail-text" id="waysDetail">Adjust the chain temples gently for a secure, comfortable fit.</div>
+          <div class="ways-v2-footer">
+            <span class="ways-v2-guide">Sunny's collection styling guide</span>
+            <div class="ways-v2-arrows">
+              <button class="ways-v2-arrow" id="waysPrev" aria-label="Previous">
+                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button class="ways-v2-arrow" id="waysNext" aria-label="Next">
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- GEMSTONE STORY -->
+  <section class="pd-enrich" id="gemstoneStory" style="padding-top:0">
+    <div class="pd-enrich-eyebrow">The Collection</div>
+    <h2 class="pd-enrich-heading">The gemstone story</h2>
+    <p class="pd-enrich-sub">Citrine, quartz, and amethyst — natural gemstones, each with its own distinctive character and symbolic aura.</p>
+
+    <!-- GEMSTONE FEATURE IMAGE -->
+    <div class="gem-feature-wrap" style="padding: 32px 0 48px;">
+      <div class="gem-feature-frame">
+        <img src="brand_assets/brand%20assets%206/gems-feature.png" alt="Sunny's natural gemstone pendants with 18K gold-plated caps" />
+      </div>
+    </div>
+
+    <div class="gem-strip">
+      <div class="gem-card">
+        <div class="gem-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="gem-name">Citrine</div>
+        <div class="gem-tags">Warmth · Optimism · Radiance</div>
+        <div class="gem-body">Citrine carries the warmth of the sun — a stone of optimism and radiant energy. Worn close, it invites light into every moment.</div>
+      </div>
+      <div class="gem-card">
+        <div class="gem-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <div class="gem-name">Quartz</div>
+        <div class="gem-tags">Clarity · Harmony · Light</div>
+        <div class="gem-body">Clear and luminous, quartz is a stone of clarity and harmony. Its translucency catches the light in endlessly shifting, graceful ways.</div>
+      </div>
+      <div class="gem-card">
+        <div class="gem-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 3l6 18 6-18M3 9h18"/></svg>
+        </div>
+        <div class="gem-name">Amethyst</div>
+        <div class="gem-tags">Calm · Balance · Quiet Elegance</div>
+        <div class="gem-body">Amethyst speaks in whispers — a stone of calm and quiet elegance, bringing a sense of balance and poise to everything it adorns.</div>
+      </div>
+    </div>
+    <div class="gem-note">Gemstones vary by model. Each stone is individually selected and hand-set, making every piece uniquely yours.</div>
+  </section>
+
+  <!-- ATELIER DETAIL GALLERY -->
+  <section id="atelier">
+
+    <div class="atelier-header">
+      <div class="atelier-header-left">
+        <div class="atelier-header-eyebrow">The Sunny's Maison</div>
+        <h2 class="atelier-header-title">Beauty is in <em>the details.</em></h2>
+      </div>
+      <p class="atelier-header-tagline">A closer look at the materials<br>that make your pair yours.</p>
+    </div>
+
+    <div id="atelierGallery">
+      <div class="atelier-tabs" role="tablist" aria-label="Detail gallery">
+        <button class="atelier-tab active" role="tab" aria-selected="true"  aria-controls="atelierLens"      data-panel="atelierLens">
+          <span class="atelier-tab-num">01</span> The lenses
+        </button>
+        <button class="atelier-tab"        role="tab" aria-selected="false" aria-controls="atelierConnector" data-panel="atelierConnector">
+          <span class="atelier-tab-num">02</span> The connector
+        </button>
+        <button class="atelier-tab"        role="tab" aria-selected="false" aria-controls="atelierChain"     data-panel="atelierChain">
+          <span class="atelier-tab-num">03</span> The chain
+        </button>
+        <button class="atelier-tab"        role="tab" aria-selected="false" aria-controls="atelierGemstone"  data-panel="atelierGemstone">
+          <span class="atelier-tab-num">04</span> The gemstone
+        </button>
+      </div>
+      <div class="atelier-panels">
+
+        <div class="atelier-panel active" id="atelierLens" role="tabpanel">
+          <div class="atelier-panel-img" id="galLens">
+            <div class="atelier-panel-img-ph">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <span>Photo coming soon</span>
+            </div>
+            <button class="btn-explore-closer" onclick="var img=this.parentElement.querySelector('img');if(img)openLightbox(img.src)">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              Explore closer
+            </button>
+          </div>
+          <div class="atelier-panel-body">
+            <div>
+              <div class="atelier-panel-num">01 <span class="atelier-panel-num-total">/ 04</span></div>
+              <div class="atelier-panel-eyebrow">Polycarbonate · UV400 Protection</div>
+              <div class="atelier-panel-title">Made for light, built for life.</div>
+              <div class="atelier-panel-desc">Each lens is precision-cut from optical-grade polycarbonate. Colour is added in gradient layers — never printed — for depth that shifts with the sun.</div>
+              <button class="btn-view-detail" onclick="var img=this.closest('.atelier-panel').querySelector('img');if(img)openLightbox(img.src)">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                View the detail
+              </button>
+            </div>
+            <div class="atelier-panel-caption">Original Sunny's maison photograph.</div>
+          </div>
+        </div>
+
+        <div class="atelier-panel" id="atelierConnector" role="tabpanel">
+          <div class="atelier-panel-img" id="galConnector">
+            <div class="atelier-panel-img-ph">
+              <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <span>Photo coming soon</span>
+            </div>
+            <button class="btn-explore-closer" onclick="var img=this.parentElement.querySelector('img');if(img)openLightbox(img.src)">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              Explore closer
+            </button>
+          </div>
+          <div class="atelier-panel-body">
+            <div>
+              <div class="atelier-panel-num">02 <span class="atelier-panel-num-total">/ 04</span></div>
+              <div class="atelier-panel-eyebrow">Gold-Plated Zinc Alloy</div>
+              <div class="atelier-panel-title">Where frame meets chain.</div>
+              <div class="atelier-panel-desc">A sculptural ring connector bridges the lens frame to the jewellery chain. Cast in gold-plated zinc alloy, it carries both structure and elegance in equal measure.</div>
+              <button class="btn-view-detail" onclick="var img=this.closest('.atelier-panel').querySelector('img');if(img)openLightbox(img.src)">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                View the detail
+              </button>
+            </div>
+            <div class="atelier-panel-caption">Original Sunny's maison photograph.</div>
+          </div>
+        </div>
+
+        <div class="atelier-panel" id="atelierChain" role="tabpanel">
+          <div class="atelier-panel-img" id="galChain">
+            <div class="atelier-panel-img-ph">
+              <svg viewBox="0 0 24 24"><path d="M2 12h20M7 12a5 5 0 0 0 5-5M7 12a5 5 0 0 0 5 5M17 12a5 5 0 1 1-5-5M17 12a5 5 0 1 1-5 5"/></svg>
+              <span>Photo coming soon</span>
+            </div>
+            <button class="btn-explore-closer" onclick="var img=this.parentElement.querySelector('img');if(img)openLightbox(img.src)">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              Explore closer
+            </button>
+          </div>
+          <div class="atelier-panel-body">
+            <div>
+              <div class="atelier-panel-num">03 <span class="atelier-panel-num-total">/ 04</span></div>
+              <div class="atelier-panel-eyebrow">18K Gold-Plated · Gold-Tone Stainless</div>
+              <div class="atelier-panel-title">Two chains. One choice.</div>
+              <div class="atelier-panel-desc">Your Sunny's comes in two distinct chain finishes — each crafted with the same care, each with its own character.<br><br><strong style="color:#c8a96e;font-weight:500">Gold-Plated 18K</strong> — a lustrous, warm-toned chain plated in 18-karat gold for a jewellery-grade finish that catches every light.<br><br><strong style="color:#c8a96e;font-weight:500">Gold-Tone Stainless</strong> — a braided chain in a rich gold tone, built for everyday wear with lasting colour and effortless resilience.<br><br>The finish is yours to choose at checkout.</div>
+              <button class="btn-view-detail" onclick="var img=this.closest('.atelier-panel').querySelector('img');if(img)openLightbox(img.src)">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                View the detail
+              </button>
+            </div>
+            <div class="atelier-panel-caption">Original Sunny's maison photograph.</div>
+          </div>
+        </div>
+
+        <div class="atelier-panel" id="atelierGemstone" role="tabpanel">
+          <div class="atelier-panel-img" id="galGemstone">
+            <div class="atelier-panel-img-ph">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span>Photo coming soon</span>
+            </div>
+            <button class="btn-explore-closer" onclick="var img=this.parentElement.querySelector('img');if(img)openLightbox(img.src)">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              Explore closer
+            </button>
+          </div>
+          <div class="atelier-panel-body">
+            <div>
+              <div class="atelier-panel-num">04 <span class="atelier-panel-num-total">/ 04</span></div>
+              <div class="atelier-panel-eyebrow">Natural Semi-Precious Stone</div>
+              <div class="atelier-panel-title">Chosen for its character.</div>
+              <div class="atelier-panel-desc">Each pendant stone is individually sourced. No two are identical — the variations in colour and texture are what make your Sunny's yours alone.</div>
+              <button class="btn-view-detail" onclick="var img=this.closest('.atelier-panel').querySelector('img');if(img)openLightbox(img.src)">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                View the detail
+              </button>
+            </div>
+            <div class="atelier-panel-caption">Original Sunny's maison photograph.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- THE MUSE -->
+  <section class="muse-section" id="theMuse">
+    <div class="muse-eyebrow">The Muse</div>
+    <h2 class="muse-heading">She wears Sunny's</h2>
+    <p class="muse-sub">Celebrities who move with quiet confidence — and the eyewear to match.</p>
+
+    <div class="muse-portrait-wrap">
+      <div class="muse-portrait-inner">
+        <img src="brand_assets/brand%20assets%206/muse-layla.png" alt="Layla El Farouk wearing Sunny's Eyewear" />
+      </div>
+    </div>
+
+    <div class="muse-name">Layla El Farouk</div>
+    <div class="muse-title">Wearing Sunny's</div>
+    <div class="muse-divider"></div>
+  </section>
+
+  <!-- YOU MAY ALSO LIKE -->
+  <section class="pd-enrich" id="youMayLike">
+    <div class="pd-enrich-eyebrow">Explore More</div>
+    <h2 class="pd-enrich-heading">You may also like</h2>
+    <div class="ymal-grid" id="ymalGrid"><!-- populated by JS --></div>
+  </section>
+
+  <!-- SHOP CTA BANNER -->
+  <section class="shop-cta-banner">
+    <div class="shop-cta-line1">Wear Confidence.</div>
+    <div class="shop-cta-line2">Wear Sunny's.</div>
+    <a href="shop.html" class="shop-cta-btn">
+      Shop the Collection
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </section>
 
   <!-- FOOTER -->
   <div class="pd-footer">
@@ -530,8 +1588,9 @@ const PRODUCTS = {
     collection: 'Core Collection',
     price: '2200',
     originalPrice: '3200',
-    img1: 'brand_assets/brand%20assets%202/1E5D59D1-C541-4C32-B169-B6C037499F40.png',
-    img2: 'brand_assets/brand%20assets%202/E1A284CB-62E4-466E-B2C5-79050DF9554E.png',
+    priceNGP: '2000', originalPriceNGP: '3000',
+    img1: 'brand_assets/BA7/1000338042.png',
+    img2: 'brand_assets/BA7/1000338040.png',
     specs: {
       frame:    'Red vintage pilot frame',
       lens:     'Translucent red PC Anti-UV — Polycarbonate, UV400 protection',
@@ -547,8 +1606,9 @@ const PRODUCTS = {
     collection: 'Core Collection',
     price: '2000',
     originalPrice: '3000',
-    img1: 'brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png',
-    img2: 'brand_assets/brand%20assets%202/F7D8666D-B57B-4A8D-813D-10B746BCB3F7.png',
+    priceNGP: '2000', originalPriceNGP: '3000',
+    img1: 'brand_assets/BA7/1000338041.png',
+    img2: 'brand_assets/BA7/1000338039.png',
     specs: {
       frame:    'Green vintage pilot frame',
       lens:     'Translucent green PC Anti-UV — Polycarbonate, UV400 protection',
@@ -598,8 +1658,9 @@ const PRODUCTS = {
     collection: 'Core Collection',
     price: '2200',
     originalPrice: '3200',
-    img1: 'brand_assets/brand%20assets%205/12048E1F-A339-4A02-B408-5AD99B58B50D.png',
-    img2: 'brand_assets/brand%20assets%205/085160AF-5F29-431E-A720-084E38D3E366.png',
+    priceNGP: '2200', originalPriceNGP: '3200',
+    img1: 'brand_assets/brand%20assets%206/E1FEA7AB-D0FC-4FC3-BD22-2282B60FFE1C.png',
+    img2: 'brand_assets/brand%20assets%206/8598DF64-53FA-4EEF-9C1A-E6DFEAB79EED.png',
     specs: {
       frame:    'Sand gold vintage aviator frame',
       lens:     'Dark smoke PC Anti-UV — Polycarbonate, UV400 protection',
@@ -653,12 +1714,11 @@ const PRODUCTS = {
   'sunnys-product-11': {
     name:       'The Sienna',                  // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '2200',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '3200',                      // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/brand%20assets%205/E6F47E09-9835-4662-ABE9-C03BA25753FE.png',
-    img2: 'brand_assets/brand%20assets%205/2A92E64C-F2D4-4411-A8FD-B5F4BFF08655.jpeg',
-    img3: 'brand_assets/brand%20assets%205/FE66DBA9-08FD-4F41-B0F8-6E21B1022B74.png',
-    img4: 'brand_assets/brand%20assets%205/7285C4AD-A4CF-413F-878B-CBE5CA3D0A73.png',
+    price:      '2200',                         // ← GP sale price
+    originalPrice: '3200',                      // ← GP original price (strikethrough)
+    priceNGP: '2400', originalPriceNGP: '3400', // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/B6FAB791-E3A1-4CE5-BBA3-9AACD7C2CFC1.jpeg',
+    img2: 'brand_assets/brand%20assets%206/AEF261ED-7A2E-43BA-9AF0-3CE3E361D563.png',
     specs: {
       frame:    'Brown tortoiseshell front with gold metal detailing — geometric pilot frame',
       lens:     'Warm amber brown PC Anti-UV — Polycarbonate, UV400 protection',
@@ -674,10 +1734,11 @@ const PRODUCTS = {
   'sunnys-product-12': {
     name:       'The Ambré',                   // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '2000',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '3000',                      // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/ba4/2B73842E-BE64-4961-8308-1598094EECDE.png', // ← REPLACE: Product 12 — Main image
-    img2: 'brand_assets/ba4/560313B6-E50D-4333-9233-197D54034C83.png', // ← REPLACE: Product 12 — Detail image
+    price:      '2000',                         // ← GP sale price
+    originalPrice: '3000',                      // ← GP original price (strikethrough)
+    priceNGP: '2000', originalPriceNGP: '3000', // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/E5B2110C-69DE-4802-82B2-0897D9E93B68.png', // ← Product 12 — Main image
+    img2: 'brand_assets/brand%20assets%206/EFA248B8-B14D-43D6-BDBA-08705FA589BD.png', // ← Product 12 — Detail image
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Translucent teal green frame with gold metal detailing — Rounded-square silhouette',
@@ -714,10 +1775,11 @@ const PRODUCTS = {
   'sunnys-product-14': {
     name:       'The Lavande',                 // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '2000',                         // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '3000',                      // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/ba4/B971C461-B582-4FD5-BA0D-4E1C98A2F2EA.png', // ← REPLACE: Product 14 — Main image
-    img2: 'brand_assets/ba4/AB12C5A2-171F-4D41-BC74-1051BFFA0016.png', // ← REPLACE: Product 14 — Detail image
+    price:      '2000',                         // ← GP sale price
+    originalPrice: '3000',                      // ← GP original price (strikethrough)
+    priceNGP: '2000', originalPriceNGP: '3000', // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/33EBA0D7-89E9-4582-8530-79FC30047A28.png', // ← Product 14 — Main image
+    img2: 'brand_assets/brand%20assets%206/A2698FBD-A593-4A00-A525-98143C2B0AD9.png', // ← Product 14 — Detail image
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Transparent crystal frame with gold metal detailing — Rounded-square silhouette',
@@ -738,10 +1800,11 @@ const PRODUCTS = {
   'sunnys-product-15': {
     name:       'The Azurea',                    // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '2000',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '3000',                        // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/brand%20assets%205/574EEF5B-E25E-4F72-865A-51E0ECC3C3CA.png', // ← Product 15 — Main image
-    img2: 'brand_assets/brand%20assets%205/8D77E8FB-20A4-4F53-B5C7-E76E05941430.png', // ← Product 15 — Detail image
+    price:      '2000',                           // ← GP sale price
+    originalPrice: '3000',                        // ← GP original price (strikethrough)
+    priceNGP: '2200', originalPriceNGP: '3200',   // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/E172720D-81DE-4477-9733-A97F98448323.png', // ← Product 15 — Main image
+    img2: 'brand_assets/brand%20assets%206/9822E9D2-F96B-4FA0-88A6-769BBADD7290.png', // ← Product 15 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Translucent deep teal blue geometric pilot frame',
@@ -758,10 +1821,11 @@ const PRODUCTS = {
   'sunnys-product-16': {
     name:       'The Aviara Classic',              // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '2200',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '3200',                        // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/brand%20assets%205/4A97DB95-67A9-479C-9E62-E58D2A08FBBC.png', // ← Product 16 — Main image
-    img2: 'brand_assets/brand%20assets%205/4C6C9FC4-8EE4-4292-9DCE-7259182E3FE2.png', // ← Product 16 — Detail image
+    price:      '2200',                           // ← GP sale price
+    originalPrice: '3200',                        // ← GP original price (strikethrough)
+    priceNGP: '2400', originalPriceNGP: '3400',   // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/IMG_2581.png', // ← Product 16 — Main image
+    img2: 'brand_assets/brand%20assets%206/D13DF80C-03B1-443E-A4EE-8A28B33C80BA.png', // ← Product 16 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Gold metal aviator frame — classic pilot silhouette',
@@ -778,10 +1842,11 @@ const PRODUCTS = {
   'sunnys-product-17': {
     name:       'The Lunelle',                   // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '1800',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '2800',                        // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/brand%20assets%205/DCAEBE5D-1F0B-4454-A379-907BC4FA353C.jpeg', // ← Product 17 — Main image
-    img2: 'brand_assets/brand%20assets%205/IMG_1683.png',                               // ← Product 17 — Detail image
+    price:      '1800',                           // ← GP sale price
+    originalPrice: '2800',                        // ← GP original price (strikethrough)
+    priceNGP: '2000', originalPriceNGP: '3000',   // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/E207561C-7C8F-4FCC-9227-C42174F32580.png', // ← Product 17 — Main image
+    img2: 'brand_assets/brand%20assets%206/74435D30-41FB-4814-AA5D-F4B53A49FBCD.png', // ← Product 17 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Translucent smoky grey vintage oval frame — soft rounded silhouette',
@@ -798,11 +1863,12 @@ const PRODUCTS = {
   'sunnys-product-18': {
     name:       'The Mocha Noir',                // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '2000',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '3000',                        // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/brand%20assets%205/E96F51DF-D269-4AFB-8B23-DBD77C64F952.png',   // ← Product 18 — Main image
-    img2: 'brand_assets/brand%20assets%205/Picsart_26-09-07_12-54-43-058.jpg',           // ← Product 18 — Detail image
-    img3: 'brand_assets/brand%20assets%205/Picsart_26-09-07_12-56-26-093.jpg',           // ← Product 18 — View 3
+    price:      '2000',                           // ← GP sale price
+    originalPrice: '3000',                        // ← GP original price (strikethrough)
+    priceNGP: '2000', originalPriceNGP: '3000',   // ← NGP prices
+    img1: 'brand_assets/BA7/1000338045.png',   // ← Product 18 — Main image
+    img2: 'brand_assets/BA7/1000338083.jpg',  // ← Product 18 — Detail image
+    img3: 'brand_assets/BA7/1000338047.png',  // ← Product 18 — View 3
     specs: {
       frame:    'Black front with brown back — vintage pilot frame',
       lens:     'Smoky grey gradient PC Anti-UV — Polycarbonate, UV400 protection',
@@ -818,10 +1884,11 @@ const PRODUCTS = {
   'sunnys-product-19': {
     name:       'The Olive Aura',                // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '2200',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '3200',                        // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/brand%20assets%205/938ACCA7-2FB5-46E3-8FC4-56B3208EE8F2.jpeg', // ← Product 19 — Main image
-    img2: 'brand_assets/brand%20assets%205/IMG_1948.jpeg',                               // ← Product 19 — Detail image
+    price:      '2200',                           // ← GP sale price
+    originalPrice: '3200',                        // ← GP original price (strikethrough)
+    priceNGP: '2200', originalPriceNGP: '3200',   // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/50A2FC38-8C6F-41F6-BC34-CF01645CAB6B.png', // ← Product 19 — Main image
+    img2: 'brand_assets/brand%20assets%206/4483C0BC-E9F7-4B9B-94A6-B0DC33E0AADC.png', // ← Product 19 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Sand gold vintage aviator frame',
@@ -838,10 +1905,11 @@ const PRODUCTS = {
   'sunnys-product-20': {
     name:       'The Hazel',                     // ← CHANGE PRODUCT NAME HERE
     collection: 'Core Collection',
-    price:      '1800',                           // ← CHANGE SALE PRICE HERE (numbers only, no EGP)
-    originalPrice: '2800',                        // ← CHANGE original price for strikethrough
-    img1: 'brand_assets/brand%20assets%205/C874F117-E201-458B-9701-CF1E365A30E5.png', // ← Product 20 — Main image
-    img2: 'brand_assets/brand%20assets%205/3F107D5F-52DA-4171-8AE2-B6A860B99CFF.png', // ← Product 20 — Detail image
+    price:      '1800',                           // ← GP sale price
+    originalPrice: '2800',                        // ← GP original price (strikethrough)
+    priceNGP: '2000', originalPriceNGP: '3000',   // ← NGP prices
+    img1: 'brand_assets/brand%20assets%206/A3FD3616-652C-43B5-B1FF-FF1209F927BE.png', // ← Product 20 — Main image
+    img2: 'brand_assets/brand%20assets%206/1F8E0596-56F8-43DB-9049-E1AB416B6015.png', // ← Product 20 — Detail image
     // img3: '',                                  // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Translucent warm brown cat-eye frame — sculpted vintage silhouette with gold detailing',
@@ -858,11 +1926,12 @@ const PRODUCTS = {
   'sunnys-product-21': {
     name:       'The Astrelle',                // ← Product name
     collection: 'Core Collection',
-    price:      '1800',                         // ← Sale price (EGP, numbers only)
-    originalPrice: '2800',                      // ← Original price for strikethrough
+    price:      '1800',                         // ← GP sale price
+    originalPrice: '2800',                      // ← GP original price (strikethrough)
+    priceNGP: '2000', originalPriceNGP: '3000', // ← NGP prices
     // ↓ REPLACE EACH PLACEHOLDER WITH THE ACTUAL IMAGE PATH WHEN PHOTOS ARE READY
-    img1: 'brand_assets/ba4/newnew%202.png',
-    img2: 'brand_assets/ba4/newnew1.png',
+    img1: 'brand_assets/brand%20assets%206/75A49BA7-2407-4691-B668-36DD70AD2ED3.png',
+    img2: 'brand_assets/brand%20assets%206/2B70C135-10EE-4DB9-937D-EDAC916188A0.png',
     // img3: '',                                // ← UNCOMMENT & ADD PATH for optional 3rd image
     specs: {
       frame:    'Jet black vintage oval frame — soft rounded silhouette',
@@ -875,23 +1944,105 @@ const PRODUCTS = {
     }
   },
 
+  // PRODUCT 22 — THE AVIARA EMERELLE
+  'sunnys-product-22': {
+    name:       'The Aviara Emerelle',
+    collection: 'Core Collection',
+    price:      '1800',
+    originalPrice: '2800',
+    priceNGP: '2400', originalPriceNGP: '3400',
+    img1: 'brand_assets/brand%20assets%206/091102B1-8B97-4C19-949A-779D5A89EAE8.png',
+    img2: 'brand_assets/brand%20assets%206/51DEC33F-F7B6-45DA-8638-476F3E64ECFF.png',
+    specs: {
+      frame:    'Gold metal aviator frame — classic pilot silhouette',
+      lens:     'Emerald green-to-lime green gradient — Polycarbonate, UV400 protection',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+
+  // PRODUCT 23 — THE ARUOYA
+  'sunnys-product-23': {
+    name:       'The Aruoya',
+    collection: 'Core Collection',
+    price:      '1800',
+    originalPrice: '2800',
+    priceNGP: '2200', originalPriceNGP: '3200',
+    img1: 'brand_assets/brand%20assets%206/6370BDA3-44D5-4E06-A751-E5D1145F81A7.png',
+    img2: 'brand_assets/brand%20assets%206/3D30D86A-7B2C-42CE-A5CC-D91415DBE61F.png',
+    specs: {
+      frame:    'Translucent deep blue geometric pilot frame',
+      lens:     'Light blue to pink gradient — Polycarbonate, UV400 protection',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+
+  // PRODUCT 24 — THE AVIARA ROSIE
+  'sunnys-product-24': {
+    name:       'The Aviara Rosie',
+    collection: 'Core Collection',
+    price:      '1800',
+    originalPrice: '2800',
+    priceNGP: '2400', originalPriceNGP: '3400',
+    img1: 'brand_assets/brand%20assets%206/44D2F002-052C-4282-8CA6-21C3538C0F2F.png',
+    img2: 'brand_assets/brand%20assets%206/347A517D-F910-43ED-B164-491555622AC1.png',
+    specs: {
+      frame:    'Gold metal aviator frame — classic pilot silhouette',
+      lens:     'Blush pink to lemon-lime gradient — Polycarbonate, UV400 protection',
+      uv:       'Category 3',
+      dims:     'Lens XX mm · Bridge XX mm · Temple XXX mm · XX g',
+      gemstone: 'Natural gemstones, left beautifully irregular and individually hand-set in <span class="gold-shine">18K gold-plated caps</span>. Each stone carries its own warm golden tone, organic texture, and distinctive shape.',
+      chain:    'Braided copper chain temples with a luxurious gold-tone finish, inspired by fine jewelry and designed for both comfort and elegance',
+    }
+  },
+
 };
 
 // ── Load product ─────────────────────────────────────────────────────────
 const id = new URLSearchParams(window.location.search).get('p') || 'rose-quartz';
 const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
+
+let selectedFinish = 'Non-Gold-Plated';
+
+function getFinishPrice() {
+  var ngpSale = parseInt(p.priceNGP || p.price);
+  var ngpOrig = p.originalPriceNGP ? parseInt(p.originalPriceNGP) : (p.originalPrice ? parseInt(p.originalPrice) : null);
+  var isGP = (selectedFinish === 'Gold-Plated');
+  return {
+    sale: isGP ? ngpSale + 800 : ngpSale,
+    orig: ngpOrig ? (isGP ? ngpOrig + 800 : ngpOrig) : null
+  };
+}
+
+function updatePriceDisplay() {
+  var fp = getFinishPrice();
+  document.getElementById('pdPrice').textContent = String(fp.sale);
+  var origEl = document.getElementById('pdOrigPrice');
+  if (fp.orig) {
+    origEl.textContent = 'EGP ' + fp.orig.toLocaleString('en-EG');
+    origEl.style.display = 'block';
+  } else {
+    origEl.style.display = 'none';
+  }
+  var stickyPrice = document.getElementById('stickyPrice');
+  if (stickyPrice) {
+    stickyPrice.innerHTML = '<strong>' + fp.sale.toLocaleString() + ' EGP</strong>' +
+      (fp.orig ? ' <s style="font-size:11px;color:#bbb">' + fp.orig.toLocaleString() + '</s>' : '');
+  }
+}
+
 (function loadProduct() {
 
   document.title = p.name + ' — Sunny\'s Eyewear';
   document.getElementById('bcName').textContent     = p.name;
   document.getElementById('pdCollection').textContent = p.collection;
   document.getElementById('pdName').textContent      = p.name;
-  document.getElementById('pdPrice').textContent     = p.price;
-  const origEl = document.getElementById('pdOrigPrice');
-  if (p.originalPrice) {
-    origEl.textContent = 'EGP ' + Number(p.originalPrice).toLocaleString('en-EG');
-    origEl.style.display = 'block';
-  }
+  updatePriceDisplay();
   document.getElementById('pdCharmDesc').style.display = (id === 'celeste') ? 'block' : 'none';
 
   const img1 = document.getElementById('pdImg1');
@@ -916,60 +2067,21 @@ const p  = PRODUCTS[id] || PRODUCTS['rose-quartz'];
   document.getElementById('specFrame').textContent    = p.specs.frame;
   document.getElementById('specLens').textContent     = p.specs.lens;
   document.getElementById('specGemstone').innerHTML = p.specs.gemstone;
-  document.getElementById('specChain').textContent    = p.specs.chain;
   document.getElementById('specAura').innerHTML       = p.specs.aura || '';
   if (!p.specs.aura) document.getElementById('specAuraCard').style.display = 'none';
 })();
 
-// ── Stone variant selector — sunnys-product-11 (The Sienna) only ─────────────
-let selectedStone = 'Natural Citrine';
+const selectedStone = 'Natural Citrine';
 
-function initStoneSelector() {
-  const pdName = document.getElementById('pdName');
-  if (!pdName) return;
-  const sel = document.createElement('div');
-  sel.className = 'stone-selector';
-  sel.id = 'stoneSelector';
-  sel.innerHTML =
-    '<div class="stone-selector-label">Choose Your Stone</div>' +
-    '<div class="stone-options" role="group" aria-label="Necklace-end stone">' +
-      '<button class="stone-option" id="stoneCitrine" type="button"' +
-              ' aria-label="Natural Citrine Gemstone" aria-pressed="true">' +
-        '<div class="stone-thumb-wrap">' +
-          '<img class="stone-thumb" src="brand_assets/brand%20assets%205/citrine-stone.jpg" alt="The Sienna with natural citrine gemstone">' +
-        '</div>' +
-        '<span class="stone-name">Natural Citrine</span>' +
-      '</button>' +
-      '<button class="stone-option" id="stonePearl" type="button"' +
-              ' aria-label="Natural Pearl" aria-pressed="false">' +
-        '<div class="stone-thumb-wrap">' +
-          '<img class="stone-thumb" src="brand_assets/brand%20assets%205/pearl-stone.jpg" alt="The Sienna with natural pearl">' +
-        '</div>' +
-        '<span class="stone-name">Natural Pearl</span>' +
-      '</button>' +
-    '</div>';
-  pdName.insertAdjacentElement('afterend', sel);
-  // Default: Citrine — show img1 + img2, hide img3 + img4
-  document.getElementById('pdImg3Wrap').style.display = 'none';
-  document.getElementById('pdImg4Wrap').style.display = 'none';
-  document.getElementById('stoneCitrine').addEventListener('click', function() { selectStone('Natural Citrine'); });
-  document.getElementById('stonePearl').addEventListener('click', function() { selectStone('Natural Pearl'); });
+function selectFinish(btn) {
+  selectedFinish = btn.dataset.finish;
+  document.querySelectorAll('.plating-option').forEach(function(b) {
+    b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+  });
+  updatePriceDisplay();
 }
 
-function selectStone(stone) {
-  selectedStone = stone;
-  document.getElementById('stoneCitrine').setAttribute('aria-pressed', stone === 'Natural Citrine' ? 'true' : 'false');
-  document.getElementById('stonePearl').setAttribute('aria-pressed', stone === 'Natural Pearl' ? 'true' : 'false');
-  const citrine = stone === 'Natural Citrine';
-  document.getElementById('pdImg1').parentElement.style.display = citrine ? '' : 'none';
-  document.getElementById('pdImg2').parentElement.style.display = citrine ? '' : 'none';
-  document.getElementById('pdImg3Wrap').style.display = citrine ? 'none' : '';
-  document.getElementById('pdImg4Wrap').style.display = citrine ? 'none' : '';
-}
-
-if (id === 'sunnys-product-11') initStoneSelector();
-
-if (window.SunnyTracking) SunnyTracking.viewContent(id, p.name, parseInt(p.price));
+if (window.SunnyTracking) SunnyTracking.viewContent(id, p.name, getFinishPrice().sale, selectedFinish);
 
 // ── Nav scroll ───────────────────────────────────────────────────────────
 const nav = document.getElementById('nav');
@@ -1009,14 +2121,15 @@ document.getElementById('btnCart').addEventListener('click', function() {
   const isSienna = id === 'sunnys-product-11';
   const stone = isSienna ? selectedStone : undefined;
   const cartImage = (isSienna && selectedStone === 'Natural Pearl') ? p.img3 : p.img1;
-  const existing = cart.find(function(i) { return i.productId === id && i.stone === stone; });
+  const existing = cart.find(function(i) { return i.productId === id && i.stone === stone && i.finish === selectedFinish; });
+  const finishPrice = getFinishPrice().sale;
   if (existing) { existing.qty++; } else {
-    const item = { productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: cartImage, qty: 1 };
+    const item = { productId: id, name: p.name, collection: p.collection, price: finishPrice, image: cartImage, qty: 1, finish: selectedFinish };
     if (isSienna) item.stone = stone;
     cart.push(item);
   }
   localStorage.setItem('sunny_cart', JSON.stringify(cart));
-  if (window.SunnyTracking) SunnyTracking.addToCart(id, p.name, parseInt(p.price));
+  if (window.SunnyTracking) SunnyTracking.addToCart(id, p.name, finishPrice, selectedFinish);
   window.location.href = 'cart.html';
 });
 
@@ -1050,11 +2163,260 @@ document.getElementById('btnCart').addEventListener('click', function() {
 document.getElementById('btnBuy').addEventListener('click', function() {
   const isSienna = id === 'sunnys-product-11';
   const cartImage = (isSienna && selectedStone === 'Natural Pearl') ? p.img3 : p.img1;
-  const item = { productId: id, name: p.name, collection: p.collection, price: parseInt(p.price), image: cartImage, qty: 1 };
+  const item = { productId: id, name: p.name, collection: p.collection, price: getFinishPrice().sale, image: cartImage, qty: 1, finish: selectedFinish };
   if (isSienna) item.stone = selectedStone;
   localStorage.setItem('sunny_buynow', JSON.stringify([item]));
   window.location.href = 'checkout.html';
 });
+
+// ══════════════════════════════════════════════════════════════════
+// SHARED IMAGES — add paths here once; appear on every product page
+// ══════════════════════════════════════════════════════════════════
+const SHARED_IMAGES = {
+  waysToWear: {
+    onEyes:     'brand_assets/brand%20assets%206/ways-01.png',
+    onHead:     'brand_assets/brand%20assets%206/ways-02.png',
+    onChest:    'brand_assets/brand%20assets%206/ways-03.png',
+    asNecklace: 'brand_assets/brand%20assets%206/ways-04.png',
+  },
+  atelier: {
+    lens:       'brand_assets/brand%20assets%206/atelier-lens.png',
+    connector:  'brand_assets/brand%20assets%206/atelier-connector.png',
+    chain:      'brand_assets/brand%20assets%206/atelier-chain.png',
+    gemstone:   'brand_assets/brand%20assets%206/atelier-gemstone.png',
+  }
+};
+
+// ── Apply shared images ─────────────────────────────────────────
+(function applySharedImages() {
+  function setAtelier(wrapId, src) {
+    if (!src) return;
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    const ph = wrap.querySelector('.atelier-panel-img-ph');
+    const img = document.createElement('img');
+    img.src = src; img.alt = '';
+    img.addEventListener('click', function() { openLightbox(src); });
+    wrap.insertBefore(img, ph);
+    if (ph) ph.style.display = 'none';
+  }
+  function setThumbImg(thumbId, src) {
+    if (!src) return;
+    var wrap = document.getElementById(thumbId);
+    if (!wrap) return;
+    var ph = wrap.querySelector('.ways-v2-thumb-img-ph');
+    var img = document.createElement('img');
+    img.src = src; img.alt = '';
+    wrap.insertBefore(img, ph);
+    if (ph) ph.style.display = 'none';
+  }
+  setAtelier('galLens',      SHARED_IMAGES.atelier.lens);
+  setAtelier('galConnector', SHARED_IMAGES.atelier.connector);
+  setAtelier('galChain',     SHARED_IMAGES.atelier.chain);
+  setAtelier('galGemstone',  SHARED_IMAGES.atelier.gemstone);
+  setThumbImg('wtwThumb1', SHARED_IMAGES.waysToWear.onEyes);
+  setThumbImg('wtwThumb2', SHARED_IMAGES.waysToWear.onHead);
+  setThumbImg('wtwThumb3', SHARED_IMAGES.waysToWear.onChest);
+  setThumbImg('wtwThumb4', SHARED_IMAGES.waysToWear.asNecklace);
+})();
+
+// ── Ways to Wear v2 interaction ────────────────────────────────
+(function() {
+  var waysData = [
+    {
+      eyebrow: 'ON YOUR EYES',
+      title: 'Born to be worn.',
+      desc: 'Wear the frame on your eyes, with the jewellery chains resting naturally behind your ears. Sun protection elevated to an art form.',
+      detail: 'Adjust the chain temples gently for a secure, comfortable fit.',
+      imgKey: 'onEyes', thumbId: 'wtwThumb1'
+    },
+    {
+      eyebrow: 'ON YOUR HEAD',
+      title: 'Above it all.',
+      desc: 'Push the frames up onto your head and let the chains cascade — effortless elegance between moments, worn like a crown.',
+      detail: 'The chains drape naturally around the face for a composed, elevated look.',
+      imgKey: 'onHead', thumbId: 'wtwThumb2'
+    },
+    {
+      eyebrow: 'ON YOUR CHEST',
+      title: 'Always within reach.',
+      desc: 'Lower the sunglasses onto your chest and let the chain sit around your neck. Your pair stays with you between every sunlit moment.',
+      detail: 'Rest the frame gently against your chest for a natural, editorial drape.',
+      imgKey: 'onChest', thumbId: 'wtwThumb3'
+    },
+    {
+      eyebrow: 'AS A NECKLACE',
+      title: 'Purely jewellery.',
+      desc: 'Drape the chain alone as a necklace and let the gemstone pendant rest at your neckline. Jewellery in its most elemental form.',
+      detail: 'The gemstone pendant naturally finds its resting place at the neckline.',
+      imgKey: 'asNecklace', thumbId: 'wtwThumb4'
+    }
+  ];
+
+  var currentWay = 0;
+  var total = waysData.length;
+
+  var thumbs = document.querySelectorAll('.ways-v2-thumb');
+  var panelImg = document.getElementById('waysLargeImg');
+  var panelPh = document.getElementById('waysLargePh');
+  var counter = document.getElementById('waysCounter');
+  var eyebrow = document.getElementById('waysEyebrow');
+  var titleEl = document.getElementById('waysTitle');
+  var descEl = document.getElementById('waysDesc');
+  var detailEl = document.getElementById('waysDetail');
+  var prevBtn = document.getElementById('waysPrev');
+  var nextBtn = document.getElementById('waysNext');
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function goToWay(idx) {
+    currentWay = ((idx % total) + total) % total;
+    var d = waysData[currentWay];
+
+    /* update thumb states */
+    thumbs.forEach(function(t, i) {
+      var isActive = i === currentWay;
+      t.classList.toggle('active', isActive);
+      var icon = t.querySelector('.ways-v2-toggle');
+      if (icon) icon.textContent = isActive ? '×' : '+';
+    });
+
+    /* update panel content */
+    eyebrow.textContent = d.eyebrow;
+    titleEl.textContent = d.title;
+    descEl.textContent = d.desc;
+    detailEl.textContent = d.detail;
+    counter.textContent = pad(currentWay + 1) + ' / ' + pad(total);
+
+    /* update large image */
+    var existingImg = panelImg.querySelector('img');
+    var src = SHARED_IMAGES.waysToWear[d.imgKey];
+    if (src) {
+      if (!existingImg) {
+        var img = document.createElement('img');
+        img.alt = '';
+        panelImg.insertBefore(img, panelPh);
+      }
+      var imgEl = panelImg.querySelector('img');
+      imgEl.src = src;
+      if (panelPh) panelPh.style.display = 'none';
+      imgEl.style.display = '';
+    } else {
+      if (existingImg) existingImg.style.display = 'none';
+      if (panelPh) panelPh.style.display = '';
+    }
+  }
+
+  /* thumb clicks */
+  thumbs.forEach(function(t) {
+    t.addEventListener('click', function() {
+      goToWay(parseInt(t.dataset.way, 10));
+    });
+  });
+
+  /* arrow nav */
+  if (prevBtn) prevBtn.addEventListener('click', function() { goToWay(currentWay - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function() { goToWay(currentWay + 1); });
+
+  /* init */
+  goToWay(0);
+})();
+
+// ── Atelier tab switching ───────────────────────────────────────
+document.querySelectorAll('.atelier-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.atelier-tab').forEach(function(t) {
+      t.classList.remove('active'); t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.atelier-panel').forEach(function(panel) {
+      panel.classList.remove('active');
+    });
+    tab.classList.add('active'); tab.setAttribute('aria-selected', 'true');
+    var panelEl = document.getElementById(tab.dataset.panel);
+    if (panelEl) panelEl.classList.add('active');
+  });
+});
+
+// ── Atelier button — scroll to gallery ─────────────────────────
+/* btnAtelier removed — section now shows gallery directly */
+
+// ── Info accordion toggle ───────────────────────────────────────
+document.querySelectorAll('.pd-acc-hd').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var body = document.getElementById(btn.dataset.target);
+    if (!body) return;
+    var opening = body.hidden;
+    body.hidden = !opening;
+    btn.classList.toggle('is-open', opening);
+    btn.querySelector('.pd-acc-icon').textContent = opening ? '×' : '+';
+  });
+});
+
+// ── Lightbox ───────────────────────────────────────────────────
+var lightboxEl = document.createElement('div');
+lightboxEl.className = 'pd-lightbox'; lightboxEl.id = 'pdLightbox';
+lightboxEl.innerHTML =
+  '<div class="pd-lightbox-inner"><img id="pdLightboxImg" src="" alt="Detail view"></div>' +
+  '<button class="pd-lightbox-close" aria-label="Close lightbox"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>';
+document.body.appendChild(lightboxEl);
+
+function openLightbox(src) {
+  document.getElementById('pdLightboxImg').src = src;
+  lightboxEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightboxEl.classList.remove('open');
+  document.body.style.overflow = '';
+}
+lightboxEl.querySelector('.pd-lightbox-close').addEventListener('click', closeLightbox);
+lightboxEl.addEventListener('click', function(e) { if (e.target === lightboxEl) closeLightbox(); });
+
+// ── You May Also Like ──────────────────────────────────────────
+(function buildYMAL() {
+  var grid = document.getElementById('ymalGrid');
+  if (!grid) return;
+  var activeIds = [
+    'sunnys-product-11','sunnys-product-12','sunnys-product-14',
+    'sunnys-product-15','sunnys-product-16','sunnys-product-17',
+    'sunnys-product-18','sunnys-product-19','sunnys-product-20',
+    'sunnys-product-21','sunnys-product-22','sunnys-product-23',
+    'sunnys-product-24'
+  ];
+  var entries = Object.entries(PRODUCTS).filter(function(entry) {
+    var pid = entry[0], prod = entry[1];
+    return pid !== id &&
+      activeIds.indexOf(pid) !== -1 &&
+      prod.img1 && !prod.img1.startsWith('data:');
+  });
+  var curIdx = entries.findIndex(function(e) { return e[0] === id; });
+  if (curIdx === -1) curIdx = 0;
+  var picks = [];
+  for (var i = 1; picks.length < 3 && i <= entries.length; i++) {
+    picks.push(entries[(curIdx + i) % entries.length]);
+  }
+  picks.forEach(function(entry) {
+    var pid = entry[0], prod = entry[1];
+    var card = document.createElement('div');
+    card.className = 'ymal-card';
+    card.addEventListener('click', function() {
+      window.location.href = 'product-detail.html?p=' + pid;
+    });
+    var origHtml = prod.originalPrice
+      ? '<span class="ymal-price-orig">EGP ' + Number(prod.originalPrice).toLocaleString('en-EG') + '</span>' : '';
+    card.innerHTML =
+      '<div class="ymal-card-img"><img src="' + prod.img1 + '" alt="' + prod.name + '" loading="lazy"></div>' +
+      '<div class="ymal-card-info">' +
+        '<div class="ymal-eyebrow">' + prod.collection + '</div>' +
+        '<div class="ymal-name">' + prod.name + '</div>' +
+        '<div class="ymal-price">' + origHtml +
+          '<span class="ymal-price-cur">EGP ' + Number(prod.price).toLocaleString('en-EG') + '</span>' +
+        '</div>' +
+        '<div class="ymal-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+})();
 </script>
 
 <script type="module">
@@ -1096,6 +2458,52 @@ if (_pid) {
     }
   } catch(e) { console.warn('[Inventory]',e.message); }
 }
+</script>
+
+<!-- MOBILE STICKY BUY BAR -->
+<div class="sticky-buy-bar" id="stickyBar">
+  <div class="sticky-bar-main">
+    <div class="sticky-bar-info">
+      <div class="sticky-bar-name" id="stickyName">—</div>
+      <div class="sticky-bar-price" id="stickyPrice">—</div>
+    </div>
+    <button class="sticky-bar-btn" id="stickyCartBtn">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Add to Cart
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var bar = document.getElementById('stickyBar');
+  var ctas = document.getElementById('btnCart');
+  if (!bar || !ctas) return;
+
+  // Populate name + price once product data is ready
+  window.addEventListener('load', function() {
+    var nameEl = document.getElementById('pdName');
+    var priceEl = document.getElementById('pdPrice');
+    var origEl = document.getElementById('pdOrigPrice');
+    if (nameEl) document.getElementById('stickyName').textContent = nameEl.textContent;
+    if (priceEl) {
+      var num = parseInt(priceEl.textContent.replace(/[^0-9]/g,''));
+      var formatted = isNaN(num) ? priceEl.textContent : num.toLocaleString() + ' EGP';
+      document.getElementById('stickyPrice').innerHTML = '<strong>' + formatted + '</strong>' + (origEl && origEl.textContent ? ' <s style="font-size:11px;color:#bbb">' + parseInt(origEl.textContent.replace(/[^0-9]/g,'')).toLocaleString() + '</s>' : '');
+    }
+  });
+
+  // Show bar when main CTA scrolls out of view
+  var observer = new IntersectionObserver(function(entries) {
+    bar.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0 });
+  observer.observe(ctas);
+
+  // Wire add to bag button
+  document.getElementById('stickyCartBtn').addEventListener('click', function() {
+    document.getElementById('btnCart').click();
+  });
+})();
 </script>
 </body>
 </html>

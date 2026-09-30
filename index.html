@@ -208,7 +208,7 @@ a { text-decoration: none; color: inherit; }
 }
 .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 56px; }
 .hero-rule { width: 100%; height: 1px; background: rgba(23,23,23,.1); margin-bottom: 32px; }
-.hero-stats { display: flex; gap: 44px; }
+.hero-stats { display: flex; gap: 44px; justify-content: center; text-align: center; }
 .stat-n { font-family: var(--fd); font-size: 34px; font-weight: 400; color: var(--black); line-height: 1; }
 .stat-l { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey); margin-top: 5px; }
 .hero-right { position: relative; }
@@ -265,58 +265,64 @@ a { text-decoration: none; color: inherit; }
 .ft-sep { color: rgba(198,161,91,.5); margin: 0 18px; font-size: 9px; }
 
 /* ── COLLECTIONS ── */
-.collections { padding: 112px 80px; background: var(--cream); }
+.collections { padding: 80px 40px; background: var(--cream); }
 .sec-hdr {
   display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 52px;
+  margin-bottom: 40px;
 }
 .sec-h2 {
   font-family: var(--fd);
-  font-size: clamp(34px, 3.5vw, 58px); font-weight: 400;
+  font-size: clamp(28px, 3vw, 52px); font-weight: 400;
   line-height: 1.05; letter-spacing: -0.02em; margin-top: 10px;
 }
 .sec-h2 em { font-style: italic; color: var(--gold); }
 .coll-grid {
   display: grid;
-  grid-template-columns: 1.55fr 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
-.cc { position: relative; overflow: hidden; cursor: pointer; background: var(--cream-2); }
-.cc:first-child { grid-row: span 2; }
+.cc {
+  position: relative; overflow: hidden; cursor: pointer; background: var(--cream-2);
+  text-decoration: none; display: flex; flex-direction: column;
+  transition: box-shadow .3s ease;
+}
+.cc:hover { box-shadow: 0 6px 28px rgba(23,23,23,.10); }
 .cc-img {
   width: 100%; aspect-ratio: 3/4; object-fit: cover;
-  transition: transform .8s cubic-bezier(.25,.46,.45,.94);
-  display: block;
+  transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+  display: block; flex-shrink: 0;
 }
-.cc:first-child .cc-img { aspect-ratio: unset; height: 100%; min-height: 420px; }
-.cc:hover .cc-img { transform: scale(1.07); }
-.cc-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(23,23,23,.78) 0%, rgba(198,161,91,.06) 55%, transparent 100%);
-  opacity: 0; transition: opacity .4s ease;
-}
-.cc:hover .cc-overlay { opacity: 1; }
+.cc:hover .cc-img { transform: scale(1.05); }
+.cc-overlay { display: none; }
 .cc-info {
-  position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 22px;
-  transform: translateY(10px); opacity: 0;
-  transition: transform .4s ease, opacity .4s ease;
+  position: static; padding: 12px 14px 15px;
+  transform: none; opacity: 1;
+  background: var(--cream-2);
 }
-.cc:hover .cc-info { transform: translateY(0); opacity: 1; }
-.cc-name { font-family: var(--fd); font-size: 24px; font-weight: 400; color: #fff; }
-.cc-sub  { font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-2); margin-top: 4px; }
-.cc-badge {
-  position: absolute; top: 14px; left: 14px;
-  background: var(--gold); color: #fff;
-  font-size: 8px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 2px;
+.cc-name { font-family: var(--fd); font-size: 18px; font-weight: 400; color: var(--black); letter-spacing: -0.01em; }
+.cc-price { display: none; }
+/* Explore tile */
+.cc-explore {
+  background: var(--black); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  cursor: pointer; text-decoration: none; min-height: 180px;
+  transition: background .3s ease;
 }
-.cc-badge.dark { background: var(--black); }
+.cc-explore:hover { background: #222; }
+.cc-explore-label {
+  font-family: var(--fd); font-size: 20px; font-weight: 400; color: #fff;
+  letter-spacing: -0.01em; line-height: 1.2; text-align: center; padding: 0 16px;
+}
+.cc-explore-arrow {
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.cc-explore-arrow svg { width: 13px; height: 13px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── CHAINS ── */
 .chains { display: flex; flex-direction: column; align-items: center; padding: 96px 80px; background: var(--cream-2); }
 .chains-vis { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; width: 100%; max-width: 720px; margin-top: 56px; }
-.chains-vis img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 3px; }
+.chains-vis img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 14px; outline: 3px solid #fff; outline-offset: 4px; box-shadow: 0 0 0 7px rgba(255,255,255,.35), 0 0 28px rgba(255,255,255,.5), 0 4px 24px rgba(0,0,0,.08); }
 .chains-body {
   display: flex; flex-direction: column; align-items: center; text-align: center;
   padding: 0; background: none; max-width: 720px; width: 100%;
@@ -625,10 +631,7 @@ footer { background: var(--black); padding: 72px 80px 0; }
   .chains { padding: 64px 28px; }
   .chains-vis { max-width: 100%; margin-top: 36px; }
   .chains-body { padding: 0 12px; }
-  .collections, .versatility, .products, .testimonials, .instagram, .newsletter { padding: 80px 40px; }
-  .coll-grid { grid-template-columns: 1fr 1fr; }
-  .cc:first-child { grid-row: span 1; }
-  .cc:first-child .cc-img { aspect-ratio: 3/4; height: auto; min-height: unset; }
+  .collections, .versatility, .products, .testimonials, .instagram, .newsletter { padding: 60px 28px; }
   .vers-grid { grid-template-columns: repeat(2,1fr); }
   .prod-grid { grid-template-columns: repeat(2,1fr); }
   .testi-grid { grid-template-columns: 1fr 1fr; }
@@ -641,14 +644,17 @@ footer { background: var(--black); padding: 72px 80px 0; }
   .hero-h1 { font-size: 52px; }
   .hero-stats { gap: 24px; }
   .hero-right { aspect-ratio: 4/5; }
-  .coll-grid { grid-template-columns: 1fr; }
+  .coll-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cc-name { font-size: 15px; }
+  .cc-info { padding: 9px 10px 11px; }
+  .cc-explore-label { font-size: 16px; }
   .vers-grid { grid-template-columns: 1fr 1fr; }
   .prod-grid { grid-template-columns: 1fr 1fr; }
   .testi-grid { grid-template-columns: 1fr; }
   .ig-grid { grid-template-columns: repeat(2,1fr); }
   .foot-top { justify-content: center; }
   .foot-wordmark { font-size: 52px; }
-  .collections, .versatility, .products, .testimonials, .instagram, .newsletter { padding-left: 22px; padding-right: 22px; }
+  .collections, .versatility, .products, .testimonials, .instagram, .newsletter { padding-left: 16px; padding-right: 16px; }
   .hero-left { padding: 38px 22px; }
   footer { padding: 44px 22px 0; }
   .story-content { left: 22px; right: 22px; max-width: none; bottom: 24px; }
@@ -664,6 +670,23 @@ footer { background: var(--black); padding: 72px 80px 0; }
 .pc-inv.limited      { background:rgba(146,64,14,.07);  color:#92400E; }
 .pc-inv.out-of-stock { background:rgba(153,27,27,.07);  color:#991B1B; }
 .pc-inv.coming-soon  { background:rgba(82,82,82,.07);   color:#525252; }
+
+/* ── Feature trust bar ── */
+.feat-bar { background: var(--cream-2); border-top: 1px solid rgba(198,161,91,.15); border-bottom: 1px solid rgba(198,161,91,.15); padding: 28px 40px; }
+.feat-bar-inner { display: flex; align-items: center; justify-content: center; gap: 0; max-width: 900px; margin: 0 auto; }
+.feat-bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 0 20px; }
+.feat-bar-item + .feat-bar-item { border-left: 1px solid rgba(198,161,91,.2); }
+.feat-icon-wrap { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid rgba(198,161,91,.45); display: flex; align-items: center; justify-content: center; background: transparent; }
+.feat-icon-wrap svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.feat-label { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; color: var(--black); text-align: center; line-height: 1.4; }
+@media(max-width:600px){
+  .feat-bar { padding: 22px 16px; }
+  .feat-bar-inner { gap: 0; }
+  .feat-bar-item { padding: 0 10px; gap: 8px; }
+  .feat-icon-wrap { width: 42px; height: 42px; }
+  .feat-icon-wrap svg { width: 18px; height: 18px; }
+  .feat-label { font-size: 10px; }
+}
 </style>
 <script src="tracking.js"></script>
 <!-- Meta Pixel 1788781122137161 -->
@@ -710,10 +733,10 @@ footer { background: var(--black); padding: 72px 80px 0; }
 </aside>
 
 <!-- FLASH SALE TICKER -->
-<div class="flash-ticker" role="marquee" aria-label="Flash Sale — 30% Off End of Season">
+<div class="flash-ticker" role="marquee" aria-label="Flash Sale — Till 30 October 2026 — Shipping to All Egypt">
   <div class="flash-ticker-track">
-    <span class="flash-ticker-item">FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span></span>
-    <span class="flash-ticker-item" aria-hidden="true">FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> 30% OFF <span class="ft-sep">✦</span> END OF SEASON SALE <span class="ft-sep">✦</span></span>
+    <span class="flash-ticker-item">FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span></span>
+    <span class="flash-ticker-item" aria-hidden="true">FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span> FLASH SALE <span class="ft-sep">✦</span> MORE THAN 33% OFF <span class="ft-sep">✦</span> SHIPPING TO ALL EGYPT <span class="ft-sep">✦</span></span>
   </div>
 </div>
 
@@ -815,6 +838,38 @@ footer { background: var(--black); padding: 72px 80px 0; }
   </div>
 </div>
 
+<!-- FEATURE TRUST BAR -->
+<div class="feat-bar">
+  <div class="feat-bar-inner">
+    <div class="feat-bar-item">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+      </div>
+      <span class="feat-label">UV400 lenses</span>
+    </div>
+    <div class="feat-bar-item">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <span class="feat-label">18K gold-plated caps</span>
+    </div>
+    <div class="feat-bar-item">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-4.95"/>
+        </svg>
+      </div>
+      <span class="feat-label">Four ways to wear</span>
+    </div>
+  </div>
+</div>
+
 <!-- FEATURED COLLECTIONS -->
 <section class="collections" id="collections">
   <div class="sec-hdr reveal">
@@ -824,31 +879,47 @@ footer { background: var(--black); padding: 72px 80px 0; }
     </div>
   </div>
   <div class="coll-grid">
-    <div class="cc reveal">
-      <img class="cc-img" src="brand_assets/brand%20assets%202/8C2831C2-A8E1-43CE-B1C8-97F110DEA8DC.jpeg" alt="The Opaline">
-      <div class="cc-overlay"></div>
-      <div class="cc-info"><div class="cc-name">The Opaline</div></div>
-    </div>
-    <div class="cc reveal d1">
-      <img class="cc-img" src="brand_assets/brand%20assets%202/20DC2642-C5AC-4FC7-A06C-637AE1E41B63.jpeg" alt="Obsidian Noir">
-      <div class="cc-overlay"></div>
-      <div class="cc-info"><div class="cc-name">The Noir</div></div>
-    </div>
-    <div class="cc reveal d2">
-      <img class="cc-img" src="brand_assets/brand%20assets%202/8D1FBDA8-7C41-479C-B5A5-68518C8C9474.png" alt="Rose Quartz">
-      <div class="cc-overlay"></div>
-      <div class="cc-info"><div class="cc-name">The Honey Quartz</div></div>
-    </div>
-    <div class="cc reveal d1">
-      <img class="cc-img" src="brand_assets/brand%20assets%202/525E93BD-D8BB-405D-B5DA-F24D7D86158B.jpeg" alt="Citrine Glow">
-      <div class="cc-overlay"></div>
-      <div class="cc-info"><div class="cc-name">The Golden Aura</div></div>
-    </div>
-    <div class="cc reveal d2">
-      <img class="cc-img" src="brand_assets/brand%20assets%202/C50452E7-BB21-4DAB-BBF5-2AC38DA0FF09.png" alt="Lapis Luxe">
-      <div class="cc-overlay"></div>
-      <div class="cc-info"><div class="cc-name">The Maldives</div></div>
-    </div>
+    <a class="cc reveal" href="product-detail.html?p=sunnys-product-11">
+      <img class="cc-img" src="brand_assets/brand%20assets%206/B6FAB791-E3A1-4CE5-BBA3-9AACD7C2CFC1.jpeg" alt="The Sienna">
+      <div class="cc-info">
+        <div class="cc-name">The Sienna</div>
+        <div class="cc-price">EGP 2,400</div>
+      </div>
+    </a>
+    <a class="cc reveal d1" href="product-detail.html?p=sunnys-product-24">
+      <img class="cc-img" src="brand_assets/brand%20assets%206/44D2F002-052C-4282-8CA6-21C3538C0F2F.png" alt="The Aviara Rosie">
+      <div class="cc-info">
+        <div class="cc-name">The Aviara Rosie</div>
+        <div class="cc-price">EGP 2,400</div>
+      </div>
+    </a>
+    <a class="cc reveal d2" href="product-detail.html?p=sunnys-product-18">
+      <img class="cc-img" src="brand_assets/BA7/1000338045.png" alt="The Mocha Noir">
+      <div class="cc-info">
+        <div class="cc-name">The Mocha Noir</div>
+        <div class="cc-price">EGP 2,000</div>
+      </div>
+    </a>
+    <a class="cc reveal d1" href="product-detail.html?p=sunnys-product-15">
+      <img class="cc-img" src="brand_assets/brand%20assets%206/E172720D-81DE-4477-9733-A97F98448323.png" alt="The Azurea">
+      <div class="cc-info">
+        <div class="cc-name">The Azurea</div>
+        <div class="cc-price">EGP 2,200</div>
+      </div>
+    </a>
+    <a class="cc reveal d2" href="product-detail.html?p=sunnys-product-21">
+      <img class="cc-img" src="brand_assets/brand%20assets%206/75A49BA7-2407-4691-B668-36DD70AD2ED3.png" alt="The Astrelle">
+      <div class="cc-info">
+        <div class="cc-name">The Astrelle</div>
+        <div class="cc-price">EGP 2,000</div>
+      </div>
+    </a>
+    <a class="cc-explore reveal d1" href="shop.html">
+      <div class="cc-explore-label">Explore<br>All Styles</div>
+      <div class="cc-explore-arrow">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
   </div>
 </section>
 

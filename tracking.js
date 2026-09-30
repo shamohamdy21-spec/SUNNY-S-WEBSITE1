@@ -14,6 +14,30 @@
     if (w.ttq && typeof w.ttq.track === 'function') w.ttq.track(event, data);
   }
 
+  // Maps sunnys-product-XX internal IDs → catalog base SKUs (SNS-0XX).
+  // Appends -NGP (Non-Gold-Plated) or -GP (18K Gold-Plated) based on finish.
+  // Falls back to the raw productId for any product not in this catalog.
+  var SKU_MAP = {
+    'sunnys-product-11': 'SNS-011',
+    'sunnys-product-12': 'SNS-012',
+    'sunnys-product-14': 'SNS-014',
+    'sunnys-product-15': 'SNS-015',
+    'sunnys-product-16': 'SNS-016',
+    'sunnys-product-17': 'SNS-017',
+    'sunnys-product-18': 'SNS-018',
+    'sunnys-product-19': 'SNS-019',
+    'sunnys-product-20': 'SNS-020',
+    'sunnys-product-21': 'SNS-021',
+    'sunnys-product-22': 'SNS-022',
+    'sunnys-product-23': 'SNS-023',
+    'sunnys-product-24': 'SNS-024'
+  };
+  function catalogSku(productId, finish) {
+    var base = SKU_MAP[productId];
+    if (!base) return productId;
+    return base + (finish === 'Gold-Plated' ? '-GP' : '-NGP');
+  }
+
   // Dialing codes for countries available in the checkout country selector.
   var COUNTRY_DIAL = {
     ae: '971', sa: '966', kw: '965', bh: '973', qa: '974', om: '968',
@@ -46,18 +70,20 @@
 
   w.SunnyTracking = {
 
-    // Fired on every product detail page after the product data is loaded
-    viewContent: function (id, name, price) {
+    // Fired on every product detail page after the product data is loaded.
+    // finish: 'Non-Gold-Plated' | 'Gold-Plated' — the variant shown at page load.
+    viewContent: function (id, name, price, finish) {
       price = parseFloat(price) || 0;
+      var sku = catalogSku(id, finish);
       fbq('track', 'ViewContent', {
-        content_ids:  [id],
+        content_ids:  [sku],
         content_name: name,
         content_type: 'product',
         value:        price,
         currency:     'EGP'
       });
       ttq('ViewContent', {
-        content_id:   id,
+        content_id:   sku,
         content_name: name,
         content_type: 'product',
         quantity:     1,
@@ -66,18 +92,20 @@
       });
     },
 
-    // Fired when "Add to Cart" is clicked
-    addToCart: function (id, name, price) {
+    // Fired when "Add to Cart" is clicked.
+    // finish: the finish selected at the moment of the click.
+    addToCart: function (id, name, price, finish) {
       price = parseFloat(price) || 0;
+      var sku = catalogSku(id, finish);
       fbq('track', 'AddToCart', {
-        content_ids:  [id],
+        content_ids:  [sku],
         content_name: name,
         content_type: 'product',
         value:        price,
         currency:     'EGP'
       });
       ttq('AddToCart', {
-        content_id:   id,
+        content_id:   sku,
         content_name: name,
         content_type: 'product',
         quantity:     1,
@@ -86,11 +114,11 @@
       });
     },
 
-    // Fired on checkout.html load (covers both Add-to-Cart and Buy-Now flows)
-    // items: array of { productId, name, price, qty }
+    // Fired on checkout.html load (covers both Add-to-Cart and Buy-Now flows).
+    // items: array of { productId, name, price, qty, finish }
     initiateCheckout: function (items) {
       var total = items.reduce(function (s, i) { return s + (i.price * i.qty); }, 0);
-      var ids   = items.map(function (i) { return i.productId; });
+      var ids   = items.map(function (i) { return catalogSku(i.productId, i.finish); });
       var num   = items.reduce(function (s, i) { return s + i.qty; }, 0);
       fbq('track', 'InitiateCheckout', {
         content_ids:  ids,
@@ -111,19 +139,19 @@
     // Fired on confirmation.html only when a valid, confirmed order is found.
     // Duplicate guard: localStorage key per orderId — persists across tab closes and
     // browser restarts so revisiting a historical confirmation URL never re-fires.
-    // order: { orderId, total, items: [{ productId, name, price, qty }] }
+    // order: { orderId, total, items: [{ productId, name, price, qty, finish }] }
     purchase: function (order) {
       var key = 'px_purchased_' + order.orderId;
       if (localStorage.getItem(key)) return;
       localStorage.setItem(key, '1');
 
-      var ids      = (order.items || []).map(function (i) { return i.productId; });
+      var ids      = (order.items || []).map(function (i) { return catalogSku(i.productId, i.finish); });
       var num      = (order.items || []).reduce(function (s, i) { return s + i.qty; }, 0);
       var contents = (order.items || []).map(function (i) {
-        return { content_id: i.productId, quantity: i.qty };
+        return { content_id: catalogSku(i.productId, i.finish), quantity: i.qty };
       });
       var metaContents = (order.items || []).map(function (i) {
-        return { id: String(i.productId), quantity: Number(i.qty), item_price: Number(i.price) };
+        return { id: catalogSku(i.productId, i.finish), quantity: Number(i.qty), item_price: Number(i.price) };
       });
       var total = parseFloat(order.total) || 0;
 

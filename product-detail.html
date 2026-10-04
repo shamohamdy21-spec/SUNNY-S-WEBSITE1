@@ -1963,9 +1963,9 @@ const PRODUCTS = {
     }
   },
 
-  // PRODUCT 23 — THE ARUOYA
+  // PRODUCT 23 — THE AUROYA
   'sunnys-product-23': {
-    name:       'The Aruoya',
+    name:       'The Auroya',
     collection: 'Core Collection',
     price:      '1800',
     originalPrice: '2800',
@@ -2402,15 +2402,17 @@ lightboxEl.addEventListener('click', function(e) { if (e.target === lightboxEl) 
     card.addEventListener('click', function() {
       window.location.href = 'product-detail.html?p=' + pid;
     });
-    var origHtml = prod.originalPrice
-      ? '<span class="ymal-price-orig">EGP ' + Number(prod.originalPrice).toLocaleString('en-EG') + '</span>' : '';
+    var ymalSalePrice = prod.priceNGP || prod.price;
+    var ymalOrigPrice = prod.originalPriceNGP || prod.originalPrice;
+    var origHtml = ymalOrigPrice
+      ? '<span class="ymal-price-orig">EGP ' + Number(ymalOrigPrice).toLocaleString('en-EG') + '</span>' : '';
     card.innerHTML =
       '<div class="ymal-card-img"><img src="' + prod.img1 + '" alt="' + prod.name + '" loading="lazy"></div>' +
       '<div class="ymal-card-info">' +
         '<div class="ymal-eyebrow">' + prod.collection + '</div>' +
         '<div class="ymal-name">' + prod.name + '</div>' +
         '<div class="ymal-price">' + origHtml +
-          '<span class="ymal-price-cur">EGP ' + Number(prod.price).toLocaleString('en-EG') + '</span>' +
+          '<span class="ymal-price-cur">EGP ' + Number(ymalSalePrice).toLocaleString('en-EG') + '</span>' +
         '</div>' +
         '<div class="ymal-link">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>' +
       '</div>';

@@ -156,7 +156,7 @@ const PRODUCTS = new Map([
   ['sunnys-product-20', { name: 'The Hazel',           price: 1800, collection: 'Core Collection' }],
   ['sunnys-product-21', { name: 'The Astrelle',        price: 1800, collection: 'Core Collection' }],
   ['sunnys-product-22', { name: 'The Aviara Emerelle', price: 1800, collection: 'Core Collection' }],
-  ['sunnys-product-23', { name: 'The Aruoya',          price: 1800, collection: 'Core Collection' }],
+  ['sunnys-product-23', { name: 'The Auroya',          price: 1800, collection: 'Core Collection' }],
   ['sunnys-product-24', { name: 'The Aviara Rosie',    price: 1800, collection: 'Core Collection' }],
 ]);
 

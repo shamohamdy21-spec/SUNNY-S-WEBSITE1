@@ -837,7 +837,8 @@ try {
   document.querySelectorAll('.prod-card[data-href]').forEach(card => {
     const m = (card.getAttribute('data-href')||'').match(/[?&]p=([^&]+)/);
     if (!m) return;
-    const inv = invMap[m[1]] || {inventoryQuantity:20,comingSoon:false};
+    // Admin saves under variant keys (e.g. sunnys-product-15-NGP); check that first
+    const inv = invMap[m[1]+'-NGP'] || invMap[m[1]] || {inventoryQuantity:20,comingSoon:false};
     const qty = inv.inventoryQuantity ?? 20;
     const cs  = inv.comingSoon ?? false;
 

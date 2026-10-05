@@ -2438,7 +2438,9 @@ if (_pid) {
     };
     const _app = getApps().length ? getApps()[0] : initializeApp(_cfg);
     const _db  = getFirestore(_app,'default');
-    const snap = await getDoc(doc(_db,'inventory',_pid));
+    // Admin saves inventory under variant keys (e.g. sunnys-product-15-NGP); try that first
+    let snap = await getDoc(doc(_db,'inventory',_pid+'-NGP'));
+    if (!snap.exists()) snap = await getDoc(doc(_db,'inventory',_pid));
     const inv  = snap.exists() ? snap.data() : {inventoryQuantity:20,comingSoon:false};
     const qty  = inv.inventoryQuantity ?? 20;
     const cs   = inv.comingSoon ?? false;

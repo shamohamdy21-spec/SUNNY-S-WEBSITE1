@@ -157,20 +157,20 @@ const PRODUCTS = new Map([
   ['riviera',           { name: 'The Golden Aura',    price: 2200, collection: 'Core Collection' }],
   ['siena',             { name: 'The Eclipse',        price: 1800, collection: 'Core Collection' }],
   ['lumiere',           { name: 'The Obsidian Noir',  price: 2000, collection: 'Core Collection' }],
-  ['sunnys-product-11', { name: 'The Sienna',         price: 2200, collection: 'Core Collection' }],
+  ['sunnys-product-11', { name: 'The Sienna',         price: 2400, collection: 'Core Collection' }],
   ['sunnys-product-12', { name: 'The Ambré',          price: 2000, collection: 'Core Collection' }],
   ['sunnys-product-13', { name: 'The Verdant',        price: 1800, collection: 'Core Collection' }],
   ['sunnys-product-14', { name: 'The Lavande',        price: 2000, collection: 'Core Collection' }],
-  ['sunnys-product-15', { name: 'The Azurea',         price: 2000, collection: 'Core Collection' }],
-  ['sunnys-product-16', { name: 'The Aviara Classic',   price: 2200, collection: 'Core Collection' }],
-  ['sunnys-product-17', { name: 'The Lunelle',         price: 1800, collection: 'Core Collection' }],
+  ['sunnys-product-15', { name: 'The Azurea',         price: 2200, collection: 'Core Collection' }],
+  ['sunnys-product-16', { name: 'The Aviara Classic',   price: 2400, collection: 'Core Collection' }],
+  ['sunnys-product-17', { name: 'The Lunelle',         price: 2000, collection: 'Core Collection' }],
   ['sunnys-product-18', { name: 'The Mocha Noir',      price: 2000, collection: 'Core Collection' }],
   ['sunnys-product-19', { name: 'The Olive Aura',      price: 2200, collection: 'Core Collection' }],
-  ['sunnys-product-20', { name: 'The Hazel',           price: 1800, collection: 'Core Collection' }],
-  ['sunnys-product-21', { name: 'The Astrelle',        price: 1800, collection: 'Core Collection' }],
-  ['sunnys-product-22', { name: 'The Aviara Emerelle', price: 1800, collection: 'Core Collection' }],
-  ['sunnys-product-23', { name: 'The Auroya',          price: 1800, collection: 'Core Collection' }],
-  ['sunnys-product-24', { name: 'The Aviara Rosie',    price: 1800, collection: 'Core Collection' }],
+  ['sunnys-product-20', { name: 'The Hazel',           price: 2000, collection: 'Core Collection' }],
+  ['sunnys-product-21', { name: 'The Astrelle',        price: 2000, collection: 'Core Collection' }],
+  ['sunnys-product-22', { name: 'The Aviara Emerelle', price: 2400, collection: 'Core Collection' }],
+  ['sunnys-product-23', { name: 'The Auroya',          price: 2200, collection: 'Core Collection' }],
+  ['sunnys-product-24', { name: 'The Aviara Rosie',    price: 2400, collection: 'Core Collection' }],
 ]);
 
 // Shipping destinations and costs.
@@ -256,16 +256,17 @@ function validateOrder(body) {
     totalQty += qty;
     if (totalQty > 20) { errors.push('total_qty_exceeded'); break; }
     const finish = item.finish === 'Gold-Plated' ? 'Gold-Plated' : 'Non-Gold-Plated';
+    const itemPrice = finish === 'Gold-Plated' ? product.price + 800 : product.price;
     validatedItems.push({
       productId:  item.productId,
       name:       product.name,
       collection: product.collection,
-      price:      product.price,
+      price:      itemPrice,
       qty,
       finish,
       image: typeof item.image === 'string' ? item.image.slice(0, 500) : '',
     });
-    recalcSubtotal += product.price * qty;
+    recalcSubtotal += itemPrice * qty;
   }
 
   if (errors.length) return { valid: false, errors };

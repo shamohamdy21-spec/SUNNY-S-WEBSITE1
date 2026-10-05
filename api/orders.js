@@ -107,7 +107,7 @@ async function checkRateLimit(req) {
 // This function must be used everywhere the API reads or writes inventory so that
 // the key it uses always matches what the admin wrote.
 function inventoryDocId(productId, finish) {
-  if (productId.startsWith('sunnys-product-')) {
+  if (productId.startsWith('sunnys-product-') || productId === 'riviera') {
     return productId + (finish === 'Gold-Plated' ? '-GP' : '-NGP');
   }
   return productId;

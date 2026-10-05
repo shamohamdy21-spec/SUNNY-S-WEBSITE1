@@ -1371,12 +1371,11 @@ function renderInventory() {
   }));
 
   grid.innerHTML = PRODUCTS_DB.map(p => {
-    const isNew = p.id.startsWith('sunnys-product-');
+    const isNew = p.id.startsWith('sunnys-product-') || p.id === 'riviera';
     const totalSold = soldMap[p.id] || 0;
 
     if (isNew) {
-      const num = p.id.replace('sunnys-product-', '');
-      const base = 'SNS-0' + num;
+      const base = p.id.startsWith('sunnys-product-') ? 'SNS-0' + p.id.replace('sunnys-product-', '') : p.id.toUpperCase();
 
       const renderVariant = (suffix, label, dotClass) => {
         const key = p.id + '-' + suffix;
@@ -1563,8 +1562,7 @@ function renderProducts() {
   }
 
   tbody.innerHTML = filtered.map(p => {
-    const num = p.id.replace('sunnys-product-', '');
-    const base = 'SNS-0' + num;
+    const base = p.id.startsWith('sunnys-product-') ? 'SNS-0' + p.id.replace('sunnys-product-', '') : p.id.toUpperCase();
     const totalSold = soldMap[p.id] || 0;
 
     const variantRow = (suffix, label, dotClass, priceVal) => {
@@ -1641,8 +1639,7 @@ function openProductPanel(productId) {
       <div class="detail-sec-title">Variants — Finish &amp; Pricing</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         ${(()=>{
-          const num = p.id.replace('sunnys-product-','');
-          const base = 'SNS-0'+num;
+          const base = p.id.startsWith('sunnys-product-') ? 'SNS-0'+p.id.replace('sunnys-product-','') : p.id.toUpperCase();
           return ['NGP','GP'].map(sfx => {
             const key = p.id+'-'+sfx;
             const vi = inventoryData[key]||{};

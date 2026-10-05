@@ -100,6 +100,19 @@ async function checkRateLimit(req) {
   }
 }
 
+// ── Inventory document ID helper ─────────────────────────────────────────────
+// The admin dashboard saves inventory under variant keys for all sunnys-product-*
+// products: <productId>-NGP (Non-Gold-Plated) and <productId>-GP (Gold-Plated).
+// Legacy products (non sunnys-product-*) use the base productId as the document key.
+// This function must be used everywhere the API reads or writes inventory so that
+// the key it uses always matches what the admin wrote.
+function inventoryDocId(productId, finish) {
+  if (productId.startsWith('sunnys-product-')) {
+    return productId + (finish === 'Gold-Plated' ? '-GP' : '-NGP');
+  }
+  return productId;
+}
+
 // ── Catalog SKU mapping ────────────────────────────────────────────────────────
 // Mirrors the mapping in tracking.js. Both must stay in sync with sunnys-meta-catalog.csv.
 // Non-Gold-Plated → -NGP suffix; Gold-Plated (18K) → -GP suffix.
@@ -582,7 +595,8 @@ module.exports = async function handler(req, res) {
   try {
     db = getDb();
     const orderRef = db.collection('orders').doc(orderId);
-    const invRefs  = validatedItems.map(item => db.collection('inventory').doc(item.productId));
+    // Use variant keys (productId-NGP / productId-GP) to match what the admin writes
+    const invRefs  = validatedItems.map(item => db.collection('inventory').doc(inventoryDocId(item.productId, item.finish)));
 
     txResult = await db.runTransaction(async (transaction) => {
       // (a) Idempotency: if the order already exists, return without touching inventory

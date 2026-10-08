@@ -349,6 +349,22 @@ try{
 }catch(e){}
 if(!items||!items.length)window.location.href='shop.html';
 
+// Re-price items from canonical catalog so stale localStorage prices never reach checkout.
+// Mirrors api/orders.js PRODUCTS map — keep both in sync when changing prices.
+const CATALOG_PRICES={
+  'noir':2000,'rose':1800,'citrine':1800,'aurelia':2200,'solene':2000,
+  'celeste':2200,'verona':1800,'riviera':2200,'siena':1800,'lumiere':2000,
+  'sunnys-product-11':2400,'sunnys-product-12':2000,'sunnys-product-13':1800,
+  'sunnys-product-14':2000,'sunnys-product-15':2200,'sunnys-product-16':2400,
+  'sunnys-product-17':2000,'sunnys-product-18':2000,'sunnys-product-19':2200,
+  'sunnys-product-20':2000,'sunnys-product-21':2000,'sunnys-product-22':2400,
+  'sunnys-product-23':2200,'sunnys-product-24':2400,
+};
+items.forEach(function(it){
+  const base=CATALOG_PRICES[it.productId];
+  if(base!==undefined) it.price=it.finish==='Gold-Plated'?base+800:base;
+});
+
 if (window.SunnyTracking && items.length) SunnyTracking.initiateCheckout(items);
 
 // Render summary items

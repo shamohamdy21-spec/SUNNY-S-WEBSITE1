@@ -130,6 +130,7 @@ const CATALOG_SKU_MAP = {
   'sunnys-product-22': 'SNS-022',
   'sunnys-product-23': 'SNS-023',
   'sunnys-product-24': 'SNS-024',
+  'riviera':           'RIVIERA',
 };
 function catalogSku(productId, finish) {
   const base = CATALOG_SKU_MAP[productId];
